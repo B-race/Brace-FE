@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import logoImage from "../../../assets/images/logo2.png";
+import logoImage from "../../../assets/images/brace-logo.png";
 import "../../../styles/appLayout.css";
 import { ROUTES } from "../../constants/routes";
 
