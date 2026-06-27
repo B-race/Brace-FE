@@ -6,6 +6,8 @@ export type MyPageProjectStatus =
   | "recruiting"
   | "completed";
 
+export type MyPageProjectListType = "myProjects" | "applications" | "bookmarks";
+
 export interface MyPageProjectCardItem {
   id: number;
   title: string;
