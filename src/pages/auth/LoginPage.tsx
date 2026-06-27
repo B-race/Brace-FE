@@ -13,19 +13,25 @@ export const LoginPage = () => {
     event.preventDefault();
 
     if (!email || !password) {
-      window.alert("이메일과 비밀번호를 입력해 주세요.");
+      window.alert("아이디와 비밀번호를 입력해 주세요.");
       return;
     }
 
-    window.alert("로그인 기능은 백엔드 API 연결 후 완성됩니다.");
+    if (email !== "Manager" || password !== "1234") {
+      window.alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      return;
+    }
+
+    sessionStorage.setItem("brace_mock_user", "Manager");
+    navigate(ROUTES.PROJECTS);
   };
 
   const handleGoogleLogin = () => {
     window.alert("Google 로그인은 OAuth 설정 후 연결됩니다.");
   };
 
-  const handleKakaoLogin = () => {
-    window.alert("Kakao 로그인은 OAuth 설정 후 연결됩니다.");
+  const handleNaverLogin = () => {
+    window.alert("Naver 로그인은 OAuth 설정 후 연결됩니다.");
   };
 
   return (
@@ -49,10 +55,10 @@ export const LoginPage = () => {
           onSubmit={handleLogin}
         >
           <label>
-            이메일
+            아이디
             <input
-              type="email"
-              placeholder="name@example.com"
+              type="text"
+              placeholder="아이디를 입력하세요"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -62,7 +68,7 @@ export const LoginPage = () => {
             비밀번호
             <input
               type="password"
-              placeholder="비밀번호 입력"
+              placeholder="비밀번호를 입력하세요"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
@@ -91,11 +97,11 @@ export const LoginPage = () => {
             </button>
 
             <button
-              className="auth-social-button kakao-login-button"
+              className="auth-social-button naver-login-button"
               type="button"
-              onClick={handleKakaoLogin}
+              onClick={handleNaverLogin}
             >
-              Kakao로 계속하기
+              Naver로 계속하기
             </button>
           </div>
 

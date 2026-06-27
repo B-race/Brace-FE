@@ -86,6 +86,11 @@
   border-color: #111111;
 }
 
+.auth-login-form input::placeholder,
+.auth-signup-form input::placeholder {
+  color: #c7c7c7;
+}
+
 .auth-dark-button {
   min-height: 44px;
   border: 1px solid #111111;
@@ -135,9 +140,10 @@
   border-color: #d8d8d8;
 }
 
-.kakao-login-button {
-  border-color: #f3d400;
-  background: #fee500;
+.naver-login-button {
+  border-color: #03c75a;
+  background: #03c75a;
+  color: #ffffff;
 }
 
 .auth-bottom-message {
@@ -157,20 +163,141 @@
   text-decoration: underline;
 }
 
-.auth-check-label {
+.auth-check-row {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
   color: #555555;
   font-size: 13px;
   font-weight: 400;
 }
 
-.auth-check-label input {
-  width: auto;
+.auth-check-row input {
+  width: 18px;
+  height: 18px;
   margin: 0;
   padding: 0;
+  accent-color: #111111;
+  cursor: pointer;
+}
+
+.auth-agreement-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: -4px;
+}
+
+.auth-agreement-links button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.auth-agreement-links button:hover,
+.auth-agreement-links button:focus-visible {
+  color: #111111;
+}
+
+.auth-agreement-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  padding: 28px;
+  place-items: center;
+  background: rgba(17, 17, 17, 0.42);
+}
+
+.auth-agreement-modal {
+  display: grid;
+  width: min(760px, 100%);
+  max-height: min(760px, calc(100vh - 56px));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.2);
+}
+
+.auth-agreement-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 26px 30px 20px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.auth-agreement-modal-header h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 26px;
+}
+
+.auth-agreement-modal-header button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #f3f3f3;
+  color: #333333;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.auth-agreement-modal-body {
+  display: grid;
+  gap: 18px;
+  overflow-y: auto;
+  padding: 28px 30px;
+}
+
+.auth-agreement-modal-body article {
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.auth-agreement-modal-body article:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.auth-agreement-modal-body h3 {
+  margin: 0;
+  color: #111111;
+  font-size: 17px;
+}
+
+.auth-agreement-modal-body p {
+  margin: 10px 0 0;
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.auth-agreement-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 30px 26px;
+  border-top: 1px solid #eeeeee;
+}
+
+.auth-agreement-modal-footer .auth-dark-button {
+  min-width: 120px;
 }
 
 .profile-intro {
