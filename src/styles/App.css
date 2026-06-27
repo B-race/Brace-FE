@@ -1193,6 +1193,320 @@
   cursor: not-allowed;
 }
 
+.mypage-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: calc(100vh - 60px);
+  background: #ffffff;
+}
+
+.mypage-layout .app-sidebar {
+  padding: 36px 24px;
+  background: #f3f4f6;
+}
+
+.mypage-layout .app-sidebar__nav {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 22px;
+}
+
+.mypage-layout .app-sidebar__item {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #111827;
+  cursor: pointer;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.mypage-layout .app-sidebar__icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.mypage-layout .app-sidebar__item:hover,
+.mypage-layout .app-sidebar__item--active {
+  color: #4f46e5;
+}
+
+.mypage-content {
+  min-width: 0;
+}
+
+.profile-dashboard {
+  display: grid;
+  gap: 48px;
+}
+
+.profile-hero-card {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 40px;
+  padding: 72px 64px 64px;
+  border-bottom: 1px solid #e4e7ec;
+}
+
+.profile-avatar {
+  display: block;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+.profile-summary {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-summary h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 32px;
+  line-height: 1.25;
+}
+
+.profile-summary p {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.profile-outline-button,
+.profile-cancel-button,
+.profile-save-button,
+.profile-withdraw-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.profile-outline-button {
+  min-width: 180px;
+  border: 2px solid #111827;
+  background: #ffffff;
+  color: #111827;
+}
+
+.profile-outline-button:hover,
+.profile-outline-button:focus-visible {
+  background: #f8fafc;
+}
+
+.profile-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 80px;
+  padding: 0 110px;
+}
+
+.profile-stat-card {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  padding: 28px 24px;
+  border-radius: 32px;
+  background: #d9d9d9;
+}
+
+.profile-stat-card strong {
+  color: #000000;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.profile-stat-card span {
+  color: #111827;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.profile-detail-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin: 24px 40px 80px;
+  padding: 56px 80px 96px;
+  border-radius: 64px;
+  background: #d9d9d9;
+}
+
+.profile-detail-card h2 {
+  margin: 0 0 32px;
+  color: #000000;
+  font-size: 28px;
+}
+
+.profile-detail-card dl {
+  display: grid;
+  gap: 32px;
+  margin: 0;
+}
+
+.profile-detail-card dl div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 32px;
+}
+
+.profile-detail-card dt,
+.profile-detail-card dd {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.profile-withdraw-button {
+  position: absolute;
+  right: 32%;
+  bottom: 32px;
+  min-width: 280px;
+  border: 0;
+  background: #000000;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.profile-edit-page {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(360px, 1fr);
+  gap: 80px;
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 96px 0 72px;
+}
+
+.profile-edit-copy {
+  align-self: center;
+}
+
+.profile-edit-copy h1 {
+  margin: 0 0 24px;
+  color: #000000;
+  font-size: 44px;
+}
+
+.profile-edit-copy p {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.profile-edit-form {
+  display: grid;
+  gap: 28px;
+}
+
+.profile-edit-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-edit-form label span {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.profile-edit-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  font-size: 15px;
+}
+
+.profile-edit-form input[type="file"] {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.profile-edit-form small {
+  color: #98a2b3;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.profile-save-message {
+  margin: 0;
+  color: #027a48;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-edit-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.profile-cancel-button {
+  border: 2px solid #111827;
+  background: #ffffff;
+  color: #111827;
+}
+
+.profile-save-button {
+  border: 0;
+  background: #000000;
+  color: #ffffff;
+  cursor: pointer;
+}
+
 @keyframes notification-skeleton-pulse {
   0% {
     background-position: 200% 0;
@@ -1300,5 +1614,82 @@
   .applicant-detail-list > div {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .mypage-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mypage-layout .app-sidebar {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .mypage-layout .app-sidebar__nav {
+    position: static;
+    display: flex;
+    min-width: max-content;
+    gap: 16px;
+  }
+
+  .mypage-layout .app-sidebar__item {
+    flex: 0 0 auto;
+    font-size: 15px;
+  }
+
+  .profile-hero-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .profile-actions {
+    justify-content: center;
+  }
+
+  .profile-stat-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 0 24px;
+  }
+
+  .profile-detail-card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin: 0 24px 48px;
+    padding: 32px 24px 104px;
+    border-radius: 28px;
+  }
+
+  .profile-detail-card dl div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .profile-withdraw-button {
+    right: 24px;
+    left: 24px;
+    min-width: 0;
+  }
+
+  .profile-edit-page {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    width: min(100% - 32px, 720px);
+    padding: 48px 0;
+  }
+
+  .profile-edit-copy {
+    text-align: center;
+  }
+
+  .profile-edit-copy h1 {
+    font-size: 34px;
+  }
+
+  .profile-edit-actions {
+    grid-template-columns: 1fr;
   }
 }
