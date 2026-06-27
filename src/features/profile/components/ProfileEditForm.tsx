@@ -19,6 +19,7 @@ interface ProfileEditFormProps {
 
 export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   const [form, setForm] = useState(profile);
+  const [skillInput, setSkillInput] = useState(profile.skills.join(", "));
   const [savedMessage, setSavedMessage] = useState("");
 
   const updateField = (field: EditableProfileField, value: string) => {
@@ -27,6 +28,7 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   };
 
   const updateSkills = (value: string) => {
+    setSkillInput(value);
     setForm((currentForm) => ({
       ...currentForm,
       skills: value
@@ -85,7 +87,7 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
         <label>
           <span>기술 태그 (최대 5개)</span>
           <input
-            value={form.skills.join(", ")}
+            value={skillInput}
             placeholder="태그 검색 후 추가"
             onChange={(event) => updateSkills(event.target.value)}
           />
