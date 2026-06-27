@@ -1,8 +1,45 @@
 import { useCallback, useMemo, useState } from "react";
 import { mockNotifications } from "../api/notification.mock";
 
+const READ_NOTIFICATION_IDS_STORAGE_KEY = "brace:read-notification-ids";
+
+const getStoredReadNotificationIds = () => {
+  try {
+    const storedReadNotificationIds = localStorage.getItem(
+      READ_NOTIFICATION_IDS_STORAGE_KEY,
+    );
+
+    if (!storedReadNotificationIds) {
+      return [];
+    }
+
+    return JSON.parse(storedReadNotificationIds) as number[];
+  } catch {
+    return [];
+  }
+};
+
+const setStoredReadNotificationIds = (notificationIds: number[]) => {
+  localStorage.setItem(
+    READ_NOTIFICATION_IDS_STORAGE_KEY,
+    JSON.stringify(notificationIds),
+  );
+};
+
 export const useNotifications = () => {
-  const [notificationItems, setNotificationItems] = useState(mockNotifications);
+  const [readNotificationIds, setReadNotificationIds] = useState<number[]>(
+    getStoredReadNotificationIds,
+  );
+
+  const notificationItems = useMemo(
+    () =>
+      mockNotifications.map((notification) =>
+        readNotificationIds.includes(notification.id)
+          ? { ...notification, status: "read" as const }
+          : notification,
+      ),
+    [readNotificationIds],
+  );
 
   const notifications = useMemo(
     () =>
@@ -22,13 +59,20 @@ export const useNotifications = () => {
   );
 
   const markAsRead = useCallback((notificationId: number) => {
-    setNotificationItems((currentNotifications) =>
-      currentNotifications.map((notification) =>
-        notification.id === notificationId
-          ? { ...notification, status: "read" }
-          : notification,
-      ),
-    );
+    setReadNotificationIds((currentReadNotificationIds) => {
+      if (currentReadNotificationIds.includes(notificationId)) {
+        return currentReadNotificationIds;
+      }
+
+      const nextReadNotificationIds = [
+        ...currentReadNotificationIds,
+        notificationId,
+      ];
+
+      setStoredReadNotificationIds(nextReadNotificationIds);
+
+      return nextReadNotificationIds;
+    });
   }, []);
 
   return {

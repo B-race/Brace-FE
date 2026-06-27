@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { NotificationItem as NotificationItemType } from "../types/notification";
 import { NotificationTypeBadge } from "./NotificationTypeBadge";
 
@@ -56,9 +57,17 @@ export const NotificationItem = ({
         >
           {isUnread ? "읽지 않음" : "읽음"}
         </span>
-        <span className="notification-action disabled">
+        <Link
+          className="notification-action"
+          to={notification.link.href}
+          onClick={() => {
+            if (isUnread) {
+              onMarkAsRead(notification.id);
+            }
+          }}
+        >
           {notification.link.label}
-        </span>
+        </Link>
         {isUnread ? (
           <button
             className="notification-action"

@@ -9,6 +9,7 @@ export const ROUTES = {
   PROJECT_DETAIL: "/projects/:projectId",
   PROJECT_APPLICANTS: "/projects/:projectId/applicants",
   NOTIFICATIONS: "/notifications",
+  NOTIFICATION_DETAIL: "/notifications/:notificationId",
   MYPAGE: "/mypage",
   MY_PROJECTS: "/mypage/projects",
   MY_APPLICATIONS: "/mypage/applications",
@@ -21,3 +22,6 @@ export const createProjectDetailPath = (projectId: number | string) =>
 
 export const createProjectApplicantsPath = (projectId: number | string) =>
   `/projects/${projectId}/applicants`;
+
+export const createNotificationDetailPath = (notificationId: number | string) =>
+  `/notifications/${notificationId}`;

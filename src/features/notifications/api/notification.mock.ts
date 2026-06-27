@@ -1,3 +1,9 @@
+import {
+  createNotificationDetailPath,
+  createProjectApplicantsPath,
+  createProjectDetailPath,
+  ROUTES,
+} from "../../../shared/constants/routes";
 import type { NotificationItem } from "../types/notification";
 
 export const mockNotifications: NotificationItem[] = [
@@ -19,7 +25,7 @@ export const mockNotifications: NotificationItem[] = [
     },
     link: {
       label: "지원자 확인하기",
-      href: "/projects/101/applicants",
+      href: createProjectApplicantsPath(101),
     },
   },
   {
@@ -43,7 +49,7 @@ export const mockNotifications: NotificationItem[] = [
     },
     link: {
       label: "연락처 확인하기",
-      href: "/notifications/2",
+      href: createNotificationDetailPath(2),
     },
   },
   {
@@ -58,7 +64,7 @@ export const mockNotifications: NotificationItem[] = [
     projectTitle: "환경 데이터 시각화 프로젝트",
     link: {
       label: "프로젝트 둘러보기",
-      href: "/projects",
+      href: ROUTES.PROJECTS,
     },
   },
   {
@@ -72,7 +78,7 @@ export const mockNotifications: NotificationItem[] = [
     projectTitle: "2024 소셜벤처 아이디어 공모전",
     link: {
       label: "프로젝트 확인하기",
-      href: "/projects/101",
+      href: createProjectDetailPath(101),
     },
   },
   {
@@ -86,7 +92,7 @@ export const mockNotifications: NotificationItem[] = [
     projectTitle: "2024 소셜벤처 아이디어 공모전",
     link: {
       label: "모집 현황 보기",
-      href: "/projects/101",
+      href: createProjectDetailPath(101),
     },
   },
 ];
