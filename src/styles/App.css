@@ -285,6 +285,7 @@
 }
 
 .notification-action {
+  appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -293,7 +294,9 @@
   padding: 0 14px;
   border: 1px solid #d0d5dd;
   border-radius: 8px;
+  background: #ffffff;
   color: #344054;
+  cursor: pointer;
   font-size: 14px;
   font-weight: 800;
 }
@@ -307,6 +310,7 @@
   border-color: #e4e7ec;
   background: #f9fafb;
   color: #98a2b3;
+  cursor: default;
 }
 
 .notification-side {

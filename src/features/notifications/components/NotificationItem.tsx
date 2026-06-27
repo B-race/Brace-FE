@@ -56,6 +56,9 @@ export const NotificationItem = ({
         >
           {isUnread ? "읽지 않음" : "읽음"}
         </span>
+        <span className="notification-action disabled">
+          {notification.link.label}
+        </span>
         {isUnread ? (
           <button
             className="notification-action"
@@ -64,11 +67,7 @@ export const NotificationItem = ({
           >
             읽음 처리
           </button>
-        ) : (
-          <span className="notification-action disabled">
-            {notification.link.label}
-          </span>
-        )}
+        ) : null}
       </div>
     </li>
   );
