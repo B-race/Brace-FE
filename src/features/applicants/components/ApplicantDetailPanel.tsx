@@ -19,10 +19,12 @@ const formatAppliedAt = (appliedAt: string) =>
 
 interface ApplicantDetailPanelProps {
   applicant: ManagedApplicant | null;
+  onReview: (applicantId: number, status: ApplicantReviewStatus) => void;
 }
 
 export const ApplicantDetailPanel = ({
   applicant,
+  onReview,
 }: ApplicantDetailPanelProps) => {
   if (!applicant) {
     return (
@@ -39,6 +41,7 @@ export const ApplicantDetailPanel = ({
   }
 
   const { profile, status, message, appliedAt } = applicant;
+  const isPending = status === "pending";
 
   return (
     <article
@@ -111,8 +114,37 @@ export const ApplicantDetailPanel = ({
         </div>
       </dl>
 
-      <div className="applicant-detail-action-placeholder">
-        수락/거절 액션은 다음 작업에서 연결됩니다.
+      <div className="applicant-review-actions">
+        <div>
+          <strong>
+            {isPending
+              ? "지원자를 검토하고 응답해주세요"
+              : `이미 ${statusLabel[status]} 처리된 지원자입니다`}
+          </strong>
+          <p>
+            {isPending
+              ? "수락하면 팀 합류 대상자로, 거절하면 미선정 지원자로 표시됩니다."
+              : "처리 결과는 지원자 목록과 상세 상태에 함께 반영됩니다."}
+          </p>
+        </div>
+        <div className="applicant-review-button-group">
+          <button
+            className="applicant-review-button accept"
+            type="button"
+            disabled={!isPending}
+            onClick={() => onReview(applicant.id, "accepted")}
+          >
+            수락
+          </button>
+          <button
+            className="applicant-review-button reject"
+            type="button"
+            disabled={!isPending}
+            onClick={() => onReview(applicant.id, "rejected")}
+          >
+            거절
+          </button>
+        </div>
       </div>
     </article>
   );
