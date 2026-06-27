@@ -1225,43 +1225,42 @@
 }
 
 .mypage-layout {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  display: block;
   width: 100%;
   min-height: calc(100vh - 60px);
   background: #ffffff;
 }
 
-.mypage-layout .app-sidebar {
-  padding: 36px 24px;
-  background: #f3f4f6;
+.app-sidebar {
+  width: 100%;
+  min-height: 100%;
+  padding: 36px 20px;
+  background: #f3f3f3;
 }
 
-.mypage-layout .app-sidebar__nav {
-  position: sticky;
-  top: 96px;
+.app-sidebar__nav {
   display: grid;
-  gap: 22px;
+  gap: 18px;
 }
 
-.mypage-layout .app-sidebar__item {
+.app-sidebar__item {
   appearance: none;
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 44px;
+  min-height: 42px;
   padding: 0;
   border: 0;
   background: transparent;
   color: #111827;
   cursor: pointer;
   font: inherit;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   text-decoration: none;
 }
 
-.mypage-layout .app-sidebar__icon {
+.app-sidebar__icon {
   display: grid;
   place-items: center;
   width: 28px;
@@ -1271,8 +1270,8 @@
   font-size: 14px;
 }
 
-.mypage-layout .app-sidebar__item:hover,
-.mypage-layout .app-sidebar__item--active {
+.app-sidebar__item:hover,
+.app-sidebar__item--active {
   color: #4f46e5;
 }
 
@@ -2012,27 +2011,6 @@
   .applicant-detail-list > div {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-
-  .mypage-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .mypage-layout .app-sidebar {
-    padding: 16px;
-    overflow-x: auto;
-  }
-
-  .mypage-layout .app-sidebar__nav {
-    position: static;
-    display: flex;
-    min-width: max-content;
-    gap: 16px;
-  }
-
-  .mypage-layout .app-sidebar__item {
-    flex: 0 0 auto;
-    font-size: 15px;
   }
 
   .profile-hero-card {

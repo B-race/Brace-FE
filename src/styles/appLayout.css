@@ -27,6 +27,42 @@
   gap: 24px;
 }
 
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.app-menu-button {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.app-menu-button span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: #111111;
+}
+
+.app-menu-button:hover,
+.app-menu-button:focus-visible {
+  background: #f5f5f5;
+  outline: none;
+}
+
 /* 로고 */
 .app-logo {
   display: flex;
@@ -124,6 +160,29 @@
   margin-top: var(--app-header-height);
 }
 
+.sidebar-drawer-backdrop {
+  position: fixed;
+  top: var(--app-header-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 90;
+  background: rgba(17, 24, 39, 0.24);
+  overflow: hidden;
+}
+
+.sidebar-drawer-panel {
+  position: fixed;
+  top: var(--app-header-height);
+  bottom: 0;
+  left: 0;
+  width: min(240px, calc(100% - 48px));
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
+  background: #f3f3f3;
+  box-shadow: 16px 0 40px rgba(15, 23, 42, 0.12);
+}
+
 @media (max-width: 820px) {
   .app-header {
     display: grid;
@@ -131,15 +190,14 @@
     padding: 16px 24px;
     grid-template-columns: 1fr auto;
     grid-template-areas:
-      "logo nav"
+      "left nav"
       "search search";
     align-content: center;
     gap: 14px 18px;
   }
 
-  .app-logo {
-    grid-area: logo;
-    width: 180px;
+  .app-header-left {
+    grid-area: left;
   }
 
   .app-search {
@@ -156,16 +214,28 @@
   .app-main {
     margin-top: var(--app-header-tablet-height);
   }
+
+  .sidebar-drawer-backdrop {
+    top: var(--app-header-tablet-height);
+  }
+
+  .sidebar-drawer-panel {
+    top: var(--app-header-tablet-height);
+  }
 }
 
 @media (max-width: 560px) {
   .app-header {
     min-height: var(--app-header-mobile-height);
-    grid-template-columns: 1fr;
+    grid-template-columns: auto 1fr;
     grid-template-areas:
-      "logo"
-      "search"
-      "nav";
+      "left left"
+      "search search"
+      "nav nav";
+  }
+
+  .app-header-left {
+    width: 100%;
   }
 
   .app-nav {
@@ -185,5 +255,13 @@
 
   .app-main {
     margin-top: var(--app-header-mobile-height);
+  }
+
+  .sidebar-drawer-backdrop {
+    top: var(--app-header-mobile-height);
+  }
+
+  .sidebar-drawer-panel {
+    top: var(--app-header-mobile-height);
   }
 }
