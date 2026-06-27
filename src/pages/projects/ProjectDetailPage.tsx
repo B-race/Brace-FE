@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 import { createProjectApplyPath } from "../../shared/constants/routes";
+import { ROUTES } from "../../shared/constants/routes";
 import "../../styles/projectDetail.css";
 
 // =====================
@@ -85,34 +86,48 @@ const LogoutModal: React.FC<{
 // =====================
 const Sidebar: React.FC = () => {
   const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setShowLogout(false);
-    alert("로그아웃 되었습니다.");
+    localStorage.removeItem("accessToken");
+    navigate(ROUTES.LOGIN);
   };
 
   return (
     <>
       <aside className="pd-sidebar">
         <nav className="pd-sidebar__nav">
-          <a
-            href="#"
-            className="pd-sidebar__item"
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pd-sidebar__item pd-sidebar__item--active"
+                : "pd-sidebar__item"
+            }
+            to={ROUTES.MY_PROJECTS}
           >
             <span className="pd-sidebar__icon">👤</span>내 프로젝트
-          </a>
-          <a
-            href="#"
-            className="pd-sidebar__item"
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pd-sidebar__item pd-sidebar__item--active"
+                : "pd-sidebar__item"
+            }
+            to={ROUTES.MY_APPLICATIONS}
           >
             <span className="pd-sidebar__icon">📋</span>지원 현황
-          </a>
-          <a
-            href="#"
-            className="pd-sidebar__item"
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pd-sidebar__item pd-sidebar__item--active"
+                : "pd-sidebar__item"
+            }
+            to={ROUTES.MY_BOOKMARKS}
           >
             <span className="pd-sidebar__icon">🔖</span>북마크
-          </a>
+          </NavLink>
           <button
             className="pd-sidebar__item pd-sidebar__item--logout"
             onClick={() => setShowLogout(true)}
