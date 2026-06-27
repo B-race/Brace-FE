@@ -1,0 +1,148 @@
+.app-shell {
+  min-height: 100vh;
+  background: #f7f8fb;
+  color: #171923;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid #e4e7ec;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+}
+
+.app-logo {
+  color: #111827;
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-nav-link:hover,
+.app-nav-link.active {
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.app-main {
+  width: min(1080px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0;
+}
+
+.placeholder-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 40px;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.placeholder-kicker {
+  margin: 0;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.placeholder-page h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 32px;
+  line-height: 1.25;
+}
+
+.placeholder-page p {
+  max-width: 640px;
+  margin: 0;
+  color: #4b5563;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.placeholder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.primary-link,
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.primary-link {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.secondary-link {
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+@media (max-width: 720px) {
+  .app-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .app-nav {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .app-main {
+    width: min(100% - 24px, 1080px);
+    padding: 32px 0;
+  }
+
+  .placeholder-page {
+    padding: 24px;
+  }
+
+  .placeholder-page h1 {
+    font-size: 26px;
+  }
+}

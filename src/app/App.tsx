@@ -1,18 +1,6 @@
-import { useState } from "react";
-import reactLogo from "../assets/icons/react.svg";
-import viteLogo from "../assets/icons/vite.svg";
-import heroImg from "../assets/images/hero.png";
-import "../styles/App.css";
-import ProjectsRegister from "../pages/projects/projectsRegister";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <ProjectsRegister />
-    </>
-  );
-}
+const App = () => <RouterProvider router={router} />;
 
 export default App;
