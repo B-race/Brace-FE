@@ -1,5 +1,4 @@
 import {
-  createNotificationDetailPath,
   createProjectApplicantsPath,
   createProjectDetailPath,
   ROUTES,
@@ -34,7 +33,7 @@ export const mockNotifications: NotificationItem[] = [
     status: "unread",
     title: "지원이 수락됐어요",
     message:
-      "로컬 맛집 추천 앱 프로젝트 합류가 확정됐어요. 제안자 연락처를 확인해보세요.",
+      "로컬 맛집 추천 앱 프로젝트 합류가 확정됐어요. 내 지원 현황에서 결과를 확인해보세요.",
     createdAt: "2026-06-26T12:10:00.000Z",
     projectId: 102,
     projectTitle: "로컬 맛집 추천 앱",
@@ -48,8 +47,8 @@ export const mockNotifications: NotificationItem[] = [
       openChatUrl: "https://open.kakao.com/o/brace-local-food",
     },
     link: {
-      label: "연락처 확인하기",
-      href: createNotificationDetailPath(2),
+      label: "내 지원 현황 보기",
+      href: ROUTES.MY_APPLICATIONS,
     },
   },
   {
@@ -63,8 +62,8 @@ export const mockNotifications: NotificationItem[] = [
     projectId: 103,
     projectTitle: "환경 데이터 시각화 프로젝트",
     link: {
-      label: "프로젝트 둘러보기",
-      href: ROUTES.PROJECTS,
+      label: "내 지원 현황 보기",
+      href: ROUTES.MY_APPLICATIONS,
     },
   },
   {
