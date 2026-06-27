@@ -1,4 +1,9 @@
 :root {
+  --app-header-height: 60px;
+  --app-header-tablet-height: 132px;
+  --app-header-mobile-height: 166px;
+  --page-gutter: clamp(16px, 4vw, 48px);
+  --page-max-width: 1180px;
   font-family:
     Inter,
     system-ui,
@@ -18,17 +23,43 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+}
+
+html.sidebar-drawer-open {
+  overflow: hidden;
+}
+
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
+}
+
+body.sidebar-drawer-open {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 button,
 input,
 textarea,
 select {
+  max-width: 100%;
   font: inherit;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a {
+  overflow-wrap: anywhere;
 }
 
 #root {

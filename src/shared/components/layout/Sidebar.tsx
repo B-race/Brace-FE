@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
 const LogoutModal = ({
@@ -46,12 +46,18 @@ const LogoutModal = ({
   </div>
 );
 
-export const Sidebar = () => {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const [showLogout, setShowLogout] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setShowLogout(false);
+    onNavigate?.();
     localStorage.removeItem("accessToken");
     navigate(ROUTES.LOGIN);
   };
@@ -62,11 +68,12 @@ export const Sidebar = () => {
         <nav className="app-sidebar__nav">
           <NavLink
             className={({ isActive }) =>
-              isActive
+              isActive || location.pathname === ROUTES.PROJECTS
                 ? "app-sidebar__item app-sidebar__item--active"
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_PROJECTS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">👤</span>내 프로젝트
           </NavLink>
@@ -77,6 +84,7 @@ export const Sidebar = () => {
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_APPLICATIONS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">📋</span>
             지원 현황
@@ -88,6 +96,7 @@ export const Sidebar = () => {
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_BOOKMARKS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">🔖</span>
             북마크
