@@ -227,14 +227,14 @@ const Step1ActivityType: React.FC<{ onNext: () => void; onPrev: () => void }> = 
           <div className="activity-item">
             <span className="activity-label">🏆 공모전 참가</span>
             <button className={`activity-btn ${selected === "contest" ? "activity-btn--selected" : ""}`} onClick={() => { setSelected("contest"); setError(""); }}>
-              {selected === "contest" ? "선택됨(예: 기본)" : "선택 가능"}
+              {selected === "contest" ? "선택됨" : "선택 가능"}
             </button>
             <span className="activity-hint">대회 참여를 위한 모집</span>
           </div>
           <div className="activity-item">
             <span className="activity-label">🔧 개인 프로젝트</span>
             <button className={`activity-btn ${selected === "personal" ? "activity-btn--selected" : ""}`} onClick={() => { setSelected("personal"); setError(""); }}>
-              {selected === "personal" ? "선택됨(예: 기본)" : "선택 가능"}
+              {selected === "personal" ? "선택됨" : "선택 가능"}
             </button>
             <span className="activity-hint">자율 프로젝트 팀 모집</span>
           </div>
@@ -500,7 +500,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="online" checked={form.online} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.online ? "선택됨" : "선택 가능"}</span>
             </label>
-            <span className="form-hint">토글 칩</span>
           </div>
 
           {/* 오프라인 */}
@@ -510,7 +509,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="offline" checked={form.offline} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.offline ? "선택됨" : "선택 가능"}</span>
             </label>
-            <span className="form-hint">토글 칩</span>
           </div>
 
           {/* 혼합 */}
@@ -520,7 +518,7 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="hybrid" checked={form.hybrid} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.hybrid ? "선택됨" : "선택 가능"}</span>
             </label>
-            {errors.mode ? <span className="form-error">{errors.mode}</span> : <span className="form-hint">토글 칩</span>}
+            {errors.mode ? <span className="form-error">{errors.mode}</span> : null}
           </div>
 
           {/* 태그 */}
@@ -572,46 +570,29 @@ export const ProjectCreatePage: React.FC = () => {
   };
 
   return (
-    <div className="page">
-      <header className="gnb">
-        <div className="gnb__logo">
-          <div className="gnb__logo-icon" />
-          <span className="gnb__logo-text">Brace</span>
+    <div className="pc-wrap">
+      {/* 상단 헤더 영역 */}
+      <div className="pc-header">
+        <h1 className="pc-header__title">프로젝트 등록</h1>
+        <p className="pc-header__subtitle">아이디어의 팀원을 모집할 내용을 단계별로 입력해 주세요.</p>
+        <div className="pc-stepper">
+          {steps.map(step => (
+            <button
+              key={step.id}
+              className={`pc-stepper__step ${currentStep === step.id ? "pc-stepper__step--active" : ""}`}
+              onClick={() => setCurrentStep(step.id)}
+            >
+              <span className="pc-stepper__number">{step.id}</span>
+              <span className="pc-stepper__label">{step.label}</span>
+            </button>
+          ))}
         </div>
-        <nav className="gnb__nav">
-          <a href="#" className="gnb__nav-link">모집하기</a>
-          <a href="#" className="gnb__nav-link">마이페이지</a>
-        </nav>
-      </header>
-      <main className="main">
-        <div className="card">
-          <h1 className="card__title">프로젝트 등록</h1>
-          <p className="card__subtitle">아이디어의 팀원을 모집할 내용을 단계별로 입력해 주세요.</p>
-          <div className="card__actions">
-            <button className="btn btn--outline">도움말</button>
-            <button className="btn btn--primary">저장하기</button>
-          </div>
-          <div className="stepper">
-            {steps.map(step => (
-              <button key={step.id} className={`stepper__step ${currentStep === step.id ? "stepper__step--active" : ""}`} onClick={() => setCurrentStep(step.id)}>
-                <span className="stepper__step-number">{step.id}</span>
-                <span className="stepper__step-label">{step.label}</span>
-              </button>
-            ))}
-          </div>
-          <div className="step-content">{renderStep()}</div>
-        </div>
-      </main>
-      <footer className="footer">
-        <div className="footer__inner">
-          <span className="footer__copy">© Brace</span>
-          <nav className="footer__nav">
-            <a href="#" className="footer__nav-link">문의</a>
-            <a href="#" className="footer__nav-link">이용 약관</a>
-            <a href="#" className="footer__nav-link">개인정보 처리방침</a>
-          </nav>
-        </div>
-      </footer>
+      </div>
+
+      {/* 단계별 콘텐츠 */}
+      <div className="pc-content">
+        {renderStep()}
+      </div>
     </div>
   );
 };

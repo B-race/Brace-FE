@@ -1,0 +1,117 @@
+/* =====================
+   App Shell
+   ===================== */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f8fb;
+}
+
+/* =====================
+   Header
+   ===================== */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 100;
+  gap: 24px;
+}
+
+/* 로고 */
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #111111;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.app-logo__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  flex-shrink: 0;
+}
+
+/* 검색바 */
+.app-search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 320px;
+  height: 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: #ffffff;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.app-search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #111111;
+  background: transparent;
+  font-family: inherit;
+}
+
+.app-search__input::placeholder { color: #aaaaaa; }
+
+.app-search__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* 네비게이션 */
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+.app-nav-link {
+  font-size: 14px;
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.15s;
+  font-weight: 400;
+}
+
+.app-nav-link:hover { color: #111111; }
+
+.app-nav-link.active {
+  color: #111111;
+  font-weight: 600;
+}
+
+/* =====================
+   Main
+   ===================== */
+.app-main {
+  margin-top: 60px;
+  flex: 1;
+  background: #f7f8fb;
+}

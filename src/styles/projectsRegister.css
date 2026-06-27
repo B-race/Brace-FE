@@ -234,8 +234,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 60px;
-  border: 1px solid #e5e5e5;
+  background: #ffffff;
   border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .step-header {
@@ -713,4 +714,154 @@ body {
   font-size: 12px;
   color: #999999;
   text-align: center;
+}
+
+/* =====================
+   ProjectsRegister (진입 페이지)
+   ===================== */
+.pr-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 40px;
+}
+
+.pr-card {
+  width: 100%;
+  max-width: 680px;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.pr-card__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.pr-card__subtitle {
+  font-size: 14px;
+  color: #888888;
+  text-align: center;
+}
+
+.pr-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pr-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.pr-stepper__step:hover { background: #f0f0f0; }
+
+.pr-stepper__number,
+.pr-stepper__label {
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: -0.01em;
+}
+
+.pr-stepper__step--active .pr-stepper__number,
+.pr-stepper__step--active .pr-stepper__label {
+  color: #111111;
+  font-weight: 600;
+}
+
+/* =====================
+   ProjectCreatePage (pc-)
+   ===================== */
+.pc-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #f7f8fb;
+}
+
+/* 상단 헤더 */
+.pc-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 40px 32px;
+  background: #f7f8fb;
+  gap: 12px;
+}
+
+.pc-header__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.pc-header__subtitle {
+  font-size: 14px;
+  color: #888888;
+}
+
+/* 스텝퍼 */
+.pc-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pc-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.pc-stepper__step:hover { background: #eeeeee; }
+
+.pc-stepper__step--active {
+  border-color: #c8a84b;
+  background: transparent;
+}
+
+.pc-stepper__number,
+.pc-stepper__label {
+  font-size: 13px;
+  color: #aaaaaa;
+  letter-spacing: -0.01em;
+}
+
+.pc-stepper__step--active .pc-stepper__number,
+.pc-stepper__step--active .pc-stepper__label {
+  color: #111111;
+  font-weight: 600;
+}
+
+/* 콘텐츠 영역 */
+.pc-content {
+  flex: 1;
+  padding: 0 40px 60px;
+  max-width: 1220px;
+  width: 100%;
+  margin: 0 auto;
 }
