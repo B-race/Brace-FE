@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import logoImage from "../../../assets/images/brace-logo.png";
 import "../../../styles/appLayout.css";
 import { ROUTES } from "../../constants/routes";
 import { Sidebar } from "./Sidebar";
+
+// 로그인 없이 접근 가능한 페이지
+const PUBLIC_ROUTES = [
+  ROUTES.HOME,
+  ROUTES.LOGIN,
+  ROUTES.SIGNUP,
+  ROUTES.NAVER_CALLBACK,
+];
 
 const navigationItems = [
   { label: "모집하기", to: ROUTES.PROJECT_REGISTER },
@@ -13,6 +21,18 @@ const navigationItems = [
 export const AppLayout = () => {
   const [search, setSearch] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 로그인 보호 처리
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const isPublic = PUBLIC_ROUTES.some((route) => location.pathname === route);
+
+    if (!accessToken && !isPublic) {
+      navigate(ROUTES.LOGIN, { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
     document.documentElement.classList.toggle(
