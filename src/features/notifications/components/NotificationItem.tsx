@@ -3,6 +3,7 @@ import { NotificationTypeBadge } from "./NotificationTypeBadge";
 
 interface NotificationItemProps {
   notification: NotificationItemType;
+  onMarkAsRead: (notificationId: number) => void;
 }
 
 const formatNotificationDate = (createdAt: string) =>
@@ -13,7 +14,10 @@ const formatNotificationDate = (createdAt: string) =>
     minute: "2-digit",
   }).format(new Date(createdAt));
 
-export const NotificationItem = ({ notification }: NotificationItemProps) => {
+export const NotificationItem = ({
+  notification,
+  onMarkAsRead,
+}: NotificationItemProps) => {
   const isUnread = notification.status === "unread";
 
   return (
@@ -44,7 +48,28 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
         )}
       </div>
 
-      <span className="notification-action">{notification.link.label}</span>
+      <div className="notification-side">
+        <span
+          className={
+            isUnread ? "notification-status unread" : "notification-status"
+          }
+        >
+          {isUnread ? "읽지 않음" : "읽음"}
+        </span>
+        {isUnread ? (
+          <button
+            className="notification-action"
+            type="button"
+            onClick={() => onMarkAsRead(notification.id)}
+          >
+            읽음 처리
+          </button>
+        ) : (
+          <span className="notification-action disabled">
+            {notification.link.label}
+          </span>
+        )}
+      </div>
     </li>
   );
 };

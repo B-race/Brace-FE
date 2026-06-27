@@ -298,6 +298,34 @@
   font-weight: 800;
 }
 
+.notification-action:hover {
+  border-color: #a5b4fc;
+  color: #3730a3;
+}
+
+.notification-action.disabled {
+  border-color: #e4e7ec;
+  background: #f9fafb;
+  color: #98a2b3;
+}
+
+.notification-side {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.notification-status {
+  color: #98a2b3;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notification-status.unread {
+  color: #4f46e5;
+}
+
 .notification-empty {
   padding: 40px;
   border: 1px dashed #d0d5dd;
@@ -353,5 +381,9 @@
 
   .notification-action {
     width: 100%;
+  }
+
+  .notification-side {
+    justify-items: stretch;
   }
 }
