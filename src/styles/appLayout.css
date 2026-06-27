@@ -71,7 +71,9 @@
   font-family: inherit;
 }
 
-.app-search__input::placeholder { color: #aaaaaa; }
+.app-search__input::placeholder {
+  color: #aaaaaa;
+}
 
 .app-search__btn {
   display: flex;
@@ -100,7 +102,9 @@
   font-weight: 400;
 }
 
-.app-nav-link:hover { color: #111111; }
+.app-nav-link:hover {
+  color: #111111;
+}
 
 .app-nav-link.active {
   color: #111111;

@@ -18,7 +18,9 @@ const ProjectsRegister: React.FC = () => {
     <div className="pr-wrap">
       <div className="pr-card">
         <h1 className="pr-card__title">프로젝트 등록</h1>
-        <p className="pr-card__subtitle">페이지에서 이탈할 시 진행상황이 초기화됩니다.</p>
+        <p className="pr-card__subtitle">
+          페이지에서 이탈할 시 진행상황이 초기화됩니다.
+        </p>
 
         {/* 스텝퍼 */}
         <div className="pr-stepper">

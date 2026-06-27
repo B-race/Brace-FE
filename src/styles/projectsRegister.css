@@ -10,7 +10,7 @@
 }
 
 body {
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
   background-color: #ffffff;
   color: #111111;
   -webkit-font-smoothing: antialiased;
@@ -146,7 +146,9 @@ body {
   border-radius: 8px;
   cursor: pointer;
   letter-spacing: -0.01em;
-  transition: opacity 0.15s ease, background-color 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
   white-space: nowrap;
 }
 
@@ -236,7 +238,7 @@ body {
   gap: 60px;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .step-header {
@@ -362,7 +364,10 @@ body {
   font-size: 14px;
   color: #aaaaaa;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .activity-btn--selected {
@@ -445,7 +450,10 @@ body {
   border-radius: 6px;
   font-size: 14px;
   color: #aaaaaa;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .toggle-chip input[type="checkbox"]:checked + .toggle-chip__track {
@@ -572,7 +580,7 @@ body {
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   padding: 16px;
 }
 
@@ -769,7 +777,9 @@ body {
   transition: background 0.15s;
 }
 
-.pr-stepper__step:hover { background: #f0f0f0; }
+.pr-stepper__step:hover {
+  background: #f0f0f0;
+}
 
 .pr-stepper__number,
 .pr-stepper__label {
@@ -837,7 +847,9 @@ body {
   transition: background 0.15s;
 }
 
-.pc-stepper__step:hover { background: #eeeeee; }
+.pc-stepper__step:hover {
+  background: #eeeeee;
+}
 
 .pc-stepper__step--active {
   border-color: #c8a84b;

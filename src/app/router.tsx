@@ -32,7 +32,10 @@ export const router = createBrowserRouter([
       { path: ROUTES.PROJECTS, element: <ProjectFeedPage /> },
       { path: ROUTES.PROJECT_REGISTER, element: <ProjectsRegister /> },
       { path: ROUTES.PROJECT_NEW, element: <ProjectCreatePage /> },
-      { path: ROUTES.PROJECT_NEW_COMPLETE, element: <ProjectCreateCompletePage /> },
+      {
+        path: ROUTES.PROJECT_NEW_COMPLETE,
+        element: <ProjectCreateCompletePage />,
+      },
       { path: ROUTES.PROJECT_DETAIL, element: <ProjectDetailPage /> },
       { path: ROUTES.PROJECT_APPLY, element: <ProjectApplyPage /> },
       { path: ROUTES.PROJECT_APPLICANTS, element: <ApplicantManagePage /> },
