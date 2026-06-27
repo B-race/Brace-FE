@@ -20,44 +20,44 @@ export const NotificationsPage = () => {
   return (
     <section className="notifications-page">
       <div className="notifications-header">
-        <div>
-          <p className="notifications-kicker">알림</p>
-          <h1>내 활동 알림</h1>
-          <p>
-            지원자 도착, 지원 결과, 프로젝트 등록과 모집 완료 소식을 확인하세요.
-          </p>
-        </div>
-        <div className="notifications-summary">
-          <span>전체 {totalCount}</span>
-          <strong>읽지 않음 {unreadCount}</strong>
-          <button
-            className="notifications-read-all-button"
-            type="button"
-            disabled={!hasUnreadNotifications || isLoading || isError}
-            onClick={markAllAsRead}
-          >
-            전체 읽음
-          </button>
-        </div>
+        <h1>알림</h1>
+        <p>알림을 확인하세요.</p>
+        <button
+          className="notifications-read-all-button"
+          type="button"
+          disabled={!hasUnreadNotifications || isLoading || isError}
+          onClick={markAllAsRead}
+        >
+          모두 읽음
+        </button>
       </div>
 
-      {isLoading && <NotificationSkeletonList />}
+      <div className="notifications-list-section">
+        <p
+          className="notifications-count"
+          aria-live="polite"
+        >
+          전체 {totalCount}개 중 읽지 않은 알림 {unreadCount}개
+        </p>
 
-      {isError && (
-        <NotificationStatePanel
-          title="알림을 불러오지 못했어요"
-          description={errorMessage}
-          actionLabel="다시 시도"
-          onAction={refetch}
-        />
-      )}
+        {isLoading && <NotificationSkeletonList />}
 
-      {!isLoading && !isError && (
-        <NotificationList
-          notifications={notifications}
-          onMarkAsRead={markAsRead}
-        />
-      )}
+        {isError && (
+          <NotificationStatePanel
+            title="알림을 불러오지 못했어요"
+            description={errorMessage}
+            actionLabel="다시 시도"
+            onAction={refetch}
+          />
+        )}
+
+        {!isLoading && !isError && (
+          <NotificationList
+            notifications={notifications}
+            onMarkAsRead={markAsRead}
+          />
+        )}
+      </div>
     </section>
   );
 };
