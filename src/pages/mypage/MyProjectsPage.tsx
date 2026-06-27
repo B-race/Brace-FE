@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { MyPageProjectListPage } from "../../features/profile/components/MyPageProjectListPage";
 import { useMyPageProjects } from "../../features/profile/hooks/useMyPageProjects";
-import { ROUTES } from "../../shared/constants/routes";
+import {
+  ROUTES,
+  createProjectApplicantsPath,
+} from "../../shared/constants/routes";
 
 export const MyProjectsPage = () => {
   const { items, isLoading, isError, errorMessage, refetch } =
@@ -21,12 +24,20 @@ export const MyProjectsPage = () => {
       emptyDescription="모집할 프로젝트를 등록하면 이곳에서 관리할 수 있습니다."
       onRetry={refetch}
       action={
-        <Link
-          className="mypage-list-action"
-          to={ROUTES.PROJECT_REGISTER}
-        >
-          모집하기
-        </Link>
+        <div className="mypage-list-actions">
+          <Link
+            className="mypage-list-action"
+            to={ROUTES.PROJECT_REGISTER}
+          >
+            모집하기
+          </Link>
+          <Link
+            className="mypage-list-action mypage-list-action--secondary"
+            to={createProjectApplicantsPath(101)}
+          >
+            지원자 관리
+          </Link>
+        </div>
       }
     />
   );

@@ -93,7 +93,7 @@ export const LoginPage = () => {
   };
 
   const handleNaverLogin = () => {
-    const state = crypto.randomUUID(); // CSRF 방지용 랜덤 값
+    const state = crypto.randomUUID();
     sessionStorage.setItem("naver_oauth_state", state);
 
     const params = new URLSearchParams({
@@ -111,7 +111,7 @@ export const LoginPage = () => {
       <section className="auth-intro">
         <p className="auth-kicker">Brace Login</p>
         <h1>로그인</h1>
-        <p>아이디어를 공유하고, 함께할 팀을 찾아보세요.</p>
+        <p>아이디어를 공유하고, 함께할 팀원을 찾아보세요.</p>
       </section>
 
       <section className="auth-form-section auth-login-section">
@@ -130,7 +130,7 @@ export const LoginPage = () => {
             이메일
             <input
               type="email"
-              placeholder="name@example.com"
+              placeholder="이메일을 입력하세요"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
