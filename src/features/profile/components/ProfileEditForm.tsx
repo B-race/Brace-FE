@@ -20,6 +20,9 @@ interface ProfileEditFormProps {
 
 export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   const [form, setForm] = useState(profile);
+  const [skillInput, setSkillInput] = useState(
+    profile.skills.map((skill) => skill.skillTag).join(", "),
+  );
   const [savedMessage, setSavedMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,17 +32,22 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   };
 
   const updateSkills = (value: string) => {
-    const newSkills: Skill[] = value
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .slice(0, 5)
-      .map((tag, index) => ({
-        skillId: index,
-        skillTag: tag.toUpperCase().replace(/[^A-Z0-9]/g, "_"),
-      }));
+    setSkillInput(value);
+    setForm((currentForm) => ({
+      ...currentForm,
+      skills: value
+        .split(",")
+        .map((skillTag) => skillTag.trim())
+        .filter(Boolean)
+        .slice(0, 5)
+        .map<Skill>((skillTag, index) => {
+          const existingSkill = currentForm.skills.find(
+            (skill) => skill.skillTag === skillTag,
+          );
 
-    setForm((currentForm) => ({ ...currentForm, skills: newSkills }));
+          return existingSkill ?? { skillId: index + 1, skillTag };
+        }),
+    }));
     setSavedMessage("");
   };
 
@@ -122,7 +130,7 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
         <label>
           <span>기술 태그 (최대 5개)</span>
           <input
-            value={form.skills.map((s) => s.skillTag).join(", ")}
+            value={skillInput}
             placeholder="태그 검색 후 추가"
             onChange={(event) => updateSkills(event.target.value)}
           />

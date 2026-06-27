@@ -5,11 +5,41 @@ import type {
 } from "../types/mypageProject";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BOOKMARK_STORAGE_KEY = "brace-bookmarked-projects";
 
 const ENDPOINT_MAP: Record<MyPageProjectListType, string> = {
   myProjects: "/users/me/projects",
   applications: "/users/me/applications",
   bookmarks: "/users/me/bookmarks",
+};
+
+const readStoredBookmarkProjects = (): MyPageProjectCardItem[] => {
+  const rawBookmarks = localStorage.getItem(BOOKMARK_STORAGE_KEY);
+  if (!rawBookmarks) return [];
+
+  try {
+    return JSON.parse(rawBookmarks) as MyPageProjectCardItem[];
+  } catch {
+    return [];
+  }
+};
+
+const mergeBookmarkProjects = (
+  apiItems: MyPageProjectCardItem[],
+  storedItems: MyPageProjectCardItem[],
+) => {
+  const apiItemIds = new Set(apiItems.map((item) => item.id));
+  const storedOnlyItems = storedItems.filter(
+    (item) => !apiItemIds.has(item.id),
+  );
+
+  return [
+    ...storedItems.filter((item) => apiItemIds.has(item.id)),
+    ...storedOnlyItems,
+    ...apiItems.filter(
+      (item) => !storedItems.some((storedItem) => storedItem.id === item.id),
+    ),
+  ];
 };
 
 interface UseMyPageProjectsParams {
@@ -43,13 +73,29 @@ export const useMyPageProjects = ({ listType }: UseMyPageProjectsParams) => {
             setIsLoading(false);
             return;
           }
-          setItems(data.result?.content ?? []);
+          const apiItems = data.result?.content ?? [];
+          setItems(
+            listType === "bookmarks"
+              ? mergeBookmarkProjects(apiItems, readStoredBookmarkProjects())
+              : apiItems,
+          );
           setErrorMessage("");
           setIsLoading(false);
         },
       )
       .catch(() => {
         if (cancelled) return;
+        if (listType === "bookmarks") {
+          const storedBookmarkProjects = readStoredBookmarkProjects();
+          setItems(storedBookmarkProjects);
+          setErrorMessage(
+            storedBookmarkProjects.length > 0
+              ? ""
+              : "?꾨줈?앺듃 紐⑸줉??遺덈윭?ㅼ? 紐삵뻽?댁슂. ?좎떆 ???ㅼ떆 ?쒕룄?댁＜?몄슂.",
+          );
+          setIsLoading(false);
+          return;
+        }
         setItems([]);
         setErrorMessage(
           "프로젝트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
