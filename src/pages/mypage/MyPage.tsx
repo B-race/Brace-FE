@@ -1,8 +1,9 @@
-import { PlaceholderPage } from "../../shared/components/layout/PlaceholderPage";
+import { mockMyProfile } from "../../features/profile/api/profile.mock";
+import { MyPageLayout } from "../../features/profile/components/MyPageLayout";
+import { ProfileDashboard } from "../../features/profile/components/ProfileDashboard";
 
 export const MyPage = () => (
-  <PlaceholderPage
-    title="마이페이지"
-    description="내 프로젝트, 지원 현황, 북마크, 프로필 수정으로 이동하는 화면입니다."
-  />
+  <MyPageLayout>
+    <ProfileDashboard profile={mockMyProfile} />
+  </MyPageLayout>
 );
