@@ -1,22 +1,18 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { mockNotifications } from "../api/notification.mock";
 
 const READ_NOTIFICATION_IDS_STORAGE_KEY = "brace:read-notification-ids";
 
 const getStoredReadNotificationIds = () => {
-  try {
-    const storedReadNotificationIds = localStorage.getItem(
-      READ_NOTIFICATION_IDS_STORAGE_KEY,
-    );
+  const storedReadNotificationIds = localStorage.getItem(
+    READ_NOTIFICATION_IDS_STORAGE_KEY,
+  );
 
-    if (!storedReadNotificationIds) {
-      return [];
-    }
-
-    return JSON.parse(storedReadNotificationIds) as number[];
-  } catch {
+  if (!storedReadNotificationIds) {
     return [];
   }
+
+  return JSON.parse(storedReadNotificationIds) as number[];
 };
 
 const setStoredReadNotificationIds = (notificationIds: number[]) => {
@@ -27,9 +23,36 @@ const setStoredReadNotificationIds = (notificationIds: number[]) => {
 };
 
 export const useNotifications = () => {
-  const [readNotificationIds, setReadNotificationIds] = useState<number[]>(
-    getStoredReadNotificationIds,
-  );
+  const [readNotificationIds, setReadNotificationIds] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const refetch = useCallback(() => {
+    setIsLoading(true);
+
+    try {
+      const storedReadNotificationIds = getStoredReadNotificationIds();
+
+      setReadNotificationIds(storedReadNotificationIds);
+      setErrorMessage("");
+    } catch {
+      localStorage.removeItem(READ_NOTIFICATION_IDS_STORAGE_KEY);
+      setReadNotificationIds([]);
+      setErrorMessage(
+        "알림 상태를 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const loadTimer = window.setTimeout(refetch, 0);
+
+    return () => {
+      window.clearTimeout(loadTimer);
+    };
+  }, [refetch]);
 
   const notificationItems = useMemo(
     () =>
@@ -103,7 +126,11 @@ export const useNotifications = () => {
     notifications,
     totalCount: notifications.length,
     unreadCount,
+    isLoading,
+    isError: Boolean(errorMessage),
+    errorMessage,
     markAsRead,
     markAllAsRead,
+    refetch,
   };
 };
