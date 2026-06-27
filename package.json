@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky",
+    "prepare": "husky || exit 0",
     "check": "pnpm lint && pnpm format:check"
   },
   "dependencies": {

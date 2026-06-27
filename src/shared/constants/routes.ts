@@ -4,9 +4,11 @@ export const ROUTES = {
   SIGNUP: "/signup",
   PROFILE_SETUP: "/onboarding/profile",
   PROJECTS: "/projects",
+  PROJECT_REGISTER: "/projects/register",
   PROJECT_NEW: "/projects/new",
   PROJECT_NEW_COMPLETE: "/projects/new/complete",
   PROJECT_DETAIL: "/projects/:projectId",
+  PROJECT_APPLY: "/projects/:projectId/apply",
   PROJECT_APPLICANTS: "/projects/:projectId/applicants",
   NOTIFICATIONS: "/notifications",
   NOTIFICATION_DETAIL: "/notifications/:notificationId",
@@ -19,6 +21,9 @@ export const ROUTES = {
 
 export const createProjectDetailPath = (projectId: number | string) =>
   `/projects/${projectId}`;
+
+export const createProjectApplyPath = (projectId: number | string) =>
+  `/projects/${projectId}/apply`;
 
 export const createProjectApplicantsPath = (projectId: number | string) =>
   `/projects/${projectId}/applicants`;
