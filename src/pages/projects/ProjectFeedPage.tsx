@@ -1,4 +1,5 @@
 import { MyPageLayout } from "../../features/profile/components/MyPageLayout";
+import defaultProjectImage from "../../assets/images/brace-logo.png";
 import "../../styles/projectFeed.css";
 
 const filters = [
@@ -86,7 +87,10 @@ export const ProjectFeedPage = () => {
               key={`${project.type}-${project.title}`}
             >
               <div className="project-feed-card-icon">
-                <span />
+                <img
+                  src={defaultProjectImage}
+                  alt=""
+                />
               </div>
               <h2>
                 [{project.type}] {project.title}

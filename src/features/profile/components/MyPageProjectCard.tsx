@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import defaultProjectImage from "../../../assets/images/brace-logo.png";
 import { createProjectDetailPath } from "../../../shared/constants/routes";
 import type { MyPageProjectCardItem } from "../types/mypageProject";
 
@@ -36,7 +37,12 @@ export const MyPageProjectCard = ({ project }: MyPageProjectCardProps) => {
         <span className={`mypage-project-status ${project.status}`}>
           {statusLabel}
         </span>
-        <span>{activityLabel}</span>
+        <img
+          className="mypage-project-thumbnail-image"
+          src={project.thumbnailUrl ?? defaultProjectImage}
+          alt=""
+        />
+        <span className="sr-only">{activityLabel}</span>
       </div>
       <div className="mypage-project-card-body">
         <strong>{project.title}</strong>
