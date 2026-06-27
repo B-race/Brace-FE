@@ -931,6 +931,45 @@
   font-weight: 700;
 }
 
+.applicant-contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.applicant-contact-list a,
+.applicant-contact-list span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  background: #f0fdf4;
+  color: #027a48;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.applicant-contact-list a:hover,
+.applicant-contact-list a:focus-visible {
+  border-color: #86efac;
+  color: #166534;
+}
+
+.applicant-contact-locked {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #98a2b3;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .applicant-review-actions {
   display: grid;
   gap: 16px;

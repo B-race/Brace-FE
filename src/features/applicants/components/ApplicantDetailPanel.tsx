@@ -40,8 +40,9 @@ export const ApplicantDetailPanel = ({
     );
   }
 
-  const { profile, status, message, appliedAt } = applicant;
+  const { profile, status, message, contact, appliedAt } = applicant;
   const isPending = status === "pending";
+  const canViewContact = status === "accepted";
 
   return (
     <article
@@ -109,6 +110,30 @@ export const ApplicantDetailPanel = ({
               </a>
             ) : (
               <span className="applicant-muted-text">등록된 링크가 없어요</span>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt>연락처</dt>
+          <dd>
+            {canViewContact ? (
+              <div className="applicant-contact-list">
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                {contact.openChatUrl ? (
+                  <a
+                    href={contact.openChatUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    오픈채팅 바로가기
+                  </a>
+                ) : null}
+                {contact.phone ? <span>{contact.phone}</span> : null}
+              </div>
+            ) : (
+              <span className="applicant-contact-locked">
+                수락된 지원자에게만 연락처가 공개됩니다.
+              </span>
             )}
           </dd>
         </div>
