@@ -1,4 +1,7 @@
-import type { MyPageProjectCardItem } from "../types/mypageProject";
+import type {
+  MyPageProjectCardItem,
+  MyPageProjectListType,
+} from "../types/mypageProject";
 
 export const mockMyProjects: MyPageProjectCardItem[] = [
   {
@@ -136,3 +139,12 @@ export const mockBookmarkedProjects: MyPageProjectCardItem[] = [
     thumbnailLabel: "상태 아이콘(X) 원형",
   },
 ];
+
+export const mockMyPageProjectLists: Record<
+  MyPageProjectListType,
+  MyPageProjectCardItem[]
+> = {
+  myProjects: mockMyProjects,
+  applications: mockMyApplications,
+  bookmarks: mockBookmarkedProjects,
+};

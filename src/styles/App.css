@@ -1548,6 +1548,47 @@
   text-decoration: none;
 }
 
+.mypage-state-panel {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(720px, calc(100% - 48px));
+  margin: 72px auto;
+  padding: 48px 32px;
+  border: 1px dashed #d0d5dd;
+  border-radius: 8px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.mypage-state-panel strong {
+  color: #111827;
+  font-size: 22px;
+}
+
+.mypage-state-panel p {
+  max-width: 460px;
+  margin: 0;
+  color: #667085;
+  line-height: 1.7;
+}
+
+.mypage-state-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #111827;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .mypage-project-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1575,6 +1616,10 @@
 .mypage-project-card.placeholder {
   border-style: dashed;
   color: #4b5563;
+}
+
+.mypage-project-card.skeleton {
+  pointer-events: none;
 }
 
 .mypage-project-thumbnail {
@@ -1653,6 +1698,49 @@
   line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.mypage-project-skeleton-thumbnail,
+.mypage-project-skeleton-line,
+.profile-avatar.skeleton,
+.profile-skeleton-line,
+.profile-stat-card.skeleton {
+  overflow: hidden;
+  background: linear-gradient(90deg, #eef2f7 0%, #f8fafc 50%, #eef2f7 100%);
+  background-size: 200% 100%;
+  animation: notification-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.mypage-project-skeleton-thumbnail {
+  display: block;
+  min-height: 210px;
+}
+
+.mypage-project-skeleton-line {
+  display: block;
+  width: 78%;
+  height: 18px;
+  border-radius: 999px;
+}
+
+.mypage-project-skeleton-line.short {
+  width: 52%;
+}
+
+.profile-skeleton-line {
+  display: block;
+  width: min(100%, 360px);
+  height: 18px;
+  border-radius: 999px;
+}
+
+.profile-skeleton-line.title {
+  width: 220px;
+  height: 34px;
+}
+
+.profile-skeleton-line.short {
+  width: 280px;
 }
 
 .mypage-project-card-body p {
