@@ -56,6 +56,13 @@
   padding: 56px 0;
 }
 
+.app-main:has(.mypage-layout),
+.app-main:has(.profile-edit-page) {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
 .placeholder-page {
   display: flex;
   flex-direction: column;
@@ -1196,6 +1203,7 @@
 .mypage-layout {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
+  width: 100%;
   min-height: calc(100vh - 60px);
   background: #ffffff;
 }
@@ -1245,6 +1253,7 @@
 }
 
 .mypage-content {
+  width: 100%;
   min-width: 0;
 }
 
@@ -1416,33 +1425,16 @@
 
 .profile-edit-page {
   display: grid;
-  grid-template-columns: minmax(260px, 0.7fr) minmax(360px, 1fr);
-  gap: 80px;
-  width: min(1180px, calc(100% - 48px));
-  margin: 0 auto;
-  padding: 96px 0 72px;
-}
-
-.profile-edit-copy {
-  align-self: center;
-}
-
-.profile-edit-copy h1 {
-  margin: 0 0 24px;
-  color: #000000;
-  font-size: 44px;
-}
-
-.profile-edit-copy p {
-  margin: 0;
-  color: #111827;
-  font-size: 18px;
-  font-weight: 800;
+  justify-items: center;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  padding: 56px 24px 72px;
 }
 
 .profile-edit-form {
   display: grid;
   gap: 28px;
+  width: min(560px, 100%);
 }
 
 .profile-edit-form label {
@@ -1505,6 +1497,64 @@
   background: #000000;
   color: #ffffff;
   cursor: pointer;
+}
+
+.sidebar-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(17, 24, 39, 0.42);
+  backdrop-filter: blur(3px);
+}
+
+.sidebar-modal {
+  display: grid;
+  gap: 24px;
+  width: min(360px, 100%);
+  padding: 32px;
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.sidebar-modal__msg {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.sidebar-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sidebar-modal__btn {
+  appearance: none;
+  min-height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sidebar-modal__btn--cancel {
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+.sidebar-modal__btn--confirm {
+  border: 1px solid #4f46e5;
+  background: #4f46e5;
+  color: #ffffff;
 }
 
 .mypage-list-page {
@@ -1928,18 +1978,8 @@
   }
 
   .profile-edit-page {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    width: min(100% - 32px, 720px);
-    padding: 48px 0;
-  }
-
-  .profile-edit-copy {
-    text-align: center;
-  }
-
-  .profile-edit-copy h1 {
-    font-size: 34px;
+    min-height: auto;
+    padding: 40px 16px 56px;
   }
 
   .profile-edit-actions {

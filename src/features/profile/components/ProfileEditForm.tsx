@@ -45,11 +45,6 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
 
   return (
     <section className="profile-edit-page">
-      <div className="profile-edit-copy">
-        <h1>프로필 수정</h1>
-        <p>모달(600x750) · 회색/흰색 와이어프레임</p>
-      </div>
-
       <form
         className="profile-edit-form"
         onSubmit={handleSubmit}

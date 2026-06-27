@@ -14,22 +14,32 @@ const LogoutModal = ({
     onClick={onCancel}
   >
     <div
+      aria-labelledby="logout-modal-title"
+      aria-modal="true"
       className="sidebar-modal"
       onClick={(e) => e.stopPropagation()}
+      role="dialog"
     >
-      <p className="sidebar-modal__msg">로그아웃 하시겠습니까?</p>
+      <p
+        className="sidebar-modal__msg"
+        id="logout-modal-title"
+      >
+        로그아웃 하시겠습니까?
+      </p>
       <div className="sidebar-modal__actions">
         <button
           className="sidebar-modal__btn sidebar-modal__btn--cancel"
           onClick={onCancel}
+          type="button"
         >
           아니오
         </button>
         <button
           className="sidebar-modal__btn sidebar-modal__btn--confirm"
           onClick={onConfirm}
+          type="button"
         >
-          네
+          예
         </button>
       </div>
     </div>
@@ -85,6 +95,7 @@ export const Sidebar = () => {
           <button
             className="app-sidebar__item app-sidebar__item--logout"
             onClick={() => setShowLogout(true)}
+            type="button"
           >
             <span className="app-sidebar__icon">📕</span>
             로그아웃
