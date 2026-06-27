@@ -92,6 +92,53 @@ const SingleDatePicker: React.FC<SinglePickerProps> = ({ value, onChange, minDat
 };
 
 // =====================
+// 날짜 범위 피커 - 월 캘린더 (render 밖에서 선언)
+// =====================
+interface CalMonthProps {
+  year: number;
+  month: number;
+  isStart: (y: number, m: number, d: number) => boolean;
+  isEnd: (y: number, m: number, d: number) => boolean;
+  isInRange: (y: number, m: number, d: number) => boolean;
+  onDayClick: (y: number, m: number, d: number) => void;
+}
+
+const CalMonth: React.FC<CalMonthProps> = ({ year, month, isStart, isEnd, isInRange, onDayClick }) => {
+  const days = getDaysInMonth(year, month);
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  const cells: (number | null)[] = [];
+  for (let i = 0; i < firstDay; i++) cells.push(null);
+  for (let d = 1; d <= days; d++) cells.push(d);
+
+  return (
+    <div className="cal cal--range">
+      <div className="cal__month-title">{year}년 {month}월</div>
+      <div className="cal__grid cal__grid--7">
+        {["일","월","화","수","목","금","토"].map(d => (
+          <span key={d} className="cal__dow">{d}</span>
+        ))}
+        {cells.map((day, i) => (
+          <button
+            key={i}
+            className={[
+              "cal__day",
+              !day ? "cal__day--empty" : "",
+              day && isStart(year, month, day) ? "cal__day--start" : "",
+              day && isEnd(year, month, day) ? "cal__day--end" : "",
+              day && isInRange(year, month, day) ? "cal__day--in-range" : "",
+            ].join(" ")}
+            disabled={!day}
+            onClick={() => day && onDayClick(year, month, day)}
+          >
+            {day ?? ""}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// =====================
 // 날짜 범위 피커
 // =====================
 interface DateRangePickerProps {
@@ -129,12 +176,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDate, endDate, o
     const clicked = { year, month, day };
     if (selecting === "start") {
       onChangeStart(clicked);
-      if (endDate && compareDates(clicked, endDate) >= 0) onChangeEnd(null as any);
+      if (endDate && compareDates(clicked, endDate) >= 0) onChangeEnd(null!);
       setSelecting("end");
     } else {
       if (startDate && compareDates(clicked, startDate) < 0) {
         onChangeStart(clicked);
-        onChangeEnd(null as any);
+        onChangeEnd(null!);
         setSelecting("end");
       } else {
         onChangeEnd(clicked);
@@ -152,41 +199,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDate, endDate, o
     else setViewMonth(m => m + 1);
   };
 
-  const CalMonth = ({ year, month }: { year: number; month: number }) => {
-    const days = getDaysInMonth(year, month);
-    const firstDay = new Date(year, month - 1, 1).getDay();
-    const cells = [];
-    for (let i = 0; i < firstDay; i++) cells.push(null);
-    for (let d = 1; d <= days; d++) cells.push(d);
-
-    return (
-      <div className="cal cal--range">
-        <div className="cal__month-title">{year}년 {month}월</div>
-        <div className="cal__grid cal__grid--7">
-          {["일","월","화","수","목","금","토"].map(d => (
-            <span key={d} className="cal__dow">{d}</span>
-          ))}
-          {cells.map((day, i) => (
-            <button
-              key={i}
-              className={[
-                "cal__day",
-                !day ? "cal__day--empty" : "",
-                day && isStart(year, month, day) ? "cal__day--start" : "",
-                day && isEnd(year, month, day) ? "cal__day--end" : "",
-                day && isInRange(year, month, day) ? "cal__day--in-range" : "",
-              ].join(" ")}
-              disabled={!day}
-              onClick={() => day && handleDayClick(year, month, day)}
-            >
-              {day ?? ""}
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="cal-range-wrap">
       <div className="cal-range-nav">
@@ -194,8 +206,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDate, endDate, o
         <button className="cal__nav-btn" onClick={nextMonth}>›</button>
       </div>
       <div className="cal-range-months">
-        <CalMonth year={viewYear} month={viewMonth} />
-        <CalMonth year={rightYear} month={rightMonth} />
+        <CalMonth year={viewYear} month={viewMonth} isStart={isStart} isEnd={isEnd} isInRange={isInRange} onDayClick={handleDayClick} />
+        <CalMonth year={rightYear} month={rightMonth} isStart={isStart} isEnd={isEnd} isInRange={isInRange} onDayClick={handleDayClick} />
       </div>
       <p className="cal-range-hint">
         {selecting === "start" ? "시작 날짜를 선택해 주세요." : "종료 날짜를 선택해 주세요."}
@@ -227,14 +239,14 @@ const Step1ActivityType: React.FC<{ onNext: () => void; onPrev: () => void }> = 
           <div className="activity-item">
             <span className="activity-label">🏆 공모전 참가</span>
             <button className={`activity-btn ${selected === "contest" ? "activity-btn--selected" : ""}`} onClick={() => { setSelected("contest"); setError(""); }}>
-              {selected === "contest" ? "선택됨" : "선택 가능"}
+              {selected === "contest" ? "선택됨(예: 기본)" : "선택 가능"}
             </button>
             <span className="activity-hint">대회 참여를 위한 모집</span>
           </div>
           <div className="activity-item">
             <span className="activity-label">🔧 개인 프로젝트</span>
             <button className={`activity-btn ${selected === "personal" ? "activity-btn--selected" : ""}`} onClick={() => { setSelected("personal"); setError(""); }}>
-              {selected === "personal" ? "선택됨" : "선택 가능"}
+              {selected === "personal" ? "선택됨(예: 기본)" : "선택 가능"}
             </button>
             <span className="activity-hint">자율 프로젝트 팀 모집</span>
           </div>
@@ -309,6 +321,30 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({ 
 };
 
 // =====================
+// Step 3: 모집 역할 - RoleField (render 밖에서 선언)
+// =====================
+type RolesState = { developer: number; designer: number; planner: number };
+
+interface RoleFieldProps {
+  roleKey: keyof RolesState;
+  label: string;
+  count: number;
+  onAdjust: (roleKey: keyof RolesState, delta: number) => void;
+}
+
+const RoleField: React.FC<RoleFieldProps> = ({ roleKey, label, count, onAdjust }) => (
+  <div className="form-field">
+    <label className="form-label">{label}</label>
+    <div className="role-counter">
+      <button className="role-counter__btn" onClick={() => onAdjust(roleKey, -1)}>−</button>
+      <span className="role-counter__value">인원 {count}</span>
+      <button className="role-counter__btn" onClick={() => onAdjust(roleKey, 1)}>+</button>
+    </div>
+    <span className="form-hint">+ / - 카운터</span>
+  </div>
+);
+
+// =====================
 // Step 3: 모집 역할
 // =====================
 interface CustomRole { id: number; name: string; count: number; }
@@ -337,18 +373,6 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({ onNe
     setError(""); onNext();
   };
 
-  const RoleField = ({ roleKey, label }: { roleKey: keyof typeof roles; label: string }) => (
-    <div className="form-field">
-      <label className="form-label">{label}</label>
-      <div className="role-counter">
-        <button className="role-counter__btn" onClick={() => adjust(roleKey, -1)}>−</button>
-        <span className="role-counter__value">인원 {roles[roleKey]}</span>
-        <button className="role-counter__btn" onClick={() => adjust(roleKey, 1)}>+</button>
-      </div>
-      <span className="form-hint">+ / - 카운터</span>
-    </div>
-  );
-
   return (
     <section className="step-section">
       <div className="step-header">
@@ -357,9 +381,9 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({ onNe
       </div>
       <div className="step-body">
         <div className="form-grid">
-          <RoleField roleKey="developer" label="개발자" />
-          <RoleField roleKey="designer" label="디자이너" />
-          <RoleField roleKey="planner" label="기획자" />
+          <RoleField roleKey="developer" label="개발자" count={roles.developer} onAdjust={adjust} />
+          <RoleField roleKey="designer" label="디자이너" count={roles.designer} onAdjust={adjust} />
+          <RoleField roleKey="planner" label="기획자" count={roles.planner} onAdjust={adjust} />
           {customRoles.map(role => (
             <div className="form-field" key={role.id}>
               <label className="form-label">{role.name}</label>
@@ -500,6 +524,7 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="online" checked={form.online} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.online ? "선택됨" : "선택 가능"}</span>
             </label>
+            <span className="form-hint">토글 칩</span>
           </div>
 
           {/* 오프라인 */}
@@ -509,6 +534,7 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="offline" checked={form.offline} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.offline ? "선택됨" : "선택 가능"}</span>
             </label>
+            <span className="form-hint">토글 칩</span>
           </div>
 
           {/* 혼합 */}
@@ -518,7 +544,7 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({ o
               <input type="checkbox" name="hybrid" checked={form.hybrid} onChange={handleToggle} />
               <span className="toggle-chip__track">{form.hybrid ? "선택됨" : "선택 가능"}</span>
             </label>
-            {errors.mode ? <span className="form-error">{errors.mode}</span> : null}
+            {errors.mode ? <span className="form-error">{errors.mode}</span> : <span className="form-hint">토글 칩</span>}
           </div>
 
           {/* 태그 */}
