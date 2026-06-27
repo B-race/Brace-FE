@@ -11,7 +11,7 @@ export const MyPageProjectGrid = ({ items }: MyPageProjectGridProps) => (
   <div className="mypage-project-grid">
     {items.map((project) => (
       <MyPageProjectCard
-        key={project.id}
+        key={project.projectId}
         project={project}
       />
     ))}
