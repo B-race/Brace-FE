@@ -1507,6 +1507,165 @@
   cursor: pointer;
 }
 
+.mypage-list-page {
+  display: grid;
+  gap: 56px;
+  padding: 72px 64px 80px;
+}
+
+.mypage-list-header {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.mypage-list-header h1 {
+  margin: 0;
+  color: #000000;
+  font-size: 44px;
+  line-height: 1.2;
+}
+
+.mypage-list-header p {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mypage-list-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.mypage-project-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 40px;
+}
+
+.mypage-project-card {
+  display: grid;
+  overflow: hidden;
+  min-height: 300px;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  text-decoration: none;
+}
+
+.mypage-project-card:hover,
+.mypage-project-card:focus-visible {
+  border-color: #a5b4fc;
+  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.1);
+  outline: none;
+}
+
+.mypage-project-card.placeholder {
+  border-style: dashed;
+  color: #4b5563;
+}
+
+.mypage-project-thumbnail {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  border-bottom: 1px solid #e4e7ec;
+  background: #e9e9e9;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mypage-project-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mypage-project-status.reviewing,
+.mypage-project-status.recruiting {
+  background: #facc15;
+}
+
+.mypage-project-card.reviewing .mypage-project-thumbnail,
+.mypage-project-card.recruiting .mypage-project-thumbnail {
+  border-color: #facc15;
+  box-shadow: inset 0 0 0 1px #facc15;
+}
+
+.mypage-project-status.accepted,
+.mypage-project-status.completed {
+  background: #22c55e;
+}
+
+.mypage-project-card.accepted .mypage-project-thumbnail,
+.mypage-project-card.completed .mypage-project-thumbnail {
+  border-color: #22c55e;
+  box-shadow: inset 0 0 0 1px #22c55e;
+}
+
+.mypage-project-status.rejected {
+  background: #d1d5db;
+}
+
+.mypage-project-status.notApplied {
+  background: #38bdf8;
+}
+
+.mypage-project-card.notApplied .mypage-project-thumbnail {
+  border-color: #38bdf8;
+  box-shadow: inset 0 0 0 1px #38bdf8;
+}
+
+.mypage-project-card-body {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 90px;
+  padding: 18px 16px;
+}
+
+.mypage-project-card-body strong {
+  overflow: hidden;
+  color: #111827;
+  font-size: 18px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mypage-project-card-body p {
+  overflow: hidden;
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @keyframes notification-skeleton-pulse {
   0% {
     background-position: 200% 0;
@@ -1514,6 +1673,12 @@
 
   100% {
     background-position: -200% 0;
+  }
+}
+
+@media (max-width: 1180px) {
+  .mypage-project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1691,5 +1856,23 @@
 
   .profile-edit-actions {
     grid-template-columns: 1fr;
+  }
+
+  .mypage-list-page {
+    gap: 36px;
+    padding: 48px 24px;
+  }
+
+  .mypage-list-header h1 {
+    font-size: 34px;
+  }
+
+  .mypage-project-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .mypage-project-card {
+    min-height: 280px;
   }
 }

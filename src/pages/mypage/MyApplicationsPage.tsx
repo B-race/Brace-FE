@@ -1,8 +1,10 @@
-import { PlaceholderPage } from "../../shared/components/layout/PlaceholderPage";
+import { mockMyApplications } from "../../features/profile/api/mypageProject.mock";
+import { MyPageProjectListPage } from "../../features/profile/components/MyPageProjectListPage";
 
 export const MyApplicationsPage = () => (
-  <PlaceholderPage
-    title="내 지원 현황"
-    description="지원한 프로젝트와 검토중, 수락, 거절 상태를 확인하는 화면입니다."
+  <MyPageProjectListPage
+    title="지원 현황 목록"
+    description="내가 지원한 프로젝트들을 확인할 수 있습니다."
+    items={mockMyApplications}
   />
 );
