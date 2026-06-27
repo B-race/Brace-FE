@@ -64,6 +64,10 @@
   padding: 0;
 }
 
+.app-main > * {
+  min-width: 0;
+}
+
 .placeholder-page {
   display: flex;
   flex-direction: column;
@@ -478,6 +482,8 @@
 .applicant-manage-page {
   display: grid;
   gap: 48px;
+  width: min(var(--page-max-width), calc(100% - var(--page-gutter) * 2));
+  margin: 0 auto;
   padding: 64px 0;
 }
 
@@ -536,7 +542,7 @@
 
 .applicant-project-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 24px;
 }
 
@@ -1282,14 +1288,18 @@
 
 .profile-hero-card {
   display: grid;
-  grid-template-columns: 132px minmax(0, 1fr) auto;
+  grid-template-columns: 132px minmax(0, 1fr);
+  grid-template-areas:
+    "avatar summary"
+    "avatar actions";
   align-items: center;
-  gap: 40px;
+  gap: 24px 40px;
   padding: 72px 64px 64px;
   border-bottom: 1px solid #e4e7ec;
 }
 
 .profile-avatar {
+  grid-area: avatar;
   display: block;
   width: 132px;
   height: 132px;
@@ -1298,8 +1308,10 @@
 }
 
 .profile-summary {
+  grid-area: summary;
   display: grid;
   gap: 14px;
+  min-width: 0;
 }
 
 .profile-summary h1 {
@@ -1313,6 +1325,7 @@
   margin: 0;
   color: #111827;
   font-size: 18px;
+  line-height: 1.6;
 }
 
 .profile-tags {
@@ -1331,12 +1344,15 @@
   color: #111827;
   font-size: 14px;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .profile-actions {
+  grid-area: actions;
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  gap: 16px;
+  min-width: 0;
 }
 
 .profile-outline-button,
@@ -1367,9 +1383,9 @@
 
 .profile-stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 80px;
-  padding: 0 110px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: clamp(18px, 5vw, 80px);
+  padding: 0 clamp(24px, 7vw, 110px);
 }
 
 .profile-stat-card {
@@ -1396,10 +1412,10 @@
 .profile-detail-card {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(40px, 5vw, 64px);
   margin: 24px 40px 80px;
-  padding: 56px 80px 96px;
+  padding: 56px clamp(40px, 6vw, 80px) 96px;
   border-radius: 64px;
   background: #d9d9d9;
 }
@@ -1428,6 +1444,7 @@
   color: #111827;
   font-size: 18px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .profile-withdraw-button {
@@ -1659,7 +1676,7 @@
 
 .mypage-project-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 40px;
 }
 
@@ -1834,7 +1851,27 @@
 
 @media (max-width: 1180px) {
   .mypage-project-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .profile-hero-card {
+    padding: 56px 48px;
+  }
+
+  .profile-detail-card {
+    padding: 48px 48px 96px;
+  }
+}
+
+@media (min-width: 1181px) {
+  .profile-hero-card {
+    grid-template-columns: 132px minmax(0, 1fr) auto;
+    grid-template-areas: "avatar summary actions";
+    gap: 40px;
+  }
+
+  .profile-actions {
+    justify-content: flex-end;
   }
 }
 
@@ -1855,6 +1892,13 @@
     padding: 32px 0;
   }
 
+  .app-main:has(.notifications-page),
+  .app-main:has(.mypage-layout),
+  .app-main:has(.profile-edit-page) {
+    width: 100%;
+    padding: 0;
+  }
+
   .placeholder-page {
     padding: 24px;
   }
@@ -1864,7 +1908,7 @@
   }
 
   .notifications-header {
-    padding: 48px 16px;
+    padding: 40px 16px;
   }
 
   .notifications-header h1 {
@@ -1873,7 +1917,7 @@
 
   .notifications-list-section {
     width: min(100% - 32px, 760px);
-    padding: 40px 0 64px;
+    padding: 32px 0 56px;
   }
 
   .notifications-count {
@@ -1916,6 +1960,7 @@
 
   .applicant-manage-page {
     gap: 32px;
+    width: min(100% - 32px, var(--page-max-width));
     padding: 40px 0;
   }
 
@@ -1938,7 +1983,15 @@
   }
 
   .applicant-list-item {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
     min-height: auto;
+  }
+
+  .applicant-list-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .applicant-detail-panel {
@@ -1984,6 +2037,10 @@
 
   .profile-hero-card {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "avatar"
+      "summary"
+      "actions";
     justify-items: center;
     gap: 24px;
     padding: 40px 24px;
@@ -1991,7 +2048,12 @@
   }
 
   .profile-actions {
+    width: 100%;
     justify-content: center;
+  }
+
+  .profile-outline-button {
+    width: min(100%, 280px);
   }
 
   .profile-stat-grid {
@@ -2006,6 +2068,12 @@
     margin: 0 24px 48px;
     padding: 32px 24px 104px;
     border-radius: 28px;
+  }
+
+  .profile-detail-card dt,
+  .profile-detail-card dd {
+    font-size: 16px;
+    overflow-wrap: anywhere;
   }
 
   .profile-detail-card dl div {
@@ -2030,7 +2098,7 @@
 
   .mypage-list-page {
     gap: 36px;
-    padding: 48px 24px;
+    padding: 48px 16px;
   }
 
   .mypage-list-header h1 {

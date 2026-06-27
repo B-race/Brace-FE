@@ -20,8 +20,8 @@ body {
    Page Layout
    ===================== */
 .page {
-  min-height: 2904px;
-  width: 1440px;
+  min-height: 100vh;
+  width: 100%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,7 @@ body {
    Main
    ===================== */
 .main {
-  padding-top: 80px;
+  padding: 80px var(--page-gutter) 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -232,7 +232,7 @@ body {
 .step-section {
   width: 100%;
   max-width: 1220px;
-  padding: 60px;
+  padding: clamp(28px, 5vw, 60px);
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -282,7 +282,7 @@ body {
    ===================== */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 60px;
 }
 
@@ -338,7 +338,7 @@ body {
    ===================== */
 .activity-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 60px;
 }
 
@@ -467,10 +467,10 @@ body {
    Footer
    ===================== */
 .footer {
-  width: 1440px;
+  width: 100%;
   max-width: 100%;
-  height: 220px;
-  padding: 60px;
+  min-height: 220px;
+  padding: 60px var(--page-gutter);
   display: flex;
   align-items: center;
   margin-top: auto;
@@ -678,7 +678,7 @@ body {
    날짜 범위 캘린더
    ===================== */
 .cal-range-wrap {
-  width: 580px;
+  width: min(580px, calc(100vw - 48px));
 }
 
 .cal-range-nav {
@@ -731,7 +731,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 60px 40px;
+  padding: 60px var(--page-gutter);
 }
 
 .pr-card {
@@ -872,8 +872,89 @@ body {
 /* 콘텐츠 영역 */
 .pc-content {
   flex: 1;
-  padding: 0 40px 60px;
+  padding: 0 var(--page-gutter) 60px;
   max-width: 1220px;
   width: 100%;
   margin: 0 auto;
+}
+
+@media (max-width: 760px) {
+  .card {
+    padding-top: 40px;
+  }
+
+  .card__actions,
+  .step-actions,
+  .role-add,
+  .footer__inner,
+  .footer__nav {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .btn,
+  .role-add__btn {
+    width: 100%;
+  }
+
+  .stepper,
+  .pr-stepper,
+  .pc-stepper {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 4px;
+  }
+
+  .stepper__step,
+  .pr-stepper__step,
+  .pc-stepper__step {
+    flex: 0 0 auto;
+  }
+
+  .step-content,
+  .step-section {
+    max-width: 100%;
+  }
+
+  .form-grid,
+  .activity-grid,
+  .cal-range-months {
+    grid-template-columns: 1fr;
+  }
+
+  .picker-dropdown {
+    width: min(100%, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+  }
+
+  .cal {
+    width: 100%;
+  }
+
+  .footer {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .main {
+    padding-top: 48px;
+  }
+
+  .card__title,
+  .step-title,
+  .pr-card__title,
+  .pc-header__title {
+    font-size: 24px;
+  }
+
+  .pr-card {
+    padding: 40px 0;
+  }
+
+  .pc-header {
+    padding: 40px var(--page-gutter) 28px;
+  }
 }
