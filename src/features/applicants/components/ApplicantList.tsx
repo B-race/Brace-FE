@@ -1,17 +1,49 @@
+import { useEffect, useRef } from "react";
 import type { ManagedApplicant } from "../types/applicant";
 import { ApplicantListItem } from "./ApplicantListItem";
 
 interface ApplicantListProps {
   applicants: ManagedApplicant[];
   selectedApplicantId: number | null;
+  hasMoreApplicants: boolean;
+  isLoadingMore: boolean;
   onSelectApplicant: (applicantId: number) => void;
+  onLoadMore: () => void;
 }
 
 export const ApplicantList = ({
   applicants,
   selectedApplicantId,
+  hasMoreApplicants,
+  isLoadingMore,
   onSelectApplicant,
+  onLoadMore,
 }: ApplicantListProps) => {
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const loadMoreElement = loadMoreRef.current;
+
+    if (!loadMoreElement || !hasMoreApplicants) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: "160px" },
+    );
+
+    observer.observe(loadMoreElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMoreApplicants, onLoadMore]);
+
   if (applicants.length === 0) {
     return (
       <div className="applicant-empty">
@@ -24,15 +56,27 @@ export const ApplicantList = ({
   }
 
   return (
-    <ul className="applicant-list">
-      {applicants.map((applicant) => (
-        <ApplicantListItem
-          key={applicant.id}
-          applicant={applicant}
-          isSelected={applicant.id === selectedApplicantId}
-          onSelect={onSelectApplicant}
-        />
-      ))}
-    </ul>
+    <>
+      <ul className="applicant-list">
+        {applicants.map((applicant) => (
+          <ApplicantListItem
+            key={applicant.id}
+            applicant={applicant}
+            isSelected={applicant.id === selectedApplicantId}
+            onSelect={onSelectApplicant}
+          />
+        ))}
+      </ul>
+      <div
+        className="applicant-load-more"
+        ref={loadMoreRef}
+        aria-live="polite"
+      >
+        {isLoadingMore && <span>지원자를 더 불러오는 중입니다.</span>}
+        {!isLoadingMore && !hasMoreApplicants && (
+          <span>모든 지원자를 확인했어요.</span>
+        )}
+      </div>
+    </>
   );
 };
