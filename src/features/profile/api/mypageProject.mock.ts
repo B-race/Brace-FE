@@ -1,0 +1,138 @@
+import type { MyPageProjectCardItem } from "../types/mypageProject";
+
+export const mockMyProjects: MyPageProjectCardItem[] = [
+  {
+    id: 101,
+    title: "로컬 스터디 매칭 서비스",
+    role: "기획/프론트엔드 모집",
+    status: "recruiting",
+    statusLabel: "모집중",
+    thumbnailLabel: "내가 등록한 프로젝트",
+  },
+  {
+    id: 102,
+    title: "로컬 맛집 추천 앱",
+    role: "백엔드 모집",
+    status: "recruiting",
+    statusLabel: "모집중",
+    thumbnailLabel: "지원자 관리 가능",
+  },
+  {
+    id: 103,
+    title: "환경 데이터 시각화",
+    role: "팀 구성 완료",
+    status: "completed",
+    statusLabel: "완료",
+    thumbnailLabel: "모집 완료 프로젝트",
+  },
+  {
+    id: 104,
+    title: "소셜벤처 공모전",
+    role: "디자이너 모집",
+    status: "recruiting",
+    statusLabel: "모집중",
+    thumbnailLabel: "공모전 프로젝트",
+  },
+];
+
+export const mockMyApplications: MyPageProjectCardItem[] = [
+  {
+    id: 201,
+    title: "팀 에어러블 해커톤",
+    role: "백엔드 개발자",
+    status: "reviewing",
+    statusLabel: "검토중",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 202,
+    title: "AI 챗봇 경진대회",
+    role: "프론트엔드 개발자",
+    status: "reviewing",
+    statusLabel: "검토중",
+    thumbnailLabel: "상태 아이콘(모래시계) 원형",
+  },
+  {
+    id: 203,
+    title: "AI 챗봇 경진대회",
+    role: "프론트엔드 개발자",
+    status: "accepted",
+    statusLabel: "수락됨",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 204,
+    title: "오픈 이노베이션 챌린지",
+    role: "기획자",
+    status: "accepted",
+    statusLabel: "수락됨",
+    thumbnailLabel: "상태 아이콘(체크) 원형",
+  },
+  {
+    id: 205,
+    title: "2주 마라톤 앱",
+    role: "모바일 개발자",
+    status: "rejected",
+    statusLabel: "거절됨",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 206,
+    title: "오픈소스 리액트링",
+    role: "기획자",
+    status: "reviewing",
+    statusLabel: "검토중",
+    thumbnailLabel: "상태 아이콘(X) 원형",
+  },
+];
+
+export const mockBookmarkedProjects: MyPageProjectCardItem[] = [
+  {
+    id: 301,
+    title: "팀 에어러블 해커톤",
+    role: "백엔드 개발자",
+    status: "reviewing",
+    statusLabel: "검토중",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 302,
+    title: "AI 챗봇 경진대회",
+    role: "프론트엔드 개발자",
+    status: "reviewing",
+    statusLabel: "검토중",
+    thumbnailLabel: "상태 아이콘(모래시계) 원형",
+  },
+  {
+    id: 303,
+    title: "AI 챗봇 경진대회",
+    role: "프론트엔드 개발자",
+    status: "accepted",
+    statusLabel: "수락됨",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 304,
+    title: "오픈 이노베이션 챌린지",
+    role: "기획자",
+    status: "accepted",
+    statusLabel: "수락됨",
+    thumbnailLabel: "상태 아이콘(체크) 원형",
+  },
+  {
+    id: 305,
+    title: "2주 마라톤 앱",
+    role: "모바일 개발자",
+    status: "rejected",
+    statusLabel: "거절됨",
+    thumbnailLabel: "상태 아이콘(북마크) 원형",
+  },
+  {
+    id: 306,
+    title: "오픈소스 리액트링",
+    role: "기획자",
+    status: "notApplied",
+    statusLabel: "미지원",
+    thumbnailLabel: "상태 아이콘(X) 원형",
+  },
+];

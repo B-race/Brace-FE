@@ -1,8 +1,10 @@
-import { PlaceholderPage } from "../../shared/components/layout/PlaceholderPage";
+import { mockBookmarkedProjects } from "../../features/profile/api/mypageProject.mock";
+import { MyPageProjectListPage } from "../../features/profile/components/MyPageProjectListPage";
 
 export const BookmarksPage = () => (
-  <PlaceholderPage
+  <MyPageProjectListPage
     title="북마크"
-    description="관심 등록한 프로젝트 목록을 확인하는 화면입니다."
+    description="내가 찜한 프로젝트를 확인할 수 있습니다."
+    items={mockBookmarkedProjects}
   />
 );
