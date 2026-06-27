@@ -75,10 +75,35 @@ export const useNotifications = () => {
     });
   }, []);
 
+  const markAllAsRead = useCallback(() => {
+    setReadNotificationIds((currentReadNotificationIds) => {
+      const unreadNotificationIds = mockNotifications
+        .map((notification) => notification.id)
+        .filter(
+          (notificationId) =>
+            !currentReadNotificationIds.includes(notificationId),
+        );
+
+      if (unreadNotificationIds.length === 0) {
+        return currentReadNotificationIds;
+      }
+
+      const nextReadNotificationIds = [
+        ...currentReadNotificationIds,
+        ...unreadNotificationIds,
+      ];
+
+      setStoredReadNotificationIds(nextReadNotificationIds);
+
+      return nextReadNotificationIds;
+    });
+  }, []);
+
   return {
     notifications,
     totalCount: notifications.length,
     unreadCount,
     markAsRead,
+    markAllAsRead,
   };
 };

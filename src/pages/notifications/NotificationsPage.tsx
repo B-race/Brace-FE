@@ -2,8 +2,9 @@ import { NotificationList } from "../../features/notifications/components/Notifi
 import { useNotifications } from "../../features/notifications/hooks/useNotifications";
 
 export const NotificationsPage = () => {
-  const { notifications, unreadCount, totalCount, markAsRead } =
+  const { notifications, unreadCount, totalCount, markAsRead, markAllAsRead } =
     useNotifications();
+  const hasUnreadNotifications = unreadCount > 0;
 
   return (
     <section className="notifications-page">
@@ -18,6 +19,14 @@ export const NotificationsPage = () => {
         <div className="notifications-summary">
           <span>전체 {totalCount}</span>
           <strong>읽지 않음 {unreadCount}</strong>
+          <button
+            className="notifications-read-all-button"
+            type="button"
+            disabled={!hasUnreadNotifications}
+            onClick={markAllAsRead}
+          >
+            전체 읽음
+          </button>
         </div>
       </div>
 
