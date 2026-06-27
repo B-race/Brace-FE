@@ -1,3 +1,4 @@
+import defaultProjectImage from "../../../assets/images/brace-logo.png";
 import type { ApplicantProject } from "../types/applicant";
 
 interface ApplicantProjectCardProps {
@@ -21,16 +22,11 @@ export const ApplicantProjectCard = ({
       <span className="applicant-project-deadline">
         {project.deadlineLabel}
       </span>
-      {project.thumbnailUrl ? (
-        <img
-          src={project.thumbnailUrl}
-          alt=""
-        />
-      ) : (
-        <span className="applicant-project-placeholder">
-          프로젝트 썸네일 영역
-        </span>
-      )}
+      <img
+        className={project.thumbnailUrl ? "" : "default"}
+        src={project.thumbnailUrl ?? defaultProjectImage}
+        alt=""
+      />
     </div>
     <div className="applicant-project-card-body">
       <span className="applicant-project-title">{project.title}</span>

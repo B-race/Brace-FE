@@ -10,6 +10,7 @@ export interface MyPageProjectCardItem {
   status: string;
   tags: string;
   writerName: string;
+  thumbnailUrl?: string;
   // applications 전용
   applicationId?: number;
   roleName?: string;

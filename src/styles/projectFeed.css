@@ -89,25 +89,12 @@
   background: #eeeeee;
 }
 
-.project-feed-card-icon span {
-  position: relative;
+.project-feed-card-icon img {
   display: block;
-  width: 44px;
-  height: 28px;
-  border-radius: 4px;
-  background: #ffd29a;
-}
-
-.project-feed-card-icon span::before {
-  position: absolute;
-  top: 9px;
-  left: 5px;
-  width: 6px;
-  height: 6px;
-  border: 1px solid #777777;
-  border-radius: 50%;
-  background: #ffffff;
-  content: "";
+  width: 50px;
+  max-height: 36px;
+  object-fit: contain;
+  opacity: 0.86;
 }
 
 .project-feed-card h2 {
