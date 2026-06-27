@@ -1,11 +1,11 @@
-import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
-import { ROUTES } from "../../constants/routes";
+import { NavLink, Outlet } from "react-router-dom";
 import "../../../styles/appLayout.css";
+import { ROUTES } from "../../constants/routes";
 
 const navigationItems = [
-  { label: "홈", to: ROUTES.HOME },
-  { label: "프로젝트", to: ROUTES.PROJECTS },
+  { label: "Value", to: ROUTES.HOME },
+  { label: "모집하기", to: ROUTES.PROJECT_REGISTER },
   { label: "알림", to: ROUTES.NOTIFICATIONS },
   { label: "마이페이지", to: ROUTES.MYPAGE },
 ];
@@ -30,10 +30,11 @@ export const AppLayout = () => {
             type="text"
             placeholder="Value"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
           <button
             className="app-search__btn"
+            type="button"
             aria-label="검색"
           >
             <svg
@@ -41,6 +42,7 @@ export const AppLayout = () => {
               height="16"
               viewBox="0 0 16 16"
               fill="none"
+              aria-hidden="true"
             >
               <circle
                 cx="6.5"
@@ -52,8 +54,8 @@ export const AppLayout = () => {
               <path
                 d="M10.5 10.5L14 14"
                 stroke="#888"
-                strokeWidth="1.5"
                 strokeLinecap="round"
+                strokeWidth="1.5"
               />
             </svg>
           </button>
