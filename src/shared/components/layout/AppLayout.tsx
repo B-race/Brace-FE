@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import logoImage from "../../../assets/images/logo2.png";
 import "../../../styles/appLayout.css";
 import { ROUTES } from "../../constants/routes";
 
@@ -19,9 +20,12 @@ export const AppLayout = () => {
         <NavLink
           className="app-logo"
           to={ROUTES.HOME}
+          aria-label="Brace 홈으로 이동"
         >
-          <div className="app-logo__icon" />
-          Brace
+          <img
+            src={logoImage}
+            alt="Brace"
+          />
         </NavLink>
 
         <div className="app-search">

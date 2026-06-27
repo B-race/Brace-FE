@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import applyTeam from "../../assets/images/applyteam.png";
 import findTeam from "../../assets/images/findteam.png";
 import makeTeam from "../../assets/images/maketeam.png";
@@ -73,8 +73,6 @@ const MainBanner = () => {
 };
 
 export const LandingPage = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="main-page">
       <section className="main-hero">
@@ -86,20 +84,18 @@ export const LandingPage = () => {
         </p>
 
         <div className="main-hero-buttons">
-          <button
+          <Link
             className="main-button main-button-outline"
-            type="button"
-            onClick={() => navigate(ROUTES.PROJECTS)}
+            to={ROUTES.PROJECTS}
           >
             둘러보기
-          </button>
-          <button
+          </Link>
+          <Link
             className="main-button main-button-dark"
-            type="button"
-            onClick={() => navigate(ROUTES.LOGIN)}
+            to={ROUTES.LOGIN}
           >
             시작하기
-          </button>
+          </Link>
         </div>
       </section>
 
