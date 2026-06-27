@@ -793,6 +793,134 @@
   line-height: 1.6;
 }
 
+.applicant-state-panel {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 48px 32px;
+  border: 1px dashed #d0d5dd;
+  border-radius: 8px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.applicant-state-panel strong {
+  color: #111827;
+  font-size: 20px;
+}
+
+.applicant-state-panel p {
+  max-width: 440px;
+  margin: 0;
+  color: #667085;
+  line-height: 1.7;
+}
+
+.applicant-state-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #4f46e5;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.applicant-state-button:hover,
+.applicant-state-button:focus-visible {
+  background: #4338ca;
+}
+
+.applicant-skeleton-panel {
+  display: grid;
+  gap: 48px;
+}
+
+.applicant-project-skeleton,
+.applicant-list-skeleton,
+.applicant-detail-skeleton {
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.applicant-project-skeleton {
+  display: grid;
+  gap: 14px;
+  padding: 0 0 16px;
+}
+
+.applicant-skeleton-thumbnail {
+  display: block;
+  aspect-ratio: 1.12 / 1;
+}
+
+.applicant-list-skeleton {
+  display: flex;
+  gap: 14px;
+  min-height: 128px;
+  padding: 18px;
+}
+
+.applicant-detail-skeleton {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 28px;
+}
+
+.applicant-skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.applicant-skeleton-content {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  width: 100%;
+}
+
+.applicant-skeleton-thumbnail,
+.applicant-skeleton-avatar,
+.applicant-skeleton-line {
+  overflow: hidden;
+  background: linear-gradient(90deg, #eef2f7 0%, #f8fafc 50%, #eef2f7 100%);
+  background-size: 200% 100%;
+  animation: notification-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.applicant-skeleton-line {
+  display: block;
+  width: min(100% - 32px, 480px);
+  height: 16px;
+  margin: 0 16px;
+  border-radius: 999px;
+}
+
+.applicant-skeleton-line.title {
+  width: min(70%, 280px);
+  height: 24px;
+  margin: 0;
+}
+
+.applicant-skeleton-line.medium {
+  width: min(60%, 240px);
+}
+
+.applicant-skeleton-line.short {
+  width: min(42%, 180px);
+}
+
 .applicant-detail-panel {
   padding: 28px;
   border: 1px solid #e4e7ec;
