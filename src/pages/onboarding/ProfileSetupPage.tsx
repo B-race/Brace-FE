@@ -183,12 +183,11 @@ export const ProfileSetupPage = () => {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          profileImg: previewUrl ?? "",
           role: selectedRole,
           skillTags: selectedSkills.map(skillToEnum),
           participationType,
           introduction: intro,
-          portfolioUrl: portfolioUrl || "",
+          ...(portfolioUrl.trim() ? { portfolioUrl: portfolioUrl.trim() } : {}),
         }),
       });
 
