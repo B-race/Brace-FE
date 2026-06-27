@@ -2,7 +2,8 @@ import { NotificationList } from "../../features/notifications/components/Notifi
 import { useNotifications } from "../../features/notifications/hooks/useNotifications";
 
 export const NotificationsPage = () => {
-  const { notifications, unreadCount, totalCount } = useNotifications();
+  const { notifications, unreadCount, totalCount, markAsRead } =
+    useNotifications();
 
   return (
     <section className="notifications-page">
@@ -20,7 +21,10 @@ export const NotificationsPage = () => {
         </div>
       </div>
 
-      <NotificationList notifications={notifications} />
+      <NotificationList
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+      />
     </section>
   );
 };

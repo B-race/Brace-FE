@@ -3,9 +3,13 @@ import { NotificationItem } from "./NotificationItem";
 
 interface NotificationListProps {
   notifications: NotificationItemType[];
+  onMarkAsRead: (notificationId: number) => void;
 }
 
-export const NotificationList = ({ notifications }: NotificationListProps) => {
+export const NotificationList = ({
+  notifications,
+  onMarkAsRead,
+}: NotificationListProps) => {
   if (notifications.length === 0) {
     return (
       <div className="notification-empty">
@@ -21,6 +25,7 @@ export const NotificationList = ({ notifications }: NotificationListProps) => {
         <NotificationItem
           key={notification.id}
           notification={notification}
+          onMarkAsRead={onMarkAsRead}
         />
       ))}
     </ul>
