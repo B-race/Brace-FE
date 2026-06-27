@@ -16,7 +16,6 @@ const ENDPOINT_MAP: Record<MyPageProjectListType, string> = {
 const readStoredBookmarkProjects = (): MyPageProjectCardItem[] => {
   const rawBookmarks = localStorage.getItem(BOOKMARK_STORAGE_KEY);
   if (!rawBookmarks) return [];
-
   try {
     return JSON.parse(rawBookmarks) as MyPageProjectCardItem[];
   } catch {
@@ -28,16 +27,18 @@ const mergeBookmarkProjects = (
   apiItems: MyPageProjectCardItem[],
   storedItems: MyPageProjectCardItem[],
 ) => {
-  const apiItemIds = new Set(apiItems.map((item) => item.id));
+  const apiItemIds = new Set(apiItems.map((item) => item.projectId));
   const storedOnlyItems = storedItems.filter(
-    (item) => !apiItemIds.has(item.id),
+    (item) => !apiItemIds.has(item.projectId),
   );
-
   return [
-    ...storedItems.filter((item) => apiItemIds.has(item.id)),
+    ...storedItems.filter((item) => apiItemIds.has(item.projectId)),
     ...storedOnlyItems,
     ...apiItems.filter(
-      (item) => !storedItems.some((storedItem) => storedItem.id === item.id),
+      (item) =>
+        !storedItems.some(
+          (storedItem) => storedItem.projectId === item.projectId,
+        ),
     ),
   ];
 };
@@ -91,7 +92,7 @@ export const useMyPageProjects = ({ listType }: UseMyPageProjectsParams) => {
           setErrorMessage(
             storedBookmarkProjects.length > 0
               ? ""
-              : "?꾨줈?앺듃 紐⑸줉??遺덈윭?ㅼ? 紐삵뻽?댁슂. ?좎떆 ???ㅼ떆 ?쒕룄?댁＜?몄슂.",
+              : "프로젝트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
           );
           setIsLoading(false);
           return;

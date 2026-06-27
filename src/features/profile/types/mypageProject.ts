@@ -1,18 +1,18 @@
-export type MyPageProjectStatus =
-  | "reviewing"
-  | "accepted"
-  | "rejected"
-  | "notApplied"
-  | "recruiting"
-  | "completed";
-
 export type MyPageProjectListType = "myProjects" | "applications" | "bookmarks";
 
 export interface MyPageProjectCardItem {
-  id: number;
+  projectId: number;
   title: string;
-  role: string;
-  status: MyPageProjectStatus;
-  statusLabel: string;
-  thumbnailLabel: string;
+  description: string;
+  activityType: string;
+  meetingType: string;
+  deadline: string;
+  status: string;
+  tags: string;
+  writerName: string;
+  // applications 전용
+  applicationId?: number;
+  roleName?: string;
+  appliedAt?: string;
+  projectStatus?: string;
 }

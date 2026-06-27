@@ -902,9 +902,28 @@ export const ProjectCreatePage: React.FC = () => {
       roles,
     } = formData;
 
+    const roleNameToId: Record<string, number> = {
+      개발자: 1,
+      프론트엔드: 2,
+      디자이너: 3,
+      기획자: 4,
+    };
+
     const apiRoles = roles
       .filter((r) => r.count > 0)
-      .map((r) => ({ roleId: 0, roleName: r.name, recruitCount: r.count }));
+      .map((r) => ({
+        roleId: roleNameToId[r.name] ?? 0,
+        recruitCount: r.count,
+      }));
+
+    if (
+      activityType === "CONTEST" &&
+      (!projectName.trim() || !projectUrl.trim())
+    ) {
+      window.alert("공모전 등록 시 공모전명과 공모전 링크를 입력해 주세요.");
+      setCurrentStep(2);
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -919,8 +938,8 @@ export const ProjectCreatePage: React.FC = () => {
           activityType,
           title,
           description,
-          projectName,
-          projectUrl,
+          ...(projectName.trim() && { projectName }),
+          ...(projectUrl.trim() && { projectUrl }),
           startDate: startDate
             ? toApiDate(startDate.year, startDate.month, startDate.day)
             : "",
