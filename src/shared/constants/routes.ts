@@ -11,6 +11,7 @@ export const ROUTES = {
   PROJECT_APPLY: "/projects/:projectId/apply",
   PROJECT_APPLICANTS: "/projects/:projectId/applicants",
   NOTIFICATIONS: "/notifications",
+  NOTIFICATION_DETAIL: "/notifications/:notificationId",
   MYPAGE: "/mypage",
   MY_PROJECTS: "/mypage/projects",
   MY_APPLICATIONS: "/mypage/applications",
