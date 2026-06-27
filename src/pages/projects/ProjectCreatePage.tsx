@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../shared/constants/routes";
 import "../../styles/projectsRegister.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // =====================
 // 날짜 유틸
 // =====================
@@ -28,9 +30,10 @@ const getDaysInMonth = (year: number, month: number) => {
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
-
 const formatDate = (y: number, m: number, d: number) =>
   `${y}/${pad(m)}/${pad(d)}`;
+const toApiDate = (y: number, m: number, d: number) =>
+  `${y}-${pad(m)}-${pad(d)}`;
 
 interface DateVal {
   year: number;
@@ -45,7 +48,24 @@ const compareDates = (a: DateVal, b: DateVal) => {
 };
 
 // =====================
-// 캘린더 피커 (단일 날짜)
+// 전체 폼 데이터 타입
+// =====================
+interface FormData {
+  activityType: "CONTEST" | "PERSONAL_PROJECT" | "";
+  title: string;
+  description: string;
+  projectName: string;
+  projectUrl: string;
+  startDate: DateVal | null;
+  endDate: DateVal | null;
+  deadline: DateVal | null;
+  meetingType: "ONLINE" | "OFFLINE" | "HYBRID" | "";
+  tags: string;
+  roles: { name: string; count: number }[];
+}
+
+// =====================
+// 캘린더 피커
 // =====================
 interface SinglePickerProps {
   value: DateVal | null;
@@ -63,20 +83,16 @@ const SingleDatePicker: React.FC<SinglePickerProps> = ({
   const [viewMonth, setViewMonth] = useState(
     value?.month ?? today.getMonth() + 1,
   );
-
   const daysInMonth = getDaysInMonth(viewYear, viewMonth);
   const firstDay = new Date(viewYear, viewMonth - 1, 1).getDay();
-
-  const isDisabled = (day: number) => {
-    if (!minDate) return false;
-    return compareDates({ year: viewYear, month: viewMonth, day }, minDate) < 0;
-  };
-
+  const isDisabled = (day: number) =>
+    !minDate
+      ? false
+      : compareDates({ year: viewYear, month: viewMonth, day }, minDate) < 0;
   const isSelected = (day: number) =>
     value?.year === viewYear &&
     value?.month === viewMonth &&
     value?.day === day;
-
   const prevMonth = () => {
     if (viewMonth === 1) {
       setViewYear((y) => y - 1);
@@ -89,11 +105,9 @@ const SingleDatePicker: React.FC<SinglePickerProps> = ({
       setViewMonth(1);
     } else setViewMonth((m) => m + 1);
   };
-
-  const cells = [];
+  const cells: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-
   return (
     <div className="cal">
       <div className="cal__nav">
@@ -126,7 +140,7 @@ const SingleDatePicker: React.FC<SinglePickerProps> = ({
           <button
             key={i}
             className={`cal__day ${day && isSelected(day) ? "cal__day--selected" : ""} ${day && isDisabled(day) ? "cal__day--disabled" : ""} ${!day ? "cal__day--empty" : ""}`}
-            disabled={!day || isDisabled(day)}
+            disabled={!day || (day ? isDisabled(day) : false)}
             onClick={() =>
               day && onChange({ year: viewYear, month: viewMonth, day })
             }
@@ -139,9 +153,6 @@ const SingleDatePicker: React.FC<SinglePickerProps> = ({
   );
 };
 
-// =====================
-// 날짜 범위 피커 - 월 캘린더 (render 밖에서 선언)
-// =====================
 interface CalMonthProps {
   year: number;
   month: number;
@@ -164,7 +175,6 @@ const CalMonth: React.FC<CalMonthProps> = ({
   const cells: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
   for (let d = 1; d <= days; d++) cells.push(d);
-
   return (
     <div className="cal cal--range">
       <div className="cal__month-title">
@@ -200,9 +210,6 @@ const CalMonth: React.FC<CalMonthProps> = ({
   );
 };
 
-// =====================
-// 날짜 범위 피커
-// =====================
 interface DateRangePickerProps {
   startDate: DateVal | null;
   endDate: DateVal | null;
@@ -217,30 +224,26 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   onChangeEnd,
 }) => {
   const today = new Date();
-  const initYear = startDate?.year ?? today.getFullYear();
-  const initMonth = startDate?.month ?? today.getMonth() + 1;
-
-  const [viewYear, setViewYear] = useState(initYear);
-  const [viewMonth, setViewMonth] = useState(initMonth);
+  const [viewYear, setViewYear] = useState(
+    startDate?.year ?? today.getFullYear(),
+  );
+  const [viewMonth, setViewMonth] = useState(
+    startDate?.month ?? today.getMonth() + 1,
+  );
   const [selecting, setSelecting] = useState<"start" | "end">("start");
-
   const rightYear = viewMonth === 12 ? viewYear + 1 : viewYear;
   const rightMonth = viewMonth === 12 ? 1 : viewMonth + 1;
-
   const isInRange = (year: number, month: number, day: number) => {
     if (!startDate || !endDate) return false;
     const cur = { year, month, day };
     return compareDates(cur, startDate) > 0 && compareDates(cur, endDate) < 0;
   };
-
   const isStart = (year: number, month: number, day: number) =>
     startDate?.year === year &&
     startDate?.month === month &&
     startDate?.day === day;
-
   const isEnd = (year: number, month: number, day: number) =>
     endDate?.year === year && endDate?.month === month && endDate?.day === day;
-
   const handleDayClick = (year: number, month: number, day: number) => {
     const clicked = { year, month, day };
     if (selecting === "start") {
@@ -258,7 +261,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       }
     }
   };
-
   const prevMonth = () => {
     if (viewMonth === 1) {
       setViewYear((y) => y - 1);
@@ -271,7 +273,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       setViewMonth(1);
     } else setViewMonth((m) => m + 1);
   };
-
   return (
     <div className="cal-range-wrap">
       <div className="cal-range-nav">
@@ -319,21 +320,20 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 // Step 1: 활동 유형
 // =====================
 const Step1ActivityType: React.FC<{
+  value: "CONTEST" | "PERSONAL_PROJECT" | "";
+  onChange: (v: "CONTEST" | "PERSONAL_PROJECT") => void;
   onNext: () => void;
   onPrev: () => void;
-}> = ({ onNext, onPrev }) => {
-  const [selected, setSelected] = useState<"contest" | "personal" | null>(null);
+}> = ({ value, onChange, onNext, onPrev }) => {
   const [error, setError] = useState("");
-
   const handleNext = () => {
-    if (!selected) {
+    if (!value) {
       setError("활동 유형을 선택해 주세요.");
       return;
     }
     setError("");
     onNext();
   };
-
   return (
     <section className="step-section">
       <div className="step-header">
@@ -345,25 +345,25 @@ const Step1ActivityType: React.FC<{
           <div className="activity-item">
             <span className="activity-label">공모전 참가</span>
             <button
-              className={`activity-btn ${selected === "contest" ? "activity-btn--selected" : ""}`}
+              className={`activity-btn ${value === "CONTEST" ? "activity-btn--selected" : ""}`}
               onClick={() => {
-                setSelected("contest");
+                onChange("CONTEST");
                 setError("");
               }}
             >
-              {selected === "contest" ? "선택됨" : "선택 가능"}
+              {value === "CONTEST" ? "선택됨" : "선택 가능"}
             </button>
           </div>
           <div className="activity-item">
             <span className="activity-label">개인 프로젝트</span>
             <button
-              className={`activity-btn ${selected === "personal" ? "activity-btn--selected" : ""}`}
+              className={`activity-btn ${value === "PERSONAL_PROJECT" ? "activity-btn--selected" : ""}`}
               onClick={() => {
-                setSelected("personal");
+                onChange("PERSONAL_PROJECT");
                 setError("");
               }}
             >
-              {selected === "personal" ? "선택됨" : "선택 가능"}
+              {value === "PERSONAL_PROJECT" ? "선택됨" : "선택 가능"}
             </button>
           </div>
         </div>
@@ -390,34 +390,38 @@ const Step1ActivityType: React.FC<{
 // =====================
 // Step 2: 기본 정보
 // =====================
-const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
-  onNext,
-  onPrev,
-}) => {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    contestName: "",
-    contestLink: "",
-  });
+const Step2BasicInfo: React.FC<{
+  value: {
+    title: string;
+    description: string;
+    projectName: string;
+    projectUrl: string;
+  };
+  onChange: (v: {
+    title: string;
+    description: string;
+    projectName: string;
+    projectUrl: string;
+  }) => void;
+  onNext: () => void;
+  onPrev: () => void;
+}> = ({ value, onChange, onNext, onPrev }) => {
   const [errors, setErrors] = useState<{
     title?: string;
     description?: string;
   }>({});
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value: v } = e.target;
+    onChange({ ...value, [name]: v });
     if (errors[name as keyof typeof errors])
       setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-
   const handleNext = () => {
     const newErrors: typeof errors = {};
-    if (!form.title.trim()) newErrors.title = "제목은 필수 항목입니다.";
-    if (!form.description.trim())
+    if (!value.title.trim()) newErrors.title = "제목은 필수 항목입니다.";
+    if (!value.description.trim())
       newErrors.description = "상세 내용은 필수 항목입니다.";
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -425,7 +429,6 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
     }
     onNext();
   };
-
   return (
     <section className="step-section">
       <div className="step-header">
@@ -441,15 +444,11 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
             <input
               className={`form-input ${errors.title ? "form-input--error" : ""}`}
               name="title"
-              value={form.title}
+              value={value.title}
               onChange={handleChange}
               placeholder="예: AI 기반 과제 자동화 도구"
             />
-            {errors.title ? (
-              <span className="form-error">{errors.title}</span>
-            ) : (
-              <span className="form-hint"></span>
-            )}
+            {errors.title && <span className="form-error">{errors.title}</span>}
           </div>
           <div className="form-field">
             <label className="form-label">
@@ -458,22 +457,20 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
             <textarea
               className={`form-input form-textarea ${errors.description ? "form-input--error" : ""}`}
               name="description"
-              value={form.description}
+              value={value.description}
               onChange={handleChange}
               placeholder="목표, 진행 방식, 기대 결과를 자유롭게 작성"
             />
-            {errors.description ? (
+            {errors.description && (
               <span className="form-error">{errors.description}</span>
-            ) : (
-              <span className="form-hint"></span>
             )}
           </div>
           <div className="form-field">
             <label className="form-label">공모전명</label>
             <input
               className="form-input"
-              name="contestName"
-              value={form.contestName}
+              name="projectName"
+              value={value.projectName}
               onChange={handleChange}
               placeholder="해당 시 기재 (없으면 공란)"
             />
@@ -482,8 +479,8 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
             <label className="form-label">공모전 링크</label>
             <input
               className="form-input"
-              name="contestLink"
-              value={form.contestLink}
+              name="projectUrl"
+              value={value.projectUrl}
               onChange={handleChange}
               placeholder="공식 페이지 URL"
             />
@@ -509,84 +506,46 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
 };
 
 // =====================
-// Step 3: 모집 역할 - RoleField (render 밖에서 선언)
-// =====================
-type RolesState = { developer: number; designer: number; planner: number };
-
-interface RoleFieldProps {
-  roleKey: keyof RolesState;
-  label: string;
-  count: number;
-  onAdjust: (roleKey: keyof RolesState, delta: number) => void;
-}
-
-const RoleField: React.FC<RoleFieldProps> = ({
-  roleKey,
-  label,
-  count,
-  onAdjust,
-}) => (
-  <div className="form-field">
-    <label className="form-label">{label}</label>
-    <div className="role-counter">
-      <button
-        className="role-counter__btn"
-        onClick={() => onAdjust(roleKey, -1)}
-      >
-        −
-      </button>
-      <span className="role-counter__value">인원 {count}</span>
-      <button
-        className="role-counter__btn"
-        onClick={() => onAdjust(roleKey, 1)}
-      >
-        +
-      </button>
-    </div>
-  </div>
-);
-
-// =====================
 // Step 3: 모집 역할
 // =====================
-interface CustomRole {
-  id: number;
-  name: string;
-  count: number;
-}
-
-const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
-  onNext,
-  onPrev,
-}) => {
-  const [roles, setRoles] = useState({ developer: 0, designer: 0, planner: 0 });
-  const [customRoles, setCustomRoles] = useState<CustomRole[]>([]);
+const Step3Roles: React.FC<{
+  value: { name: string; count: number }[];
+  onChange: (v: { name: string; count: number }[]) => void;
+  onNext: () => void;
+  onPrev: () => void;
+}> = ({ value, onChange, onNext, onPrev }) => {
   const [newRoleName, setNewRoleName] = useState("");
   const [error, setError] = useState("");
 
-  const adjust = (role: keyof typeof roles, delta: number) =>
-    setRoles((prev) => ({ ...prev, [role]: Math.max(0, prev[role] + delta) }));
+  const defaultRoles = ["개발자", "디자이너", "기획자"];
 
-  const adjustCustom = (id: number, delta: number) =>
-    setCustomRoles((prev) =>
-      prev.map((r) =>
-        r.id === id ? { ...r, count: Math.max(0, r.count + delta) } : r,
-      ),
-    );
+  const getCount = (name: string) =>
+    value.find((r) => r.name === name)?.count ?? 0;
+
+  const adjust = (name: string, delta: number) => {
+    const existing = value.find((r) => r.name === name);
+    if (existing) {
+      onChange(
+        value
+          .map((r) =>
+            r.name === name ? { ...r, count: Math.max(0, r.count + delta) } : r,
+          )
+          .filter((r) => defaultRoles.includes(r.name) || r.count > 0),
+      );
+    } else if (delta > 0) {
+      onChange([...value, { name, count: 1 }]);
+    }
+  };
 
   const addCustomRole = () => {
     if (!newRoleName.trim()) return;
-    setCustomRoles((prev) => [
-      ...prev,
-      { id: Date.now(), name: newRoleName.trim(), count: 0 },
-    ]);
+    if (value.find((r) => r.name === newRoleName.trim())) return;
+    onChange([...value, { name: newRoleName.trim(), count: 0 }]);
     setNewRoleName("");
   };
 
   const handleNext = () => {
-    const total =
-      Object.values(roles).reduce((a, b) => a + b, 0) +
-      customRoles.reduce((a, r) => a + r.count, 0);
+    const total = value.reduce((a, r) => a + r.count, 0);
     if (total === 0) {
       setError("최소 1명 이상의 역할 인원을 설정해 주세요.");
       return;
@@ -594,6 +553,11 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
     setError("");
     onNext();
   };
+
+  const allRoleNames = [
+    ...defaultRoles,
+    ...value.filter((r) => !defaultRoles.includes(r.name)).map((r) => r.name),
+  ];
 
   return (
     <section className="step-section">
@@ -603,46 +567,29 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
       </div>
       <div className="step-body">
         <div className="form-grid">
-          <RoleField
-            roleKey="developer"
-            label="개발자"
-            count={roles.developer}
-            onAdjust={adjust}
-          />
-          <RoleField
-            roleKey="designer"
-            label="디자이너"
-            count={roles.designer}
-            onAdjust={adjust}
-          />
-          <RoleField
-            roleKey="planner"
-            label="기획자"
-            count={roles.planner}
-            onAdjust={adjust}
-          />
-          {customRoles.map((role) => (
+          {allRoleNames.map((name) => (
             <div
               className="form-field"
-              key={role.id}
+              key={name}
             >
-              <label className="form-label">{role.name}</label>
+              <label className="form-label">{name}</label>
               <div className="role-counter">
                 <button
                   className="role-counter__btn"
-                  onClick={() => adjustCustom(role.id, -1)}
+                  onClick={() => adjust(name, -1)}
                 >
                   −
                 </button>
-                <span className="role-counter__value">인원 {role.count}</span>
+                <span className="role-counter__value">
+                  인원 {getCount(name)}
+                </span>
                 <button
                   className="role-counter__btn"
-                  onClick={() => adjustCustom(role.id, 1)}
+                  onClick={() => adjust(name, 1)}
                 >
                   +
                 </button>
               </div>
-              <span className="form-hint">+ / - 카운터</span>
             </div>
           ))}
           <div className="form-field">
@@ -687,31 +634,45 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
 // =====================
 // Step 4: 세부 설정
 // =====================
-const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
+const Step4Detail: React.FC<{
+  startDate: DateVal | null;
+  endDate: DateVal | null;
+  deadline: DateVal | null;
+  meetingType: "ONLINE" | "OFFLINE" | "HYBRID" | "";
+  tags: string;
+  onChangeStartDate: (d: DateVal) => void;
+  onChangeEndDate: (d: DateVal) => void;
+  onChangeDeadline: (d: DateVal) => void;
+  onChangeMeetingType: (v: "ONLINE" | "OFFLINE" | "HYBRID") => void;
+  onChangeTags: (v: string) => void;
+  onPrev: () => void;
+  onSubmit: () => void;
+  isLoading: boolean;
+}> = ({
+  startDate,
+  endDate,
+  deadline,
+  meetingType,
+  tags,
+  onChangeStartDate,
+  onChangeEndDate,
+  onChangeDeadline,
+  onChangeMeetingType,
+  onChangeTags,
   onPrev,
   onSubmit,
+  isLoading,
 }) => {
-  const [startDate, setStartDate] = useState<DateVal | null>(null);
-  const [endDate, setEndDate] = useState<DateVal | null>(null);
-  const [deadline, setDeadline] = useState<DateVal | null>(null);
   const [showRangePicker, setShowRangePicker] = useState(false);
   const [showDeadlinePicker, setShowDeadlinePicker] = useState(false);
-  const [form, setForm] = useState({
-    online: false,
-    offline: false,
-    hybrid: false,
-    tags: "",
-  });
   const [errors, setErrors] = useState<{
     dateRange?: string;
     deadline?: string;
     mode?: string;
   }>({});
-
   const rangeRef = useRef<HTMLDivElement>(null);
   const deadlineRef = useRef<HTMLDivElement>(null);
 
-  // 바깥 클릭 시 피커 닫기
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (rangeRef.current && !rangeRef.current.contains(e.target as Node))
@@ -737,19 +698,21 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
     ? formatDate(deadline.year, deadline.month, deadline.day)
     : "";
 
-  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: checked }));
-    if (errors.mode) setErrors((prev) => ({ ...prev, mode: "" }));
-  };
+  const meetingOptions: {
+    label: string;
+    value: "ONLINE" | "OFFLINE" | "HYBRID";
+  }[] = [
+    { label: "온라인", value: "ONLINE" },
+    { label: "오프라인", value: "OFFLINE" },
+    { label: "온/오프라인", value: "HYBRID" },
+  ];
 
   const handleSubmit = () => {
     const newErrors: typeof errors = {};
     if (!startDate || !endDate)
       newErrors.dateRange = "활동 기간은 필수 항목입니다.";
     if (!deadline) newErrors.deadline = "모집 마감일은 필수 항목입니다.";
-    if (!form.online && !form.offline && !form.hybrid)
-      newErrors.mode = "참여 방식을 하나 이상 선택해 주세요.";
+    if (!meetingType) newErrors.mode = "참여 방식을 선택해 주세요.";
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -765,7 +728,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
       </div>
       <div className="step-body">
         <div className="form-grid">
-          {/* 활동 기간 */}
           <div
             className="form-field"
             ref={rangeRef}
@@ -783,10 +745,8 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
                 setShowDeadlinePicker(false);
               }}
             />
-            {errors.dateRange ? (
+            {errors.dateRange && (
               <span className="form-error">{errors.dateRange}</span>
-            ) : (
-              <span className="form-hint">시작일 선택 후 종료일 선택</span>
             )}
             {showRangePicker && (
               <div className="picker-dropdown">
@@ -794,19 +754,17 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
                   startDate={startDate}
                   endDate={endDate}
                   onChangeStart={(d) => {
-                    setStartDate(d);
-                    setErrors((prev) => ({ ...prev, dateRange: "" }));
+                    onChangeStartDate(d);
+                    setErrors((p) => ({ ...p, dateRange: "" }));
                   }}
                   onChangeEnd={(d) => {
-                    setEndDate(d);
+                    onChangeEndDate(d);
                     setShowRangePicker(false);
                   }}
                 />
               </div>
             )}
           </div>
-
-          {/* 모집 마감일 */}
           <div
             className="form-field"
             ref={deadlineRef}
@@ -824,71 +782,48 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
                 setShowRangePicker(false);
               }}
             />
-            {errors.deadline ? (
+            {errors.deadline && (
               <span className="form-error">{errors.deadline}</span>
-            ) : (
-              <span className="form-hint">YYYY/MM/DD</span>
             )}
             {showDeadlinePicker && (
               <div className="picker-dropdown">
                 <SingleDatePicker
                   value={deadline}
                   onChange={(d) => {
-                    setDeadline(d);
+                    onChangeDeadline(d);
                     setShowDeadlinePicker(false);
-                    setErrors((prev) => ({ ...prev, deadline: "" }));
+                    setErrors((p) => ({ ...p, deadline: "" }));
                   }}
                 />
               </div>
             )}
           </div>
-
-          {/* 온라인 */}
           <div className="form-field">
             <label className="form-label">
-              온라인 <span className="form-required">*</span>
+              참여 방식 <span className="form-required">*</span>
             </label>
-            <label className="toggle-chip">
-              <input
-                type="checkbox"
-                name="online"
-                checked={form.online}
-                onChange={handleToggle}
-              />
-              <span className="toggle-chip__track">
-                {form.online ? "선택됨" : "선택 가능"}
-              </span>
-            </label>
+            <div style={{ display: "flex", gap: "8px" }}>
+              {meetingOptions.map((opt) => (
+                <button
+                  key={opt.value}
+                  className={`activity-btn ${meetingType === opt.value ? "activity-btn--selected" : ""}`}
+                  onClick={() => {
+                    onChangeMeetingType(opt.value);
+                    setErrors((p) => ({ ...p, mode: "" }));
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            {errors.mode && <span className="form-error">{errors.mode}</span>}
           </div>
-
-          {/* 오프라인 */}
-          <div className="form-field">
-            <label className="form-label">
-              오프라인 <span className="form-required">*</span>
-            </label>
-            <label className="toggle-chip">
-              <input
-                type="checkbox"
-                name="offline"
-                checked={form.offline}
-                onChange={handleToggle}
-              />
-              <span className="toggle-chip__track">
-                {form.offline ? "선택됨" : "선택 가능"}
-              </span>
-            </label>
-          </div>
-
-          {/* 태그 */}
           <div className="form-field">
             <label className="form-label">태그</label>
             <input
               className="form-input"
-              name="tags"
-              value={form.tags}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, tags: e.target.value }))
-              }
+              value={tags}
+              onChange={(e) => onChangeTags(e.target.value)}
               placeholder="예: 웹, 프론트엔드, 머신러닝"
             />
           </div>
@@ -904,8 +839,9 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
         <button
           className="btn btn--primary"
           onClick={handleSubmit}
+          disabled={isLoading}
         >
-          등록 완료
+          {isLoading ? "등록 중..." : "등록 완료"}
         </button>
       </div>
     </section>
@@ -924,20 +860,105 @@ const steps = [
 
 export const ProjectCreatePage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<FormData>({
+    activityType: "",
+    title: "",
+    description: "",
+    projectName: "",
+    projectUrl: "",
+    startDate: null,
+    endDate: null,
+    deadline: null,
+    meetingType: "",
+    tags: "",
+    roles: [
+      { name: "개발자", count: 0 },
+      { name: "디자이너", count: 0 },
+      { name: "기획자", count: 0 },
+    ],
+  });
 
   const goNext = () => setCurrentStep((s) => Math.min(s + 1, 4));
   const goPrev = () => {
     if (currentStep === 1) navigate(-1);
     else setCurrentStep((s) => s - 1);
   };
-  const handleSubmit = () => navigate(ROUTES.HOME);
+
+  const handleSubmit = async () => {
+    const {
+      activityType,
+      title,
+      description,
+      projectName,
+      projectUrl,
+      startDate,
+      endDate,
+      deadline,
+      meetingType,
+      tags,
+      roles,
+    } = formData;
+
+    const apiRoles = roles
+      .filter((r) => r.count > 0)
+      .map((r) => ({ roleId: 0, roleName: r.name, recruitCount: r.count }));
+
+    setIsLoading(true);
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${API_BASE_URL}/api/projects`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          activityType,
+          title,
+          description,
+          projectName,
+          projectUrl,
+          startDate: startDate
+            ? toApiDate(startDate.year, startDate.month, startDate.day)
+            : "",
+          endDate: endDate
+            ? toApiDate(endDate.year, endDate.month, endDate.day)
+            : "",
+          deadline: deadline
+            ? toApiDate(deadline.year, deadline.month, deadline.day)
+            : "",
+          meetingType,
+          tags,
+          roles: apiRoles,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.isSuccess) {
+        window.alert(data.message || "프로젝트 등록에 실패했습니다.");
+        return;
+      }
+
+      window.alert("프로젝트가 등록되었습니다!");
+      navigate(ROUTES.PROJECTS);
+    } catch {
+      window.alert("서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
         return (
           <Step1ActivityType
+            value={formData.activityType}
+            onChange={(v) => setFormData((f) => ({ ...f, activityType: v }))}
             onNext={goNext}
             onPrev={goPrev}
           />
@@ -945,6 +966,13 @@ export const ProjectCreatePage: React.FC = () => {
       case 2:
         return (
           <Step2BasicInfo
+            value={{
+              title: formData.title,
+              description: formData.description,
+              projectName: formData.projectName,
+              projectUrl: formData.projectUrl,
+            }}
+            onChange={(v) => setFormData((f) => ({ ...f, ...v }))}
             onNext={goNext}
             onPrev={goPrev}
           />
@@ -952,6 +980,8 @@ export const ProjectCreatePage: React.FC = () => {
       case 3:
         return (
           <Step3Roles
+            value={formData.roles}
+            onChange={(v) => setFormData((f) => ({ ...f, roles: v }))}
             onNext={goNext}
             onPrev={goPrev}
           />
@@ -959,8 +989,25 @@ export const ProjectCreatePage: React.FC = () => {
       case 4:
         return (
           <Step4Detail
+            startDate={formData.startDate}
+            endDate={formData.endDate}
+            deadline={formData.deadline}
+            meetingType={formData.meetingType}
+            tags={formData.tags}
+            onChangeStartDate={(d) =>
+              setFormData((f) => ({ ...f, startDate: d }))
+            }
+            onChangeEndDate={(d) => setFormData((f) => ({ ...f, endDate: d }))}
+            onChangeDeadline={(d) =>
+              setFormData((f) => ({ ...f, deadline: d }))
+            }
+            onChangeMeetingType={(v) =>
+              setFormData((f) => ({ ...f, meetingType: v }))
+            }
+            onChangeTags={(v) => setFormData((f) => ({ ...f, tags: v }))}
             onPrev={goPrev}
             onSubmit={handleSubmit}
+            isLoading={isLoading}
           />
         );
       default:
@@ -970,7 +1017,6 @@ export const ProjectCreatePage: React.FC = () => {
 
   return (
     <div className="pc-wrap">
-      {/* 상단 헤더 영역 */}
       <div className="pc-header">
         <h1 className="pc-header__title">프로젝트 등록</h1>
         <p className="pc-header__subtitle">
@@ -989,8 +1035,6 @@ export const ProjectCreatePage: React.FC = () => {
           ))}
         </div>
       </div>
-
-      {/* 단계별 콘텐츠 */}
       <div className="pc-content">{renderStep()}</div>
     </div>
   );
