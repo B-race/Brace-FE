@@ -9,8 +9,6 @@ interface NotificationItemProps {
 
 const formatNotificationDate = (createdAt: string) =>
   new Intl.DateTimeFormat("ko-KR", {
-    month: "short",
-    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   }).format(new Date(createdAt));
@@ -23,14 +21,9 @@ export const NotificationItem = ({
 
   return (
     <li className={isUnread ? "notification-item unread" : "notification-item"}>
-      <div className="notification-item-main">
-        <div className="notification-item-top">
-          <NotificationTypeBadge type={notification.type} />
-          <time dateTime={notification.createdAt}>
-            {formatNotificationDate(notification.createdAt)}
-          </time>
-        </div>
+      <NotificationTypeBadge type={notification.type} />
 
+      <div className="notification-item-main">
         <div className="notification-item-content">
           <div className="notification-title-row">
             {isUnread && (
@@ -41,15 +34,32 @@ export const NotificationItem = ({
             )}
             <h2>{notification.title}</h2>
           </div>
-          <p>{notification.message}</p>
+          <p>
+            {notification.projectTitle && (
+              <span className="notification-project">
+                “{notification.projectTitle}”
+              </span>
+            )}
+            {notification.message}
+          </p>
+          <Link
+            className="notification-action"
+            to={notification.link.href}
+            onClick={() => {
+              if (isUnread) {
+                onMarkAsRead(notification.id);
+              }
+            }}
+          >
+            {notification.link.label}
+          </Link>
         </div>
-
-        {notification.projectTitle && (
-          <p className="notification-project">{notification.projectTitle}</p>
-        )}
       </div>
 
       <div className="notification-side">
+        <time dateTime={notification.createdAt}>
+          {formatNotificationDate(notification.createdAt)}
+        </time>
         <span
           className={
             isUnread ? "notification-status unread" : "notification-status"
@@ -57,20 +67,9 @@ export const NotificationItem = ({
         >
           {isUnread ? "읽지 않음" : "읽음"}
         </span>
-        <Link
-          className="notification-action"
-          to={notification.link.href}
-          onClick={() => {
-            if (isUnread) {
-              onMarkAsRead(notification.id);
-            }
-          }}
-        >
-          {notification.link.label}
-        </Link>
         {isUnread ? (
           <button
-            className="notification-action"
+            className="notification-read-button"
             type="button"
             onClick={() => onMarkAsRead(notification.id)}
           >

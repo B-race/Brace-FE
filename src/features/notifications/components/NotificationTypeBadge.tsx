@@ -12,8 +12,20 @@ const notificationTypeLabels: Record<NotificationType, string> = {
   recruitmentCompleted: "모집 완료",
 };
 
+const notificationTypeIcons: Record<NotificationType, string> = {
+  newApplicant: "NEW",
+  applicationAccepted: "✓",
+  applicationRejected: "!",
+  projectCreated: "+",
+  recruitmentCompleted: "⌛",
+};
+
 export const NotificationTypeBadge = ({ type }: NotificationTypeBadgeProps) => (
-  <span className={`notification-type ${type}`}>
-    {notificationTypeLabels[type]}
+  <span
+    aria-label={notificationTypeLabels[type]}
+    className={`notification-type ${type}`}
+    role="img"
+  >
+    {notificationTypeIcons[type]}
   </span>
 );
