@@ -549,6 +549,7 @@
 .applicant-project-card {
   appearance: none;
   display: grid;
+  justify-items: stretch;
   overflow: hidden;
   padding: 0;
   border: 1px solid #e4e7ec;
@@ -615,8 +616,10 @@
 
 .applicant-project-card-body {
   display: grid;
+  justify-items: start;
   gap: 6px;
   padding: 16px;
+  text-align: left;
 }
 
 .applicant-project-title {
@@ -1632,6 +1635,26 @@
   text-decoration: none;
 }
 
+.mypage-list-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.mypage-list-action--secondary {
+  border: 1px solid #111827;
+  background: #ffffff;
+  color: #111827;
+}
+
+.mypage-list-action:hover,
+.mypage-list-action:focus-visible {
+  background: #4f46e5;
+  color: #ffffff;
+  outline: none;
+}
+
 .mypage-state-panel {
   display: grid;
   justify-items: center;
@@ -1675,7 +1698,7 @@
 
 .mypage-project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 40px;
 }
 
@@ -1690,16 +1713,17 @@
   text-decoration: none;
 }
 
+.mypage-project-card-main {
+  display: grid;
+  color: inherit;
+  text-decoration: none;
+}
+
 .mypage-project-card:hover,
 .mypage-project-card:focus-visible {
   border-color: #a5b4fc;
   box-shadow: 0 12px 28px rgba(79, 70, 229, 0.1);
   outline: none;
-}
-
-.mypage-project-card.placeholder {
-  border-style: dashed;
-  color: #4b5563;
 }
 
 .mypage-project-card.skeleton {
@@ -1850,6 +1874,7 @@
 
 @media (max-width: 1180px) {
   .mypage-project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px;
   }
 
