@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { ApplicantManagePage } from "../pages/applicants/ApplicantManagePage";
 import { LoginPage } from "../pages/auth/LoginPage";
+import { NaverCallbackPage } from "../pages/auth/NaverCallbackPage";
 import { SignupPage } from "../pages/auth/SignupPage";
 import { LandingPage } from "../pages/landing/LandingPage";
 import { BookmarksPage } from "../pages/mypage/BookmarksPage";
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.HOME, element: <LandingPage /> },
       { path: ROUTES.LOGIN, element: <LoginPage /> },
       { path: ROUTES.SIGNUP, element: <SignupPage /> },
+      { path: ROUTES.NAVER_CALLBACK, element: <NaverCallbackPage /> },
       { path: ROUTES.PROFILE_SETUP, element: <ProfileSetupPage /> },
       { path: ROUTES.PROJECTS, element: <ProjectFeedPage /> },
       { path: ROUTES.PROJECT_REGISTER, element: <ProjectsRegister /> },
