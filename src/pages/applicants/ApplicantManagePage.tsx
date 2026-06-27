@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 import {
   getManagedApplicantsByProjectId,
+  mockManagedApplicants,
   mockApplicantProjects,
 } from "../../features/applicants/api/applicant.mock";
 import { ApplicantDetailPanel } from "../../features/applicants/components/ApplicantDetailPanel";
 import { ApplicantList } from "../../features/applicants/components/ApplicantList";
 import { ApplicantProjectList } from "../../features/applicants/components/ApplicantProjectList";
+import type { ApplicantReviewStatus } from "../../features/applicants/types/applicant";
 
 const initialProjectId = mockApplicantProjects[0]?.id ?? 0;
 const initialApplicantId =
@@ -16,12 +18,18 @@ export const ApplicantManagePage = () => {
   const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
     initialApplicantId,
   );
+  const [managedApplicants, setManagedApplicants] = useState(
+    mockManagedApplicants,
+  );
   const selectedProject = mockApplicantProjects.find(
     (project) => project.id === selectedProjectId,
   );
   const applicants = useMemo(
-    () => getManagedApplicantsByProjectId(selectedProjectId),
-    [selectedProjectId],
+    () =>
+      managedApplicants.filter(
+        (applicant) => applicant.projectId === selectedProjectId,
+      ),
+    [managedApplicants, selectedProjectId],
   );
   const selectedApplicant = useMemo(
     () =>
@@ -34,6 +42,17 @@ export const ApplicantManagePage = () => {
     setSelectedProjectId(projectId);
     setSelectedApplicantId(
       getManagedApplicantsByProjectId(projectId)[0]?.id ?? null,
+    );
+  };
+
+  const handleReviewApplicant = (
+    applicantId: number,
+    status: ApplicantReviewStatus,
+  ) => {
+    setManagedApplicants((currentApplicants) =>
+      currentApplicants.map((applicant) =>
+        applicant.id === applicantId ? { ...applicant, status } : applicant,
+      ),
     );
   };
 
@@ -66,7 +85,10 @@ export const ApplicantManagePage = () => {
           />
         </div>
 
-        <ApplicantDetailPanel applicant={selectedApplicant} />
+        <ApplicantDetailPanel
+          applicant={selectedApplicant}
+          onReview={handleReviewApplicant}
+        />
       </div>
     </section>
   );
