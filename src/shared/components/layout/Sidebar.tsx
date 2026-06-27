@@ -46,13 +46,18 @@ const LogoutModal = ({
   </div>
 );
 
-export const Sidebar = () => {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const [showLogout, setShowLogout] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setShowLogout(false);
+    onNavigate?.();
     localStorage.removeItem("accessToken");
     navigate(ROUTES.LOGIN);
   };
@@ -68,6 +73,7 @@ export const Sidebar = () => {
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_PROJECTS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">👤</span>내 프로젝트
           </NavLink>
@@ -78,6 +84,7 @@ export const Sidebar = () => {
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_APPLICATIONS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">📋</span>
             지원 현황
@@ -89,6 +96,7 @@ export const Sidebar = () => {
                 : "app-sidebar__item"
             }
             to={ROUTES.MY_BOOKMARKS}
+            onClick={onNavigate}
           >
             <span className="app-sidebar__icon">🔖</span>
             북마크

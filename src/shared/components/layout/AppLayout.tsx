@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import logoImage from "../../../assets/images/brace-logo.png";
 import "../../../styles/appLayout.css";
 import { ROUTES } from "../../constants/routes";
+import { Sidebar } from "./Sidebar";
 
 const navigationItems = [
   { label: "Value", to: ROUTES.HOME },
@@ -13,20 +14,51 @@ const navigationItems = [
 
 export const AppLayout = () => {
   const [search, setSearch] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "sidebar-drawer-open",
+      isSidebarOpen,
+    );
+    document.body.classList.toggle("sidebar-drawer-open", isSidebarOpen);
+
+    return () => {
+      document.documentElement.classList.remove("sidebar-drawer-open");
+      document.body.classList.remove("sidebar-drawer-open");
+    };
+  }, [isSidebarOpen]);
 
   return (
     <div className="app-shell">
       <header className="app-header">
-        <NavLink
-          className="app-logo"
-          to={ROUTES.HOME}
-          aria-label="Brace 홈으로 이동"
-        >
-          <img
-            src={logoImage}
-            alt="Brace"
-          />
-        </NavLink>
+        <div className="app-header-left">
+          <button
+            className="app-menu-button"
+            type="button"
+            aria-label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
+            aria-expanded={isSidebarOpen}
+            aria-controls="global-sidebar-drawer"
+            onClick={() =>
+              setIsSidebarOpen((currentIsSidebarOpen) => !currentIsSidebarOpen)
+            }
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <NavLink
+            className="app-logo"
+            to={ROUTES.HOME}
+            aria-label="Brace 홈으로 이동"
+          >
+            <img
+              src={logoImage}
+              alt="Brace"
+            />
+          </NavLink>
+        </div>
 
         <div className="app-search">
           <input
@@ -82,6 +114,25 @@ export const AppLayout = () => {
           ))}
         </nav>
       </header>
+
+      {isSidebarOpen && (
+        <div
+          className="sidebar-drawer-backdrop"
+          role="presentation"
+          onClick={() => setIsSidebarOpen(false)}
+        >
+          <div
+            className="sidebar-drawer-panel"
+            id="global-sidebar-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="사이드바 메뉴"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <Sidebar onNavigate={() => setIsSidebarOpen(false)} />
+          </div>
+        </div>
+      )}
 
       <main className="app-main">
         <Outlet />
