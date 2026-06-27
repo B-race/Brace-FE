@@ -9,6 +9,7 @@ import { MyPage } from "../pages/mypage/MyPage";
 import { MyProjectsPage } from "../pages/mypage/MyProjectsPage";
 import { ProfileEditPage } from "../pages/mypage/ProfileEditPage";
 import { NotFoundPage } from "../pages/not-found/NotFoundPage";
+import { NotificationDetailPage } from "../pages/notifications/NotificationDetailPage";
 import { NotificationsPage } from "../pages/notifications/NotificationsPage";
 import { ProfileSetupPage } from "../pages/onboarding/ProfileSetupPage";
 import { ProjectCreateCompletePage } from "../pages/projects/ProjectCreateCompletePage";
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.NOTIFICATIONS,
         element: <NotificationsPage />,
+      },
+      {
+        path: ROUTES.NOTIFICATION_DETAIL,
+        element: <NotificationDetailPage />,
       },
       {
         path: ROUTES.MYPAGE,

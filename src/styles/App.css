@@ -299,9 +299,11 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 800;
+  text-decoration: none;
 }
 
-.notification-action:hover {
+.notification-action:hover,
+.notification-action:focus-visible {
   border-color: #a5b4fc;
   color: #3730a3;
 }
