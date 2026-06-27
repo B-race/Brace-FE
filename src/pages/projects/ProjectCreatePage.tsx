@@ -343,7 +343,7 @@ const Step1ActivityType: React.FC<{
       <div className="step-body">
         <div className="activity-grid">
           <div className="activity-item">
-            <span className="activity-label">🏆 공모전 참가</span>
+            <span className="activity-label">공모전 참가</span>
             <button
               className={`activity-btn ${selected === "contest" ? "activity-btn--selected" : ""}`}
               onClick={() => {
@@ -351,12 +351,11 @@ const Step1ActivityType: React.FC<{
                 setError("");
               }}
             >
-              {selected === "contest" ? "선택됨(예: 기본)" : "선택 가능"}
+              {selected === "contest" ? "선택됨" : "선택 가능"}
             </button>
-            <span className="activity-hint">대회 참여를 위한 모집</span>
           </div>
           <div className="activity-item">
-            <span className="activity-label">🔧 개인 프로젝트</span>
+            <span className="activity-label">개인 프로젝트</span>
             <button
               className={`activity-btn ${selected === "personal" ? "activity-btn--selected" : ""}`}
               onClick={() => {
@@ -364,9 +363,8 @@ const Step1ActivityType: React.FC<{
                 setError("");
               }}
             >
-              {selected === "personal" ? "선택됨(예: 기본)" : "선택 가능"}
+              {selected === "personal" ? "선택됨" : "선택 가능"}
             </button>
-            <span className="activity-hint">자율 프로젝트 팀 모집</span>
           </div>
         </div>
         {error && <p className="form-error">{error}</p>}
@@ -450,7 +448,7 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
             {errors.title ? (
               <span className="form-error">{errors.title}</span>
             ) : (
-              <span className="form-hint">짧고 구체적으로</span>
+              <span className="form-hint"></span>
             )}
           </div>
           <div className="form-field">
@@ -467,7 +465,7 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
             {errors.description ? (
               <span className="form-error">{errors.description}</span>
             ) : (
-              <span className="form-hint">여기에 textarea</span>
+              <span className="form-hint"></span>
             )}
           </div>
           <div className="form-field">
@@ -479,7 +477,6 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
               onChange={handleChange}
               placeholder="해당 시 기재 (없으면 공란)"
             />
-            <span className="form-hint">선택 입력</span>
           </div>
           <div className="form-field">
             <label className="form-label">공모전 링크</label>
@@ -490,7 +487,6 @@ const Step2BasicInfo: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
               onChange={handleChange}
               placeholder="공식 페이지 URL"
             />
-            <span className="form-hint">선택 입력</span>
           </div>
         </div>
       </div>
@@ -547,7 +543,6 @@ const RoleField: React.FC<RoleFieldProps> = ({
         +
       </button>
     </div>
-    <span className="form-hint">+ / - 카운터</span>
   </div>
 );
 
@@ -667,9 +662,6 @@ const Step3Roles: React.FC<{ onNext: () => void; onPrev: () => void }> = ({
                 추가
               </button>
             </div>
-            <span className="form-hint">
-              역할명 입력 후 Enter 또는 추가 버튼
-            </span>
           </div>
         </div>
         {error && <p className="form-error">{error}</p>}
@@ -867,7 +859,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
                 {form.online ? "선택됨" : "선택 가능"}
               </span>
             </label>
-            <span className="form-hint">토글 칩</span>
           </div>
 
           {/* 오프라인 */}
@@ -886,30 +877,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
                 {form.offline ? "선택됨" : "선택 가능"}
               </span>
             </label>
-            <span className="form-hint">토글 칩</span>
-          </div>
-
-          {/* 혼합 */}
-          <div className="form-field">
-            <label className="form-label">
-              혼합 <span className="form-required">*</span>
-            </label>
-            <label className="toggle-chip">
-              <input
-                type="checkbox"
-                name="hybrid"
-                checked={form.hybrid}
-                onChange={handleToggle}
-              />
-              <span className="toggle-chip__track">
-                {form.hybrid ? "선택됨" : "선택 가능"}
-              </span>
-            </label>
-            {errors.mode ? (
-              <span className="form-error">{errors.mode}</span>
-            ) : (
-              <span className="form-hint">토글 칩</span>
-            )}
           </div>
 
           {/* 태그 */}
@@ -924,7 +891,6 @@ const Step4Detail: React.FC<{ onPrev: () => void; onSubmit: () => void }> = ({
               }
               placeholder="예: 웹, 프론트엔드, 머신러닝"
             />
-            <span className="form-hint">태그 입력 필드</span>
           </div>
         </div>
       </div>
