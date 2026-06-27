@@ -28,7 +28,12 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
 
         <div className="notification-item-content">
           <div className="notification-title-row">
-            {isUnread && <span className="notification-unread-dot" />}
+            {isUnread && (
+              <span
+                className="notification-unread-dot"
+                aria-hidden="true"
+              />
+            )}
             <h2>{notification.title}</h2>
           </div>
           <p>{notification.message}</p>
