@@ -1,60 +1,27 @@
-import { useMemo, useState } from "react";
-import {
-  getManagedApplicantsByProjectId,
-  mockManagedApplicants,
-  mockApplicantProjects,
-} from "../../features/applicants/api/applicant.mock";
 import { ApplicantDetailPanel } from "../../features/applicants/components/ApplicantDetailPanel";
 import { ApplicantList } from "../../features/applicants/components/ApplicantList";
 import { ApplicantProjectList } from "../../features/applicants/components/ApplicantProjectList";
-import type { ApplicantReviewStatus } from "../../features/applicants/types/applicant";
-
-const initialProjectId = mockApplicantProjects[0]?.id ?? 0;
-const initialApplicantId =
-  getManagedApplicantsByProjectId(initialProjectId)[0]?.id ?? null;
+import { ApplicantSkeletonPanel } from "../../features/applicants/components/ApplicantSkeletonPanel";
+import { ApplicantStatePanel } from "../../features/applicants/components/ApplicantStatePanel";
+import { useApplicantManagement } from "../../features/applicants/hooks/useApplicantManagement";
 
 export const ApplicantManagePage = () => {
-  const [selectedProjectId, setSelectedProjectId] = useState(initialProjectId);
-  const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
-    initialApplicantId,
-  );
-  const [managedApplicants, setManagedApplicants] = useState(
-    mockManagedApplicants,
-  );
-  const selectedProject = mockApplicantProjects.find(
-    (project) => project.id === selectedProjectId,
-  );
-  const applicants = useMemo(
-    () =>
-      managedApplicants.filter(
-        (applicant) => applicant.projectId === selectedProjectId,
-      ),
-    [managedApplicants, selectedProjectId],
-  );
-  const selectedApplicant = useMemo(
-    () =>
-      applicants.find((applicant) => applicant.id === selectedApplicantId) ??
-      null,
-    [applicants, selectedApplicantId],
-  );
-
-  const handleSelectProject = (projectId: number) => {
-    setSelectedProjectId(projectId);
-    setSelectedApplicantId(
-      getManagedApplicantsByProjectId(projectId)[0]?.id ?? null,
-    );
-  };
-
-  const handleReviewApplicant = (
-    applicantId: number,
-    status: ApplicantReviewStatus,
-  ) => {
-    setManagedApplicants((currentApplicants) =>
-      currentApplicants.map((applicant) =>
-        applicant.id === applicantId ? { ...applicant, status } : applicant,
-      ),
-    );
-  };
+  const {
+    projects,
+    applicants,
+    selectedProject,
+    selectedProjectId,
+    selectedApplicant,
+    selectedApplicantId,
+    isLoading,
+    isError,
+    errorMessage,
+    selectProject,
+    selectApplicant,
+    reviewApplicant,
+    refetch,
+  } = useApplicantManagement();
+  const hasProjects = projects.length > 0;
 
   return (
     <section className="applicant-manage-page">
@@ -63,33 +30,55 @@ export const ApplicantManagePage = () => {
         <p>제안자가 확인하고 응답할 수 있습니다.</p>
       </div>
 
-      <ApplicantProjectList
-        projects={mockApplicantProjects}
-        selectedProjectId={selectedProjectId}
-        onSelectProject={handleSelectProject}
-      />
+      {isLoading && <ApplicantSkeletonPanel />}
 
-      <div className="applicant-management-section">
-        <div className="applicant-list-panel">
-          <div className="applicant-section-heading">
-            <p>지원자 목록</p>
-            <h2>{selectedProject?.title ?? "프로젝트"} 지원자</h2>
-            <span>
-              프로필, 역할, 기술태그, 메시지 프리뷰를 확인할 수 있습니다.
-            </span>
-          </div>
-          <ApplicantList
-            applicants={applicants}
-            selectedApplicantId={selectedApplicantId}
-            onSelectApplicant={setSelectedApplicantId}
-          />
-        </div>
-
-        <ApplicantDetailPanel
-          applicant={selectedApplicant}
-          onReview={handleReviewApplicant}
+      {isError && (
+        <ApplicantStatePanel
+          title="지원자 정보를 불러오지 못했어요"
+          description={errorMessage}
+          actionLabel="다시 시도"
+          onAction={refetch}
         />
-      </div>
+      )}
+
+      {!isLoading && !isError && !hasProjects && (
+        <ApplicantStatePanel
+          title="관리할 프로젝트가 없어요"
+          description="프로젝트를 등록하면 지원자 목록과 검토 상태가 이곳에 표시됩니다."
+        />
+      )}
+
+      {!isLoading && !isError && hasProjects && (
+        <>
+          <ApplicantProjectList
+            projects={projects}
+            selectedProjectId={selectedProjectId ?? 0}
+            onSelectProject={selectProject}
+          />
+
+          <div className="applicant-management-section">
+            <div className="applicant-list-panel">
+              <div className="applicant-section-heading">
+                <p>지원자 목록</p>
+                <h2>{selectedProject?.title ?? "프로젝트"} 지원자</h2>
+                <span>
+                  프로필, 역할, 기술태그, 메시지 프리뷰를 확인할 수 있습니다.
+                </span>
+              </div>
+              <ApplicantList
+                applicants={applicants}
+                selectedApplicantId={selectedApplicantId}
+                onSelectApplicant={selectApplicant}
+              />
+            </div>
+
+            <ApplicantDetailPanel
+              applicant={selectedApplicant}
+              onReview={reviewApplicant}
+            />
+          </div>
+        </>
+      )}
     </section>
   );
 };
