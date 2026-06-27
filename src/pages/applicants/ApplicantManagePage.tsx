@@ -3,15 +3,18 @@ import {
   getManagedApplicantsByProjectId,
   mockApplicantProjects,
 } from "../../features/applicants/api/applicant.mock";
+import { ApplicantDetailPanel } from "../../features/applicants/components/ApplicantDetailPanel";
 import { ApplicantList } from "../../features/applicants/components/ApplicantList";
 import { ApplicantProjectList } from "../../features/applicants/components/ApplicantProjectList";
 
 const initialProjectId = mockApplicantProjects[0]?.id ?? 0;
+const initialApplicantId =
+  getManagedApplicantsByProjectId(initialProjectId)[0]?.id ?? null;
 
 export const ApplicantManagePage = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(initialProjectId);
   const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(
-    null,
+    initialApplicantId,
   );
   const selectedProject = mockApplicantProjects.find(
     (project) => project.id === selectedProjectId,
@@ -20,10 +23,18 @@ export const ApplicantManagePage = () => {
     () => getManagedApplicantsByProjectId(selectedProjectId),
     [selectedProjectId],
   );
+  const selectedApplicant = useMemo(
+    () =>
+      applicants.find((applicant) => applicant.id === selectedApplicantId) ??
+      null,
+    [applicants, selectedApplicantId],
+  );
 
   const handleSelectProject = (projectId: number) => {
     setSelectedProjectId(projectId);
-    setSelectedApplicantId(null);
+    setSelectedApplicantId(
+      getManagedApplicantsByProjectId(projectId)[0]?.id ?? null,
+    );
   };
 
   return (
@@ -55,13 +66,7 @@ export const ApplicantManagePage = () => {
           />
         </div>
 
-        <div
-          className="applicant-detail-placeholder"
-          aria-live="polite"
-        >
-          <strong>지원자 상세 정보</strong>
-          <p>지원자 상세 프로필과 수락/거절 액션은 다음 작업에서 연결됩니다.</p>
-        </div>
+        <ApplicantDetailPanel applicant={selectedApplicant} />
       </div>
     </section>
   );

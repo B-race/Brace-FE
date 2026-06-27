@@ -615,7 +615,8 @@
 }
 
 .applicant-list-panel,
-.applicant-detail-placeholder {
+.applicant-detail-panel,
+.applicant-detail-empty {
   display: grid;
   align-content: start;
   gap: 24px;
@@ -772,7 +773,7 @@
 }
 
 .applicant-empty,
-.applicant-detail-placeholder {
+.applicant-detail-empty {
   padding: 32px;
   border: 1px dashed #d0d5dd;
   border-radius: 8px;
@@ -781,15 +782,162 @@
 }
 
 .applicant-empty strong,
-.applicant-detail-placeholder strong {
+.applicant-detail-empty strong {
   color: #111827;
   font-size: 18px;
 }
 
 .applicant-empty p,
-.applicant-detail-placeholder p {
+.applicant-detail-empty p {
   margin: 0;
   line-height: 1.6;
+}
+
+.applicant-detail-panel {
+  padding: 28px;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.applicant-detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.applicant-detail-avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+.applicant-detail-avatar::before {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  content: "";
+}
+
+.applicant-detail-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.applicant-detail-avatar:has(img)::before {
+  display: none;
+}
+
+.applicant-detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.applicant-detail-title-row h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.applicant-detail-header p {
+  margin: 8px 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.applicant-detail-header span:not(.applicant-status) {
+  color: #98a2b3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.applicant-detail-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.applicant-detail-list > div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 24px;
+  padding: 18px 0;
+  border-top: 1px solid #e4e7ec;
+}
+
+.applicant-detail-list dt {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.applicant-detail-list dd {
+  margin: 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.applicant-detail-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.applicant-detail-skills span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.applicant-portfolio-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.applicant-portfolio-link:hover,
+.applicant-portfolio-link:focus-visible {
+  border-color: #a5b4fc;
+  color: #3730a3;
+}
+
+.applicant-muted-text {
+  color: #98a2b3;
+  font-weight: 700;
+}
+
+.applicant-detail-action-placeholder {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 @keyframes notification-skeleton-pulse {
@@ -879,5 +1027,18 @@
 
   .applicant-list-item {
     min-height: auto;
+  }
+
+  .applicant-detail-panel {
+    padding: 22px;
+  }
+
+  .applicant-detail-header {
+    flex-direction: column;
+  }
+
+  .applicant-detail-list > div {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
