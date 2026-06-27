@@ -1,13 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { MyPageLayout } from "../../features/profile/components/MyPageLayout";
 import "../../styles/projectFeed.css";
-import { ROUTES } from "../../shared/constants/routes";
-
-const projectMenus = [
-  { icon: "👤", label: "내 프로젝트" },
-  { icon: "📝", label: "지원 현황" },
-  { icon: "🔖", label: "북마크" },
-];
 
 const filters = [
   "전체",
@@ -57,45 +49,8 @@ const projects = [
 ];
 
 export const ProjectFeedPage = () => {
-  const navigate = useNavigate();
-  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
-
-  const handleLogout = () => {
-    sessionStorage.clear();
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setIsLogoutOpen(false);
-    navigate(ROUTES.LOGIN);
-  };
-
   return (
-    <div className="project-feed-page">
-      <aside
-        className="project-feed-sidebar"
-        aria-label="프로젝트 메뉴"
-      >
-        {projectMenus.map((menu) => (
-          <button
-            className="project-feed-menu disabled"
-            type="button"
-            key={menu.label}
-            disabled
-          >
-            <span>{menu.icon}</span>
-            {menu.label}
-          </button>
-        ))}
-
-        <button
-          className="project-feed-menu logout"
-          type="button"
-          onClick={() => setIsLogoutOpen(true)}
-        >
-          <span>🚪</span>
-          로그아웃
-        </button>
-      </aside>
-
+    <MyPageLayout>
       <section className="project-feed-content">
         <header className="project-feed-hero">
           <h1>Projects</h1>
@@ -146,42 +101,6 @@ export const ProjectFeedPage = () => {
           ))}
         </div>
       </section>
-
-      {isLogoutOpen && (
-        <div
-          className="project-logout-backdrop"
-          role="presentation"
-          onClick={() => setIsLogoutOpen(false)}
-        >
-          <section
-            className="project-logout-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="project-logout-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <h2 id="project-logout-title">로그아웃하시겠습니까?</h2>
-            <p>확인을 누르면 현재 로그인 상태가 종료됩니다.</p>
-
-            <div className="project-logout-actions">
-              <button
-                className="project-logout-button cancel"
-                type="button"
-                onClick={() => setIsLogoutOpen(false)}
-              >
-                취소
-              </button>
-              <button
-                className="project-logout-button confirm"
-                type="button"
-                onClick={handleLogout}
-              >
-                확인
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
-    </div>
+    </MyPageLayout>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
 const LogoutModal = ({
@@ -48,6 +48,7 @@ const LogoutModal = ({
 
 export const Sidebar = () => {
   const [showLogout, setShowLogout] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -62,7 +63,7 @@ export const Sidebar = () => {
         <nav className="app-sidebar__nav">
           <NavLink
             className={({ isActive }) =>
-              isActive
+              isActive || location.pathname === ROUTES.PROJECTS
                 ? "app-sidebar__item app-sidebar__item--active"
                 : "app-sidebar__item"
             }
