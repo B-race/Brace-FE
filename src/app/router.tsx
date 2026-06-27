@@ -15,6 +15,8 @@ import { ProjectCreateCompletePage } from "../pages/projects/ProjectCreateComple
 import { ProjectCreatePage } from "../pages/projects/ProjectCreatePage";
 import { ProjectDetailPage } from "../pages/projects/ProjectDetailPage";
 import { ProjectFeedPage } from "../pages/projects/ProjectFeedPage";
+import { ProjectApplyPage } from "../pages/projects/Projectapplypage";
+import ProjectsRegister from "../pages/projects/projectsRegister";
 import { AppLayout } from "../shared/components/layout/AppLayout";
 import { ROUTES } from "../shared/constants/routes";
 
@@ -23,70 +25,24 @@ export const router = createBrowserRouter([
     element: <AppLayout />,
     errorElement: <NotFoundPage />,
     children: [
-      {
-        path: ROUTES.HOME,
-        element: <LandingPage />,
-      },
-      {
-        path: ROUTES.LOGIN,
-        element: <LoginPage />,
-      },
-      {
-        path: ROUTES.SIGNUP,
-        element: <SignupPage />,
-      },
-      {
-        path: ROUTES.PROFILE_SETUP,
-        element: <ProfileSetupPage />,
-      },
-      {
-        path: ROUTES.PROJECTS,
-        element: <ProjectFeedPage />,
-      },
-      {
-        path: ROUTES.PROJECT_NEW,
-        element: <ProjectCreatePage />,
-      },
-      {
-        path: ROUTES.PROJECT_NEW_COMPLETE,
-        element: <ProjectCreateCompletePage />,
-      },
-      {
-        path: ROUTES.PROJECT_DETAIL,
-        element: <ProjectDetailPage />,
-      },
-      {
-        path: ROUTES.PROJECT_APPLICANTS,
-        element: <ApplicantManagePage />,
-      },
-      {
-        path: ROUTES.NOTIFICATIONS,
-        element: <NotificationsPage />,
-      },
-      {
-        path: ROUTES.MYPAGE,
-        element: <MyPage />,
-      },
-      {
-        path: ROUTES.MY_PROJECTS,
-        element: <MyProjectsPage />,
-      },
-      {
-        path: ROUTES.MY_APPLICATIONS,
-        element: <MyApplicationsPage />,
-      },
-      {
-        path: ROUTES.MY_BOOKMARKS,
-        element: <BookmarksPage />,
-      },
-      {
-        path: ROUTES.MY_PROFILE,
-        element: <ProfileEditPage />,
-      },
+      { path: ROUTES.HOME, element: <LandingPage /> },
+      { path: ROUTES.LOGIN, element: <LoginPage /> },
+      { path: ROUTES.SIGNUP, element: <SignupPage /> },
+      { path: ROUTES.PROFILE_SETUP, element: <ProfileSetupPage /> },
+      { path: ROUTES.PROJECTS, element: <ProjectFeedPage /> },
+      { path: ROUTES.PROJECT_REGISTER, element: <ProjectsRegister /> },
+      { path: ROUTES.PROJECT_NEW, element: <ProjectCreatePage /> },
+      { path: ROUTES.PROJECT_NEW_COMPLETE, element: <ProjectCreateCompletePage /> },
+      { path: ROUTES.PROJECT_DETAIL, element: <ProjectDetailPage /> },
+      { path: ROUTES.PROJECT_APPLY, element: <ProjectApplyPage /> },
+      { path: ROUTES.PROJECT_APPLICANTS, element: <ApplicantManagePage /> },
+      { path: ROUTES.NOTIFICATIONS, element: <NotificationsPage /> },
+      { path: ROUTES.MYPAGE, element: <MyPage /> },
+      { path: ROUTES.MY_PROJECTS, element: <MyProjectsPage /> },
+      { path: ROUTES.MY_APPLICATIONS, element: <MyApplicationsPage /> },
+      { path: ROUTES.MY_BOOKMARKS, element: <BookmarksPage /> },
+      { path: ROUTES.MY_PROFILE, element: <ProfileEditPage /> },
     ],
   },
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
+  { path: "*", element: <NotFoundPage /> },
 ]);

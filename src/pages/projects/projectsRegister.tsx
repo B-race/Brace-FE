@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../shared/constants/routes";
 import "../../styles/projectsRegister.css";
 
 const steps = [
-  { id: 1, label: '활동 유형' },
-  { id: 2, label: '기본 정보' },
-  { id: 3, label: '모집 역할' },
-  { id: 4, label: '세부 설정' },
+  { id: 1, label: "활동 유형" },
+  { id: 2, label: "기본 정보" },
+  { id: 3, label: "모집 역할" },
+  { id: 4, label: "세부 설정" },
 ];
 
-const ProjectRegister: React.FC = () => {
+const ProjectsRegister: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const navigate = useNavigate();
 
   return (
     <div className="page">
@@ -34,16 +37,24 @@ const ProjectRegister: React.FC = () => {
           {/* Action Buttons */}
           <div className="card__actions">
             <button className="btn btn--outline">도움말</button>
-            <button className="btn btn--primary">저장하기</button>
+            <button
+              className="btn btn--primary"
+              onClick={() => navigate(ROUTES.PROJECT_NEW)}
+            >
+              저장하기
+            </button>
           </div>
 
-          {/* Step Indicators */}
+          {/* Stepper */}
           <div className="stepper">
             {steps.map((step) => (
               <button
                 key={step.id}
-                className={`stepper__step ${currentStep === step.id ? 'stepper__step--active' : ''}`}
-                onClick={() => setCurrentStep(step.id)}
+                className={`stepper__step ${currentStep === step.id ? "stepper__step--active" : ""}`}
+                onClick={() => {
+                  setCurrentStep(step.id);
+                  navigate(ROUTES.PROJECT_NEW);
+                }}
               >
                 <span className="stepper__step-number">{step.id}</span>
                 <span className="stepper__step-label">{step.label}</span>
@@ -52,8 +63,20 @@ const ProjectRegister: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer__inner">
+          <span className="footer__copy">© Brace</span>
+          <nav className="footer__nav">
+            <a href="#" className="footer__nav-link">문의</a>
+            <a href="#" className="footer__nav-link">이용 약관</a>
+            <a href="#" className="footer__nav-link">개인정보 처리방침</a>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 };
 
-export default ProjectRegister;
+export default ProjectsRegister;

@@ -1,4 +1,6 @@
-
+/* =====================
+   Reset & Base
+   ===================== */
 *,
 *::before,
 *::after {
@@ -26,7 +28,7 @@ body {
 }
 
 /* =====================
-   GNB (Global Navigation Bar)
+   GNB
    ===================== */
 .gnb {
   position: fixed;
@@ -96,16 +98,15 @@ body {
 }
 
 /* =====================
-   Card
+   Card (상단 헤더 영역)
    ===================== */
 .card {
   width: 100%;
-  max-width: 560px;
+  max-width: 1220px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 60px 0 0;
-  gap: 0;
 }
 
 .card__title {
@@ -137,11 +138,12 @@ body {
 }
 
 .btn {
-  height: 44px;
-  padding: 0 28px;
+  height: 48px;
+  width: 200px;
+  padding: 12px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   letter-spacing: -0.01em;
   transition: opacity 0.15s ease, background-color 0.15s ease;
@@ -175,6 +177,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 40px;
 }
 
 .stepper__step {
@@ -211,4 +214,503 @@ body {
   font-weight: 400;
   color: #999999;
   letter-spacing: -0.01em;
+}
+
+/* =====================
+   Step Content
+   ===================== */
+.step-content {
+  width: 100%;
+  max-width: 1220px;
+}
+
+/* =====================
+   Step Section (공통)
+   ===================== */
+.step-section {
+  width: 100%;
+  max-width: 1220px;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+
+.step-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+  text-align: center;
+}
+
+.step-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555555;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.step-body {
+  width: 100%;
+}
+
+/* =====================
+   Step Actions (이전/다음 버튼)
+   ===================== */
+.step-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* =====================
+   Form Grid (2열 레이아웃)
+   ===================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 60px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+.form-input {
+  width: 100%;
+  max-width: 510px;
+  height: 36px;
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #111111;
+  background-color: #f5f5f5;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus {
+  border-color: #111111;
+  background-color: #ffffff;
+}
+
+.form-input::placeholder {
+  color: #aaaaaa;
+}
+
+.form-textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: -0.01em;
+}
+
+/* =====================
+   Activity Type (1단계)
+   ===================== */
+.activity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 60px;
+}
+
+.activity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+.activity-btn {
+  width: 100%;
+  height: 48px;
+  background-color: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #aaaaaa;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.activity-btn--selected {
+  background-color: #e8e8e8;
+  border-color: #111111;
+  color: #111111;
+  font-weight: 500;
+}
+
+.activity-hint {
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: -0.01em;
+}
+
+/* =====================
+   Role Counter (3단계)
+   ===================== */
+.role-counter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  background-color: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.role-counter--placeholder {
+  justify-content: center;
+}
+
+.role-counter__btn {
+  width: 44px;
+  height: 100%;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #555555;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.role-counter__btn:hover {
+  background-color: #e8e8e8;
+}
+
+.role-counter__value {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+/* =====================
+   Toggle Chip (4단계)
+   ===================== */
+.toggle-chip {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-chip input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-chip__track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 510px;
+  height: 48px;
+  background-color: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #aaaaaa;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.toggle-chip input[type="checkbox"]:checked + .toggle-chip__track {
+  background-color: #e8e8e8;
+  border-color: #111111;
+  color: #111111;
+  font-weight: 500;
+}
+
+/* =====================
+   Footer
+   ===================== */
+.footer {
+  width: 1440px;
+  max-width: 100%;
+  height: 220px;
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+}
+
+.footer__inner {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.footer__copy {
+  font-size: 14px;
+  font-weight: 400;
+  color: #111111;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.footer__nav {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.footer__nav-link {
+  font-size: 14px;
+  font-weight: 400;
+  color: #111111;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.footer__nav-link:hover {
+  opacity: 0.5;
+}
+
+/* =====================
+   필수 항목 표시
+   ===================== */
+.form-required {
+  color: #e03131;
+  margin-left: 2px;
+}
+
+/* =====================
+   에러 상태
+   ===================== */
+.form-input--error {
+  border-color: #e03131;
+  background-color: #fff5f5;
+}
+
+.form-error {
+  font-size: 12px;
+  color: #e03131;
+  letter-spacing: -0.01em;
+}
+
+/* =====================
+   역할 추가 입력
+   ===================== */
+.role-add {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.role-add__input {
+  flex: 1;
+  height: 48px;
+}
+
+.role-add__btn {
+  height: 48px;
+  padding: 0 16px;
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.role-add__btn:hover {
+  opacity: 0.8;
+}
+
+/* =====================
+   피커 공통
+   ===================== */
+.form-input--picker {
+  cursor: pointer;
+  caret-color: transparent;
+}
+
+.picker-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  padding: 16px;
+}
+
+.form-field {
+  position: relative;
+}
+
+/* =====================
+   단일 날짜 캘린더
+   ===================== */
+.cal {
+  width: 280px;
+}
+
+.cal__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cal__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.cal__nav-btn {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.cal__nav-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.cal__grid--7 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal__dow {
+  font-size: 11px;
+  color: #999999;
+  text-align: center;
+  padding: 4px 0;
+  font-weight: 500;
+}
+
+.cal__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #111111;
+  transition: background-color 0.1s ease;
+}
+
+.cal__day:hover:not(:disabled):not(.cal__day--empty) {
+  background-color: #f0f0f0;
+}
+
+.cal__day--selected {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.cal__day--disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
+.cal__day--empty {
+  cursor: default;
+}
+
+/* =====================
+   날짜 범위 캘린더
+   ===================== */
+.cal-range-wrap {
+  width: 580px;
+}
+
+.cal-range-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cal-range-months {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.cal--range {
+  width: 100%;
+}
+
+.cal__month-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.cal__day--start,
+.cal__day--end {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.cal__day--in-range {
+  background-color: #e8e8e8;
+  border-radius: 0;
+}
+
+.cal-range-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #999999;
+  text-align: center;
 }
