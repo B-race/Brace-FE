@@ -1,37 +1,109 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import "../../styles/authPage.css";
 import { ROUTES } from "../../shared/constants/routes";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID as string;
+const NAVER_REDIRECT_URI = import.meta.env.VITE_NAVER_REDIRECT_URI as string;
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const saveTokens = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+  };
+
+  const handleAuthSuccess = (result: {
+    accessToken: string;
+    refreshToken: string;
+    profileCompleted: boolean;
+  }) => {
+    saveTokens(result.accessToken, result.refreshToken);
+    navigate(result.profileCompleted ? ROUTES.PROJECTS : ROUTES.PROFILE_SETUP);
+  };
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!email || !password) {
-      window.alert("아이디와 비밀번호를 입력해 주세요.");
+      window.alert("이메일과 비밀번호를 입력해 주세요.");
       return;
     }
 
-    if (email !== "Manager" || password !== "1234") {
-      window.alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-      return;
-    }
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    sessionStorage.setItem("brace_mock_user", "Manager");
-    navigate(ROUTES.PROJECTS);
+      const data = await response.json();
+
+      if (!data.isSuccess) {
+        window.alert(data.message || "로그인에 실패했습니다.");
+        return;
+      }
+
+      handleAuthSuccess(data.result);
+    } catch {
+      window.alert("서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    window.alert("Google 로그인은 OAuth 설정 후 연결됩니다.");
+  const handleGoogleSuccess = async (credentialResponse: {
+    credential?: string;
+  }) => {
+    const idToken = credentialResponse.credential;
+    if (!idToken) {
+      window.alert("Google 인증에 실패했습니다.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/google/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const data = await response.json();
+
+      if (!data.isSuccess) {
+        window.alert(data.message || "Google 로그인에 실패했습니다.");
+        return;
+      }
+
+      handleAuthSuccess(data.result);
+    } catch {
+      window.alert("서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleNaverLogin = () => {
-    window.alert("Naver 로그인은 OAuth 설정 후 연결됩니다.");
+    const state = crypto.randomUUID(); // CSRF 방지용 랜덤 값
+    sessionStorage.setItem("naver_oauth_state", state);
+
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: NAVER_CLIENT_ID,
+      redirect_uri: NAVER_REDIRECT_URI,
+      state,
+    });
+
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?${params.toString()}`;
   };
 
   return (
@@ -55,10 +127,10 @@ export const LoginPage = () => {
           onSubmit={handleLogin}
         >
           <label>
-            아이디
+            이메일
             <input
-              type="text"
-              placeholder="아이디를 입력하세요"
+              type="email"
+              placeholder="name@example.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -77,8 +149,9 @@ export const LoginPage = () => {
           <button
             className="auth-dark-button"
             type="submit"
+            disabled={isLoading}
           >
-            로그인
+            {isLoading ? "로그인 중..." : "로그인"}
           </button>
 
           <div className="auth-divider">
@@ -88,13 +161,13 @@ export const LoginPage = () => {
           </div>
 
           <div className="auth-social-login-buttons">
-            <button
-              className="auth-social-button google-login-button"
-              type="button"
-              onClick={handleGoogleLogin}
-            >
-              Google로 계속하기
-            </button>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => window.alert("Google 로그인에 실패했습니다.")}
+              text="continue_with"
+              shape="rectangular"
+              width="100%"
+            />
 
             <button
               className="auth-social-button naver-login-button"

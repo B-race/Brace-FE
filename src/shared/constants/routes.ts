@@ -16,6 +16,7 @@ export const ROUTES = {
   MY_APPLICATIONS: "/mypage/applications",
   MY_BOOKMARKS: "/mypage/bookmarks",
   MY_PROFILE: "/mypage/profile",
+  NAVER_CALLBACK: "/auth/naver/callback",
 } as const;
 
 export const createProjectDetailPath = (projectId: number | string) =>

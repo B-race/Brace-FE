@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { mockMyPageProjectLists } from "../api/mypageProject.mock";
 import type {
   MyPageProjectCardItem,
   MyPageProjectListType,
 } from "../types/mypageProject";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const ENDPOINT_MAP: Record<MyPageProjectListType, string> = {
+  myProjects: "/users/me/projects",
+  applications: "/users/me/applications",
+  bookmarks: "/users/me/bookmarks",
+};
 
 interface UseMyPageProjectsParams {
   listType: MyPageProjectListType;
@@ -13,30 +20,52 @@ export const useMyPageProjects = ({ listType }: UseMyPageProjectsParams) => {
   const [items, setItems] = useState<MyPageProjectCardItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const accessToken = localStorage.getItem("accessToken");
+
+    fetch(`${API_BASE_URL}${ENDPOINT_MAP[listType]}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+      .then((res) => res.json())
+      .then(
+        (data: {
+          isSuccess: boolean;
+          message?: string;
+          result?: { content?: MyPageProjectCardItem[] };
+        }) => {
+          if (cancelled) return;
+          if (!data.isSuccess) {
+            setItems([]);
+            setErrorMessage(data.message ?? "목록을 불러오지 못했어요.");
+            setIsLoading(false);
+            return;
+          }
+          setItems(data.result?.content ?? []);
+          setErrorMessage("");
+          setIsLoading(false);
+        },
+      )
+      .catch(() => {
+        if (cancelled) return;
+        setItems([]);
+        setErrorMessage(
+          "프로젝트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
+        );
+        setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [listType, fetchTrigger]);
 
   const refetch = useCallback(() => {
     setIsLoading(true);
-
-    try {
-      setItems(mockMyPageProjectLists[listType]);
-      setErrorMessage("");
-    } catch {
-      setItems([]);
-      setErrorMessage(
-        "프로젝트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [listType]);
-
-  useEffect(() => {
-    const loadTimer = window.setTimeout(refetch, 0);
-
-    return () => {
-      window.clearTimeout(loadTimer);
-    };
-  }, [refetch]);
+    setFetchTrigger((n) => n + 1);
+  }, []);
 
   return {
     items,

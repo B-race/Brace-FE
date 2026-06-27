@@ -18,7 +18,7 @@ export const ProfileDashboard = ({ profile }: ProfileDashboardProps) => (
         <div className="profile-tags">
           <span>역할: {profile.role}</span>
           {profile.skills.map((skill) => (
-            <span key={skill}>기술: {skill}</span>
+            <span key={skill.skillId}>기술: {skill.skillTag}</span>
           ))}
         </div>
         <p>{profile.introduction}</p>
@@ -41,15 +41,15 @@ export const ProfileDashboard = ({ profile }: ProfileDashboardProps) => (
 
     <div className="profile-stat-grid">
       <div className="profile-stat-card">
-        <strong>{profile.stats.registeredProjects}</strong>
+        <strong>{profile.registeredProjects}</strong>
         <span>등록한 프로젝트</span>
       </div>
       <div className="profile-stat-card">
-        <strong>{profile.stats.appliedProjects}</strong>
+        <strong>{profile.appliedProjects}</strong>
         <span>지원한 프로젝트</span>
       </div>
       <div className="profile-stat-card">
-        <strong>{profile.stats.bookmarkedProjects}</strong>
+        <strong>{profile.bookmarkedProjects}</strong>
         <span>북마크 프로젝트</span>
       </div>
     </div>
@@ -72,7 +72,7 @@ export const ProfileDashboard = ({ profile }: ProfileDashboardProps) => (
           </div>
           <div>
             <dt>가입일</dt>
-            <dd>{profile.joinedAt}</dd>
+            <dd>{new Date(profile.createdAt).toLocaleDateString("ko-KR")}</dd>
           </div>
         </dl>
       </section>
@@ -81,11 +81,19 @@ export const ProfileDashboard = ({ profile }: ProfileDashboardProps) => (
         <dl>
           <div>
             <dt>깃허브</dt>
-            <dd>{profile.githubUrl.replace("https://", "")}</dd>
+            <dd>
+              {profile.githubUrl
+                ? profile.githubUrl.replace("https://", "")
+                : "-"}
+            </dd>
           </div>
           <div>
             <dt>노션</dt>
-            <dd>{profile.notionUrl.replace("https://", "")}</dd>
+            <dd>
+              {profile.notionUrl
+                ? profile.notionUrl.replace("https://", "")
+                : "-"}
+            </dd>
           </div>
         </dl>
       </section>

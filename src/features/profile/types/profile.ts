@@ -1,23 +1,21 @@
-export interface ProfileLink {
-  label: string;
-  href: string;
+export interface Skill {
+  skillId: number;
+  skillTag: string;
 }
 
 export interface MyProfile {
+  userId: number;
   name: string;
   email: string;
   role: string;
   introduction: string;
-  joinedAt: string;
-  skills: string[];
-  avatarUrl?: string;
+  profileImageUrl: string;
+  skills: Skill[];
   githubUrl: string;
   notionUrl: string;
-  portfolioUrl: string;
   extraUrl: string;
-  stats: {
-    registeredProjects: number;
-    appliedProjects: number;
-    bookmarkedProjects: number;
-  };
+  createdAt: string;
+  registeredProjects: number;
+  appliedProjects: number;
+  bookmarkedProjects: number;
 }

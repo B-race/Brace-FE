@@ -2,7 +2,9 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../shared/constants/routes";
-import type { MyProfile } from "../types/profile";
+import type { MyProfile, Skill } from "../types/profile";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type EditableProfileField =
   | "name"
@@ -10,7 +12,6 @@ type EditableProfileField =
   | "introduction"
   | "githubUrl"
   | "notionUrl"
-  | "portfolioUrl"
   | "extraUrl";
 
 interface ProfileEditFormProps {
@@ -21,6 +22,7 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   const [form, setForm] = useState(profile);
   const [skillInput, setSkillInput] = useState(profile.skills.join(", "));
   const [savedMessage, setSavedMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const updateField = (field: EditableProfileField, value: string) => {
     setForm((currentForm) => ({ ...currentForm, [field]: value }));
@@ -40,9 +42,41 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
     setSavedMessage("");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSavedMessage("프로필 수정 내용이 임시 저장됐어요.");
+    setIsLoading(true);
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${API_BASE_URL}/users/me`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          name: form.name,
+          introduction: form.introduction,
+          role: form.role,
+          skillTags: form.skills.map((s) => s.skillTag),
+          githubUrl: form.githubUrl,
+          notionUrl: form.notionUrl,
+          extraUrl: form.extraUrl,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.isSuccess) {
+        setSavedMessage(data.message || "저장에 실패했습니다.");
+        return;
+      }
+
+      setSavedMessage("프로필이 저장됐어요.");
+    } catch {
+      setSavedMessage("서버 연결에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -94,15 +128,6 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
           <small>쉼표로 구분해서 입력하세요.</small>
         </label>
         <label>
-          <span>포트폴리오 링크</span>
-          <input
-            value={form.portfolioUrl}
-            onChange={(event) =>
-              updateField("portfolioUrl", event.target.value)
-            }
-          />
-        </label>
-        <label>
           <span>GitHub</span>
           <input
             value={form.githubUrl}
@@ -138,8 +163,9 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
           <button
             className="profile-save-button"
             type="submit"
+            disabled={isLoading}
           >
-            저장하기
+            {isLoading ? "저장 중..." : "저장하기"}
           </button>
         </div>
       </form>

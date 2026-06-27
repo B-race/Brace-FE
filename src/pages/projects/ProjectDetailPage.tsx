@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
-import { createProjectApplyPath } from "../../shared/constants/routes";
-import { ROUTES } from "../../shared/constants/routes";
+import { createProjectApplyPath, ROUTES } from "../../shared/constants/routes";
 import "../../styles/projectDetail.css";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // =====================
 // 팩맨 모집률 그래프
@@ -14,17 +15,14 @@ const PacmanChart: React.FC<{ rate: number }> = ({ rate }) => {
   const cx = 80,
     cy = 80,
     r = 70;
-
   const bx1 = cx + r * Math.cos(toRad(mouthAngle / 2));
   const by1 = cy + r * Math.sin(toRad(mouthAngle / 2));
   const bx2 = cx + r * Math.cos(toRad(360 - mouthAngle / 2));
   const by2 = cy + r * Math.sin(toRad(360 - mouthAngle / 2));
-
   const sliceAngle = filled * (360 - mouthAngle);
   const ex = cx + r * Math.cos(toRad(mouthAngle / 2 + sliceAngle));
   const ey = cy + r * Math.sin(toRad(mouthAngle / 2 + sliceAngle));
   const sliceLarge = sliceAngle > 180 ? 1 : 0;
-
   return (
     <div className="pd-pacman">
       <svg
@@ -87,13 +85,12 @@ const LogoutModal: React.FC<{
 const Sidebar: React.FC = () => {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
-
   const handleLogout = () => {
     setShowLogout(false);
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     navigate(ROUTES.LOGIN);
   };
-
   return (
     <>
       <aside className="pd-sidebar">
@@ -147,14 +144,32 @@ const Sidebar: React.FC = () => {
 };
 
 // =====================
-// 모집 역할 타입 및 데이터
+// 타입
 // =====================
-type RecruitStatus = "지원 가능" | "모집 마감";
+interface RecruitmentRole {
+  roleId: number;
+  roleName: string;
+  recruitCount: number;
+  currentCount: number;
+}
 
-const MOCK_ROLES: { icon: string; label: string; status: RecruitStatus }[] = [
-  { icon: "💻", label: "개발자 1명", status: "지원 가능" },
-  { icon: "🎨", label: "디자이너 1명", status: "지원 가능" },
-];
+interface ProjectDetail {
+  projectId: number;
+  activityType: string;
+  title: string;
+  description: string;
+  projectName: string;
+  startDate: string;
+  endDate: string;
+  deadline: string;
+  meetingType: string;
+  status: string;
+  writerName: string;
+  writerRole: string;
+  writerIntroduction: string;
+  writerProfileImageUrl: string;
+  recruitmentStatus: RecruitmentRole[];
+}
 
 // =====================
 // Main: ProjectDetailPage
@@ -162,77 +177,118 @@ const MOCK_ROLES: { icon: string; label: string; status: RecruitStatus }[] = [
 export const ProjectDetailPage: React.FC = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const [hasApplied, setHasApplied] = useState(false);
+  const [project, setProject] = useState<ProjectDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      setIsLoading(true);
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await fetch(
+          `${API_BASE_URL}/api/projects/${projectId}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          },
+        );
+        const data = await response.json();
+        if (data.isSuccess) setProject(data.result);
+      } catch {
+        window.alert("프로젝트 정보를 불러오지 못했습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProject();
+  }, [projectId]);
 
   const handleApply = () => navigate(createProjectApplyPath(projectId ?? "1"));
-  const handleCancel = () => setHasApplied(false);
+
+  const totalRecruit =
+    project?.recruitmentStatus.reduce((sum, r) => sum + r.recruitCount, 0) ?? 0;
+  const currentCount =
+    project?.recruitmentStatus.reduce((sum, r) => sum + r.currentCount, 0) ?? 0;
+  const fillRate = totalRecruit > 0 ? currentCount / totalRecruit : 0;
+
+  if (isLoading)
+    return (
+      <div className="pd-layout">
+        <div className="pd-content">
+          <p>불러오는 중...</p>
+        </div>
+      </div>
+    );
+  if (!project)
+    return (
+      <div className="pd-layout">
+        <div className="pd-content">
+          <p>프로젝트를 찾을 수 없습니다.</p>
+        </div>
+      </div>
+    );
 
   return (
     <div className="pd-layout">
       <Sidebar />
-
       <div className="pd-content">
-        {/* 히어로 */}
         <section className="pd-hero">
           <h1 className="pd-hero__title">프로젝트 상세</h1>
-          <PacmanChart rate={0.6} />
+          <PacmanChart rate={fillRate} />
         </section>
 
-        {/* 공모전 카드 */}
         <section className="pd-contest">
           <div className="pd-contest__thumb" />
           <div className="pd-contest__body">
-            <h2 className="pd-contest__name">공모전 이름</h2>
-            <p className="pd-contest__desc">
-              공모전 설명...... 계속이어지는 공모전
-              설명.......................................................................................................................○○○○○○○○○○○○
-            </p>
-            <p className="pd-contest__desc">...</p>
-            <p className="pd-contest__desc">...</p>
-            <p className="pd-contest__desc">...</p>
+            <h2 className="pd-contest__name">{project.title}</h2>
+            <p className="pd-contest__desc">{project.description}</p>
+            <p className="pd-contest__desc">마감일: {project.deadline}</p>
+            <p className="pd-contest__desc">미팅 방식: {project.meetingType}</p>
           </div>
         </section>
 
-        {/* 제안자 */}
         <section className="pd-proposer">
-          <div className="pd-proposer__avatar" />
+          <div className="pd-proposer__avatar">
+            {project.writerProfileImageUrl && (
+              <img
+                src={project.writerProfileImageUrl}
+                alt={project.writerName}
+              />
+            )}
+          </div>
           <div className="pd-proposer__info">
-            <h3 className="pd-proposer__name">제안자</h3>
-            <span className="pd-proposer__chip">역할: 기획/리드</span>
-            <p className="pd-proposer__desc">
-              아바타 + 이름 + 역할 칩 + 한 줄 소개
-            </p>
+            <h3 className="pd-proposer__name">{project.writerName}</h3>
+            <span className="pd-proposer__chip">
+              역할: {project.writerRole}
+            </span>
+            <p className="pd-proposer__desc">{project.writerIntroduction}</p>
           </div>
         </section>
 
-        {/* 모집 현황 */}
         <section className="pd-recruit">
           <h2 className="pd-recruit__title">모집 현황</h2>
           <div className="pd-recruit__right">
-            {MOCK_ROLES.map((role, i) => (
-              <div
-                key={i}
-                className="pd-role"
-              >
-                <p className="pd-role__label">
-                  {role.icon} {role.label}
-                </p>
+            {project.recruitmentStatus.map((role) => {
+              const isClosed = role.currentCount >= role.recruitCount;
+              return (
                 <div
-                  className={`pd-role__badge ${role.status === "모집 마감" ? "pd-role__badge--closed" : ""}`}
+                  key={role.roleId}
+                  className="pd-role"
                 >
-                  {role.status}
+                  <p className="pd-role__label">
+                    {role.roleName} {role.recruitCount}명
+                  </p>
+                  <div
+                    className={`pd-role__badge ${isClosed ? "pd-role__badge--closed" : ""}`}
+                  >
+                    {isClosed ? "모집 마감" : "지원 가능"}
+                  </div>
+                  <p className="pd-role__hint">
+                    {role.currentCount}/{role.recruitCount}명 지원
+                  </p>
                 </div>
-                <p className="pd-role__hint">지원 버튼 대신 상태 표기</p>
-              </div>
-            ))}
-            {hasApplied ? (
-              <button
-                className="pd-apply-btn pd-apply-btn--cancel"
-                onClick={handleCancel}
-              >
-                취소하기
-              </button>
-            ) : (
+              );
+            })}
+            {project.status === "RECRUITING" && (
               <button
                 className="pd-apply-btn pd-apply-btn--apply"
                 onClick={handleApply}

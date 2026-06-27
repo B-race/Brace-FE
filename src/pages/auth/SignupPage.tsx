@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/authPage.css";
 import { ROUTES } from "../../shared/constants/routes";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const agreementContent = {
   terms: {
     title: "이용약관",
@@ -67,12 +69,13 @@ export const SignupPage = () => {
   const [agreementModal, setAgreementModal] = useState<
     "terms" | "privacy" | null
   >(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const activeAgreement = agreementModal
     ? agreementContent[agreementModal]
     : null;
 
-  const handleSignup = (event: FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!name || !email || !password || !passwordCheck) {
@@ -81,6 +84,16 @@ export const SignupPage = () => {
     }
 
     if (password !== passwordCheck) {
+      // handleSignup 안에서 password !== passwordCheck 체크 바로 아래에 추가
+
+      const passwordRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,20}$/;
+      if (!passwordRegex.test(password)) {
+        window.alert(
+          "비밀번호는 8~20자이며, 영문과 숫자를 모두 포함해야 합니다.",
+        );
+        return;
+      }
       window.alert("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -90,8 +103,31 @@ export const SignupPage = () => {
       return;
     }
 
-    window.alert("회원가입 기능은 백엔드 API 연결 후 완성됩니다.");
-    navigate(ROUTES.PROFILE_SETUP);
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!data.isSuccess) {
+        window.alert(data.message || "회원가입에 실패했습니다.");
+        return;
+      }
+
+      const { accessToken, refreshToken } = data.result;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      navigate(ROUTES.PROFILE_SETUP);
+    } catch {
+      window.alert("서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -180,9 +216,9 @@ export const SignupPage = () => {
           <button
             className="auth-dark-button"
             type="submit"
-            disabled={!agreeTerms}
+            disabled={!agreeTerms || isLoading}
           >
-            회원가입
+            {isLoading ? "가입 중..." : "회원가입"}
           </button>
 
           <p className="auth-bottom-message">
