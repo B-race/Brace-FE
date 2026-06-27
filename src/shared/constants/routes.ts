@@ -27,3 +27,6 @@ export const createProjectApplyPath = (projectId: number | string) =>
 
 export const createProjectApplicantsPath = (projectId: number | string) =>
   `/projects/${projectId}/applicants`;
+
+export const createNotificationDetailPath = (notificationId: number | string) =>
+  `/notifications/${notificationId}`;
