@@ -12,17 +12,80 @@ const roles = [
   { icon: "✏️", title: "기타", sub: "기타 역할" },
 ];
 
-const skills = [
-  { icon: "R", title: "React", sub: "Frontend" },
-  { icon: "N", title: "Next.js", sub: "Frontend" },
-  { icon: "JS", title: "JavaScript", sub: "Language" },
-  { icon: "TS", title: "TypeScript", sub: "Language" },
-  { icon: "Py", title: "Python", sub: "Language" },
-  { icon: "J", title: "Java", sub: "Language" },
-  { icon: "No", title: "Node.js", sub: "Backend" },
-  { icon: "Fi", title: "Figma", sub: "Design" },
-  { icon: "DB", title: "MySQL", sub: "Database" },
-  { icon: "AWS", title: "AWS", sub: "Cloud" },
+const skillCategories = [
+  {
+    title: "언어",
+    tags: [
+      "Java",
+      "Python",
+      "JavaScript",
+      "TypeScript",
+      "Kotlin",
+      "C++",
+      "C#",
+      "Go",
+    ],
+  },
+  {
+    title: "프론트엔드",
+    tags: ["React", "Next.js", "Vue.js", "Angular", "HTML/CSS", "Tailwind CSS"],
+  },
+  {
+    title: "백엔드",
+    tags: [
+      "Spring",
+      "Spring Boot",
+      "Django",
+      "FastAPI",
+      "Node.js",
+      "Express",
+      "NestJS",
+      "Flask",
+    ],
+  },
+  {
+    title: "모바일",
+    tags: ["Android", "iOS", "Flutter", "React Native"],
+  },
+  {
+    title: "데이터베이스",
+    tags: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Neo4j"],
+  },
+  {
+    title: "인프라",
+    tags: ["AWS", "Docker", "Kubernetes", "Nginx", "Linux", "GitHub Actions"],
+  },
+  {
+    title: "AI/데이터",
+    tags: [
+      "TensorFlow",
+      "PyTorch",
+      "Pandas",
+      "Scikit-learn",
+      "LangChain",
+      "OpenAI API",
+      "Upstage API",
+    ],
+  },
+  {
+    title: "디자인",
+    tags: ["Figma", "Photoshop", "Illustrator", "Blender", "After Effects"],
+  },
+  {
+    title: "기획/협업",
+    tags: ["Notion", "Jira", "Confluence", "Miro", "Slack", "Discord"],
+  },
+  {
+    title: "마케팅",
+    tags: [
+      "Google Analytics",
+      "Google Ads",
+      "Meta Ads",
+      "SEO",
+      "Mixpanel",
+      "Mailchimp",
+    ],
+  },
 ];
 
 const participationTypes = [
@@ -52,6 +115,9 @@ export const ProfileSetupPage = () => {
   const [step, setStep] = useState(1);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState("");
+  const [activeSkillCategory, setActiveSkillCategory] = useState(
+    skillCategories[0].title,
+  );
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState("");
   const [intro, setIntro] = useState("");
@@ -265,25 +331,71 @@ export const ProfileSetupPage = () => {
             </p>
           </div>
 
-          <div className="profile-choice-grid profile-tag-grid">
-            {skills.map((skill) => {
-              const isSelected = selectedSkills.includes(skill.title);
-
-              return (
+          <div className="profile-tag-picker">
+            <div
+              className="profile-tag-categories"
+              aria-label="기술 태그 카테고리"
+            >
+              {skillCategories.map((category) => (
                 <button
-                  className={`profile-choice-card ${
-                    isSelected ? "selected" : ""
+                  className={`profile-category-toggle ${
+                    activeSkillCategory === category.title ? "active" : ""
                   }`}
                   type="button"
-                  key={skill.title}
-                  onClick={() => toggleSkill(skill.title)}
+                  key={category.title}
+                  onClick={() => setActiveSkillCategory(category.title)}
                 >
-                  <span className="profile-choice-icon">{skill.icon}</span>
-                  <strong>{skill.title}</strong>
-                  <small>{skill.sub}</small>
+                  {category.title}
+                  <span>{category.tags.length}</span>
                 </button>
-              );
-            })}
+              ))}
+            </div>
+
+            <div className="profile-tag-chip-panel">
+              <div className="profile-tag-chip-heading">
+                <strong>{activeSkillCategory}</strong>
+                <span>관심 있는 태그를 선택해 주세요.</span>
+              </div>
+
+              <div className="profile-tag-chip-list">
+                {skillCategories
+                  .find((category) => category.title === activeSkillCategory)
+                  ?.tags.map((tag) => {
+                    const isSelected = selectedSkills.includes(tag);
+
+                    return (
+                      <button
+                        className={`profile-tag-chip ${
+                          isSelected ? "selected" : ""
+                        }`}
+                        type="button"
+                        key={tag}
+                        onClick={() => toggleSkill(tag)}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+
+            {selectedSkills.length > 0 && (
+              <div className="profile-selected-tags">
+                <strong>선택한 태그</strong>
+                <div>
+                  {selectedSkills.map((tag) => (
+                    <button
+                      className="profile-selected-tag"
+                      type="button"
+                      key={tag}
+                      onClick={() => toggleSkill(tag)}
+                    >
+                      {tag} ×
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="profile-next-area">
