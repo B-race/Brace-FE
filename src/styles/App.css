@@ -175,6 +175,31 @@
   font-size: 18px;
 }
 
+.notifications-read-all-button {
+  appearance: none;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #4f46e5;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notifications-read-all-button:hover,
+.notifications-read-all-button:focus-visible {
+  background: #4338ca;
+}
+
+.notifications-read-all-button:disabled {
+  border-color: #e4e7ec;
+  background: #f2f4f7;
+  color: #98a2b3;
+  cursor: not-allowed;
+}
+
 .notification-list {
   display: grid;
   gap: 12px;
