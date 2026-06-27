@@ -14,10 +14,13 @@ export const ApplicantManagePage = () => {
     selectedApplicant,
     selectedApplicantId,
     isLoading,
+    isLoadingMore,
+    hasMoreApplicants,
     isError,
     errorMessage,
     selectProject,
     selectApplicant,
+    loadMoreApplicants,
     reviewApplicant,
     refetch,
   } = useApplicantManagement();
@@ -68,7 +71,10 @@ export const ApplicantManagePage = () => {
               <ApplicantList
                 applicants={applicants}
                 selectedApplicantId={selectedApplicantId}
+                hasMoreApplicants={hasMoreApplicants}
+                isLoadingMore={isLoadingMore}
                 onSelectApplicant={selectApplicant}
+                onLoadMore={loadMoreApplicants}
               />
             </div>
 

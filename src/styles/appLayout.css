@@ -5,7 +5,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f7f8fb;
+  background: #ffffff; /* ← 흰색으로 */
 }
 
 /* =====================
@@ -110,12 +110,13 @@
 }
 
 /* =====================
-   Main
+   페이지 콘텐츠 래퍼
    ===================== */
-.app-main {
+.page-content {
   margin-top: 60px;
   flex: 1;
-  background: #f7f8fb;
+  background: #ffffff;
+  /* display: flex, flex-direction: column 제거 */
 }
 
 @media (max-width: 820px) {

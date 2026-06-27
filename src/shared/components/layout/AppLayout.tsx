@@ -2,18 +2,8 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import logoImage from "../../../assets/images/logo2.png";
 import "../../../styles/appLayout.css";
-import { ROUTES } from "../../constants/routes";
-
-const navigationItems = [
-  { label: "Value", to: ROUTES.HOME },
-  { label: "모집하기", to: ROUTES.PROJECT_REGISTER },
-  { label: "알림", to: ROUTES.NOTIFICATIONS },
-  { label: "마이페이지", to: ROUTES.MYPAGE },
-];
 
 export const AppLayout = () => {
-  const [search, setSearch] = useState("");
-
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -85,7 +75,7 @@ export const AppLayout = () => {
 
       <main className="app-main">
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 };
