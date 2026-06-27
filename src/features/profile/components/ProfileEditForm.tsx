@@ -20,7 +20,9 @@ interface ProfileEditFormProps {
 
 export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
   const [form, setForm] = useState(profile);
-  const [skillInput, setSkillInput] = useState(profile.skills.join(", "));
+  const [skillInput, setSkillInput] = useState(
+    profile.skills.map((skill) => skill.skillTag).join(", "),
+  );
   const [savedMessage, setSavedMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,9 +37,16 @@ export const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
       ...currentForm,
       skills: value
         .split(",")
-        .map((skill) => skill.trim())
+        .map((skillTag) => skillTag.trim())
         .filter(Boolean)
-        .slice(0, 5),
+        .slice(0, 5)
+        .map<Skill>((skillTag, index) => {
+          const existingSkill = currentForm.skills.find(
+            (skill) => skill.skillTag === skillTag,
+          );
+
+          return existingSkill ?? { skillId: index + 1, skillTag };
+        }),
     }));
     setSavedMessage("");
   };
