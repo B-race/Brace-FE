@@ -1,0 +1,214 @@
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  background-color: #ffffff;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =====================
+   Page Layout
+   ===================== */
+.page {
+  min-height: 2904px;
+  width: 1440px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================
+   GNB (Global Navigation Bar)
+   ===================== */
+.gnb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 100;
+}
+
+.gnb__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.gnb__logo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  flex-shrink: 0;
+}
+
+.gnb__logo-text {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #111111;
+}
+
+.gnb__nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.gnb__nav-link {
+  font-size: 14px;
+  font-weight: 400;
+  color: #111111;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s ease;
+}
+
+.gnb__nav-link:hover {
+  opacity: 0.6;
+}
+
+/* =====================
+   Main
+   ===================== */
+.main {
+  padding-top: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1;
+}
+
+/* =====================
+   Card
+   ===================== */
+.card {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0 0;
+  gap: 0;
+}
+
+.card__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.card__subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555555;
+  text-align: center;
+  letter-spacing: -0.01em;
+  margin-bottom: 28px;
+}
+
+/* =====================
+   Action Buttons
+   ===================== */
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  height: 44px;
+  padding: 0 28px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn--outline {
+  background-color: #ffffff;
+  color: #111111;
+  border: 1.5px solid #111111;
+}
+
+.btn--outline:hover {
+  background-color: #f5f5f5;
+}
+
+.btn--primary {
+  background-color: #111111;
+  color: #ffffff;
+  border: 1.5px solid #111111;
+}
+
+.btn--primary:hover {
+  opacity: 0.8;
+}
+
+/* =====================
+   Stepper
+   ===================== */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.stepper__step:hover {
+  background-color: #f0f0f0;
+}
+
+.stepper__step--active .stepper__step-number,
+.stepper__step--active .stepper__step-label {
+  color: #111111;
+  font-weight: 600;
+}
+
+.stepper__step-number {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+  letter-spacing: -0.01em;
+}
+
+.stepper__step-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+  letter-spacing: -0.01em;
+}
