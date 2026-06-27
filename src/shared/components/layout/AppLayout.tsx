@@ -6,9 +6,7 @@ import { ROUTES } from "../../constants/routes";
 import { Sidebar } from "./Sidebar";
 
 const navigationItems = [
-  { label: "Value", to: ROUTES.HOME },
   { label: "모집하기", to: ROUTES.PROJECT_REGISTER },
-  { label: "알림", to: ROUTES.NOTIFICATIONS },
   { label: "마이페이지", to: ROUTES.MYPAGE },
 ];
 
@@ -60,47 +58,79 @@ export const AppLayout = () => {
           </NavLink>
         </div>
 
-        <div className="app-search">
-          <input
-            className="app-search__input"
-            type="text"
-            placeholder="Value"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-          <button
-            className="app-search__btn"
-            type="button"
-            aria-label="검색"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <circle
-                cx="6.5"
-                cy="6.5"
-                r="5"
-                stroke="#888"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M10.5 10.5L14 14"
-                stroke="#888"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </button>
-        </div>
-
         <nav
           className="app-nav"
           aria-label="주요 메뉴"
         >
+          <div className="app-search">
+            <input
+              className="app-search__input"
+              type="text"
+              placeholder="검색"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+            <button
+              className="app-search__btn"
+              type="button"
+              aria-label="검색"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="6.5"
+                  cy="6.5"
+                  r="5"
+                  stroke="#888"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M10.5 10.5L14 14"
+                  stroke="#888"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "app-nav-icon-link active" : "app-nav-icon-link"
+            }
+            to={ROUTES.NOTIFICATIONS}
+            aria-label="알림"
+            title="알림"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M18 8A6 6 0 0 0 6 8c0 7-3 8-3 8h18s-3-1-3-8"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+              <path
+                d="M13.73 21a2 2 0 0 1-3.46 0"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </NavLink>
+
           {navigationItems.map((item) => (
             <NavLink
               key={item.to}
